@@ -26,6 +26,17 @@ dependencies:
   redux_thunk: ^0.2.1
   redux_persist_flutter: ^0.8.0
   redux_persist: ^0.8.0
+  http: ^0.12.0
+  html: ^0.13.3+3
+  # flutter_html_view: ^0.5.10
+  # flutter_webview_plugin: ^0.3.0+2
+  flutter_markdown: ^0.2.0
+  flutter_spinkit: ^3.0.0
+  url_launcher: ^4.0.2
+  carousel_slider: ^1.0.1
+  timeago: ^2.0.9
+  flutter_staggered_grid_view: ^0.2.4
+  share: ^0.5.3
 
 dev_dependencies:
 
@@ -45,7 +56,29 @@ flutter:
   assets:
   - assets/images/login.jpg
   - assets/images/tick.png
-  
+  - assets/images/xahoi.jpg
+  - assets/images/thegioi.jpg
+  - assets/images/vanhoa.jpg
+  - assets/images/kinhte.jpg
+  - assets/images/giaoduc.jpg
+  - assets/images/thethao.jpg
+  - assets/images/giaitri.jpg
+  - assets/images/congnghe.jpg
+  - assets/images/khoahoc.jpg
+  - assets/images/tinhot.png
+  - assets/images/latest.jpg
+  - assets/zing.png
+  - assets/vov.jpg
+  - assets/thanhnien.jpg
+  - assets/laodong.jpg
+  - assets/vietnamplus.jpg
+  - assets/vietnamnet.png
+  - assets/vtc.png
+  - assets/saostart.jpg
+  - assets/vnmedia.png
+  - assets/ictnews.png
+  - assets/tienphong.png
+  - assets/kienthuc.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -58,7 +91,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

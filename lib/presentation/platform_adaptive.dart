@@ -8,14 +8,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:cat_dog/styles/colors.dart';
 
 final ThemeData kIOSTheme = new ThemeData(
-  primarySwatch: colorStyles['primary'],
-  primaryColor: colorStyles['primary'],
+  primarySwatch: AppColors.primary,
+  primaryColor: AppColors.primary,
   primaryColorBrightness: Brightness.light,
 );
 
 final ThemeData kDefaultTheme = new ThemeData(
-  primarySwatch: colorStyles['primary'],
-  accentColor: colorStyles['primary'],
+  primarySwatch: AppColors.primary,
+  accentColor: AppColors.primary,
 );
 
 /// App bar that uses iOS styling on iOS

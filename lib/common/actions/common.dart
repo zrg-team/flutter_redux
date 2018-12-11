@@ -12,7 +12,7 @@ final Function actionSetUserLanguage = (BuildContext context, String language) {
   return (Store<AppState> store) {
     if (language != '') {
       store.dispatch(new SetUserLanguage(language));
-      Navigator.of(context).pushNamedAndRemoveUntil('/main', (_) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
     }
   };
 };

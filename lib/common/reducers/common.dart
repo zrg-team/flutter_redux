@@ -7,8 +7,8 @@ Reducer<CommonState> commonReducer = combineReducers([
   new TypedReducer<CommonState, SetUserLanguage>(setUserLanguageReducer)
 ]);
 
-CommonState setUserLanguageReducer(CommonState auth, SetUserLanguage action) {
-  return new CommonState().copyWith(
+CommonState setUserLanguageReducer(CommonState common, SetUserLanguage action) {
+  return common.copyWith(
     language: action.language
   );
 }

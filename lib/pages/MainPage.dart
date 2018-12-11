@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:cat_dog/presentation/platform_adaptive.dart';
 import 'package:cat_dog/styles/texts.dart';
-import 'package:cat_dog/modules/dashboard/components/discover_tab.dart';
-import 'package:cat_dog/modules/dashboard/components/stats_tab.dart';
-import 'package:cat_dog/modules/dashboard/components/news_tab.dart';
+import 'package:cat_dog/modules/dashboard/components/DiscoverComponent.dart';
+import 'package:cat_dog/modules/category/components/CategoriesView.dart';
+import 'package:cat_dog/modules/dashboard/containers/NewsTab.dart';
 import 'package:cat_dog/common/components/MainDrawer.dart';
+import 'package:cat_dog/common/components/GradientAppBar.dart';
+import 'package:cat_dog/common/components/BottomBar.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -14,6 +15,7 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => new MainScreenState();
 }
 class MainScreenState extends State<MainPage> {
+  final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
   PageController _tabController;
   String _title;
   int _index;
@@ -29,11 +31,24 @@ class MainScreenState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new PlatformAdaptiveAppBar(
-        title: new Text(_title),
-        platform: Theme.of(context).platform
+      key: _mainKey,
+      appBar: new PreferredSize(
+        preferredSize: const Size.fromHeight(48.0),
+        child: new GradientAppBar(
+          _title,
+          Icon(
+            Icons.dehaze,
+            size: 32
+          ),
+          () => _mainKey.currentState.openDrawer(),
+          null,
+          () {
+            _tabController.jumpToPage(0);
+          }
+        ),
       ),
-      bottomNavigationBar: new PlatformAdaptiveBottomBar(
+      bottomNavigationBar: 
+      new PlatformAdaptiveBottomBar(
         currentIndex: _index,
         onTap: onTap,
         items: TabItems.map((TabItem item) {
@@ -42,7 +57,10 @@ class MainScreenState extends State<MainPage> {
               item.title,
               style: textStyles['bottom_label'],
             ),
-            icon: new Icon(item.icon),
+            icon: new Icon(
+              item.icon,
+              size: 25
+            ),
           );
         }).toList(),
       ),
@@ -51,8 +69,8 @@ class MainScreenState extends State<MainPage> {
         onPageChanged: onTabChanged,
         children: <Widget>[
           new NewsTab(),
-          new StatsTab(),
-          new DiscoverTab()
+          new CategoriesView(),
+          new DiscoverComponent()
         ],
       ),
       drawer: new MainDrawer(),
@@ -70,16 +88,3 @@ class MainScreenState extends State<MainPage> {
     this._title = TabItems[tab].title;
   }
 }
-
-class TabItem {
-  final String title;
-  final IconData icon;
-
-  const TabItem({ this.title, this.icon });
-}
-
-const List<TabItem> TabItems = const <TabItem>[
-  const TabItem(title: 'News', icon: Icons.assignment),
-  const TabItem(title: 'Statistics', icon: Icons.timeline),
-  const TabItem(title: 'Discover', icon: Icons.group_work)
-];

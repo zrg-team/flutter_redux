@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
-
+import 'package:cat_dog/modules/dashboard/actions.dart';
 import 'package:cat_dog/modules/user/models/user.dart';
 import 'package:cat_dog/common/state.dart';
 
@@ -8,33 +7,45 @@ class UserLoginRequest {}
 
 class UserLoginSuccess {
   final User user;
-
   UserLoginSuccess(this.user);
 }
 
 class UserLoginFailure {
   final String error;
-
   UserLoginFailure(this.error);
 }
 
 class UserLogout {}
 
-final Function login = (BuildContext context, String username, String password) {
+class UserSavedNews {
+  final Object news;
+  UserSavedNews(this.news);
+}
+
+// TODO: Remove thunk usage
+final Function loginAction = (String username, String password) {
   return (Store<AppState> store) {
     store.dispatch(new UserLoginRequest());
-    if (username == 'asd' && password == 'asd') {
+    if (username == 'admin' && password == 'admin') {
       store.dispatch(new UserLoginSuccess(new User('placeholder_token', 'placeholder_id')));
-      Navigator.of(context).pushNamedAndRemoveUntil('/main', (_) => false);
+      return true;
     } else {
       store.dispatch(new UserLoginFailure('Username or password were incorrect.'));
+      return false;
     }
   };
 };
-
-final Function logout = (BuildContext context) {
+// TODO: Remove thunk usage
+final Function logoutAction = () {
   return (Store<AppState> store) {
     store.dispatch(new UserLogout());
-    Navigator.of(context).pushNamedAndRemoveUntil('/login', (_) => false);
   };
+};
+
+final Function saveNewsAction = (Store<AppState> store, Map<String, dynamic> item) async {
+  var result = await getDefailNews(item['url']);
+  dynamic data = item;
+  data['data'] = result;
+  store.dispatch(UserSavedNews(item));
+  return true;
 };

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DiscoverTab extends StatelessWidget {
-  DiscoverTab({Key key}) : super(key: key);
+class DiscoverComponent extends StatelessWidget {
+  DiscoverComponent({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

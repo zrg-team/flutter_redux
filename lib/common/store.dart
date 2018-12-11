@@ -11,7 +11,6 @@ Future<Store<AppState>> createStore() async {
     storage: FlutterStorage(),
     serializer: JsonSerializer<AppState>(AppState.rehydrationJSON)
   );
-  print('hello !');
   // Load initial state
   final initialState = await persistor.load();
   final store = Store<AppState>(
