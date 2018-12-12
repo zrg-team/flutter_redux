@@ -18,14 +18,6 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
   bool change = false;
   final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
 
-  CircleAvatar _loadAvatar(var url) {
-    return new CircleAvatar(
-      backgroundColor: Colors.transparent,
-      backgroundImage: new AssetImage(url),
-      radius: 40.0,
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -85,35 +77,28 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
                   )
                 ]),
             child: new Container(
-              height: 500.0,
               padding: const EdgeInsets.only(bottom: 5.0),
-              child: new GestureDetector(
+              child: new FlatButton(
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     new SizedBox(
                       height: 100.0,
                       width: 100.0,
-                      child: new Row(
-                        children: <Widget>[
-                          new Stack(
-                            children: <Widget>[
-                              new SizedBox(
-                                child: new Container(
-                                  child: _loadAvatar(
-                                    sources[index]['image']),
-                                  padding: const EdgeInsets.only(
-                                    left: 10.0, top: 12.0, right: 10.0),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      child: new Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.white
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            sources[index]['image']
+                          )
+                        )
+                      )
+                    )
+                  ]
                 ),
-                onTap: () {
+                onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => SubNewsPage(category: {

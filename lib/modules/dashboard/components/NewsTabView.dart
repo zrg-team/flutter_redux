@@ -108,41 +108,40 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
           return new Container(
             margin: EdgeInsets.all(5.0),
             width: MediaQuery.of(pageKey.currentContext).size.width - 40,
+            height: 200,
             decoration: new BoxDecoration(
               color: AppColors.commonBackgroundColor
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                child: Container(
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      image: NetworkImage(
-                          item['image']
-                        ),
-                      fit: BoxFit.cover
-                    )
+            child: Stack(
+              children: <Widget>[
+                new Image(
+                  width: MediaQuery.of(pageKey.currentContext).size.width - 40,
+                  image: NetworkImage(
+                    item['image']
                   ),
-                  child: Container(
-                    alignment: Alignment(-0.9, 0.8),
-                    child: new FlatButton(
-                      child: Text(
-                        item['heading'],
-                        style: new TextStyle(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17.0
+                  fit: BoxFit.fill
+                ),
+                Container(
+                  alignment: Alignment(-0.9, 0.8),
+                  child: new FlatButton(
+                    child: Text(
+                      item['heading'],
+                      style: new TextStyle(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17.0
+                      )
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ReadingPage(news: item)
                         )
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ReadingPage(news: item)
-                          )
-                        );
-                      }
-                    )
+                      );
+                    }
                   )
                 )
+              ]
             )
           );
         }).toList(),

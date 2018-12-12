@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cat_dog/common/configs.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:cat_dog/modules/dashboard/actions.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:video_player/video_player.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
@@ -19,7 +20,6 @@ class _ReadingViewState extends State<ReadingView> {
   String html = '';
   var video = [];
   bool isPlaying = false;
-  VideoPlayerController videoController;
   @override
   void initState() {
     super.initState();
@@ -37,23 +37,6 @@ class _ReadingViewState extends State<ReadingView> {
         setState(() {
           html = result['text'];
           video = result['video'];
-          if (video != null && video.length > 0) {
-            videoController = VideoPlayerController.network(
-              result['video'][0],
-            )
-            ..addListener(() {
-              final bool playingStatus = videoController.value.isPlaying;
-              if (isPlaying != playingStatus) {
-                setState(() {
-                  isPlaying = playingStatus;
-                });
-              }
-            })
-            ..initialize().then((_) {
-              setState(() {
-              });
-            });
-          }
         });
       });
     } catch (err) {
@@ -64,20 +47,22 @@ class _ReadingViewState extends State<ReadingView> {
     return Column(
       children: <Widget>[
         video.length > 0 ? new Container(
-          margin: EdgeInsets.all(5),
+          margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: FlatButton(
-            onPressed: () {
-              videoController.value.isPlaying
-              ? videoController.pause()
-              : videoController.play();
+            onPressed: () async {
+              String url = widget.news['url'];
+              url = DEFAULT_URL + url.replaceAll('/c/', '/r/');
+              print(url);
+              if (await canLaunch(url)) {
+                await launch(url, forceWebView: true);
+              } else {
+                print('Could not launch $url');
+              }
             },
             child: new Center(
-              child: videoController.value.initialized
-                ? AspectRatio(
-                    aspectRatio: videoController.value.aspectRatio,
-                    child: VideoPlayer(videoController),
-                  )
-                : Container(),
+              child: new Image(
+                image: AssetImage('assets/videoplayer.jpg'),
+              ),
             )
           )
         ) : new Container( width: 0, height: 0 ),

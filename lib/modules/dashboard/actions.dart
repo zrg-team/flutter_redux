@@ -78,8 +78,6 @@ ${tag.innerHtml.trim()}
 
 """;
         } else if (tag.className.contains('body-video')) {
-          print(tag.getElementsByTagName('iframe'));
-          print(tag.innerHtml);
           var videoTag = tag.getElementsByTagName('video')[0];
           video.add(videoTag.getElementsByTagName('source')[0].attributes['data-src']);
         }

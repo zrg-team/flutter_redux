@@ -42,7 +42,7 @@ class UserState {
       isAuthenticated: input != null ? input['isAuthenticated'] : false,
       isAuthenticating: input != null ? input['isAuthenticating'] : false,
       error: input != null ? input['error'] : null,
-      user: input != null ? new User.fromJSON(input['user']) : null,
+      user: input != null && input['user'] != null ? new User.fromJSON(input['user']) : null,
       saved: input != null ? json.decode(input['saved']) : []
     );
   }
