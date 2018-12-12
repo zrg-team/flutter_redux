@@ -22,7 +22,11 @@ class UserSavedNews {
   UserSavedNews(this.news);
 }
 
-// TODO: Remove thunk usage
+class UserRemoveSavedNews {
+  final dynamic news;
+  UserRemoveSavedNews(this.news);
+}
+
 final Function loginAction = (String username, String password) {
   return (Store<AppState> store) {
     store.dispatch(new UserLoginRequest());
@@ -35,7 +39,6 @@ final Function loginAction = (String username, String password) {
     }
   };
 };
-// TODO: Remove thunk usage
 final Function logoutAction = () {
   return (Store<AppState> store) {
     store.dispatch(new UserLogout());
@@ -48,4 +51,10 @@ final Function saveNewsAction = (Store<AppState> store, Map<String, dynamic> ite
   data['data'] = result['text'];
   store.dispatch(UserSavedNews(item));
   return true;
+};
+
+final Function removeSavedNewsAction = (Map<String, dynamic> item) {
+  return (Store<AppState> store) {
+    store.dispatch(UserRemoveSavedNews(item));
+  };
 };

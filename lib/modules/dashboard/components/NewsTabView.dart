@@ -201,7 +201,14 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                               return store.state.dashboard.hot;
                             },
                             builder: (BuildContext context, news) {
-                              return new NewsList(news ?? [], scrollController, widget, { 'download': true, 'share': true });
+                              return new NewsList(
+                                news ?? [],
+                                scrollController,
+                                widget,
+                                { 'download': true, 'share': true },
+                                null,
+                                null
+                              );
                             }
                           )
                         ),
@@ -213,7 +220,14 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                               return store.state.dashboard.news;
                             },
                             builder: (BuildContext context, news) {
-                              return new NewsList(news ?? [], scrollController, widget, { 'download': true, 'share': true });
+                              return new NewsList(
+                                news ?? [],
+                                scrollController,
+                                widget,
+                                { 'download': true, 'share': true },
+                                null,
+                                null
+                              );
                             }
                           )
                         )

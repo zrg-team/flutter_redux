@@ -8,6 +8,7 @@ Reducer<UserState> authReducer = combineReducers([
   new TypedReducer<UserState, UserLoginFailure>(userLoginFailureReducer),
   new TypedReducer<UserState, UserLogout>(userLogoutReducer),
   new TypedReducer<UserState, UserSavedNews>(userSavedNewsReducer),
+  new TypedReducer<UserState, UserRemoveSavedNews>(userRemoveSavedNewsReducer),
 ]);
 
 UserState userLoginRequestReducer(UserState user, UserLoginRequest action) {
@@ -43,4 +44,15 @@ UserState userSavedNewsReducer(UserState user, UserSavedNews action) {
 
 UserState userLogoutReducer(UserState user, UserLogout action) {
   return new UserState();
+}
+
+UserState userRemoveSavedNewsReducer(UserState user, UserRemoveSavedNews action) {
+  var news = user.saved;
+  int index = user.saved.indexWhere((dynamic item) {
+    return item['url'] == action.news['url'];
+  });
+  news.removeAt(index);
+  return user.copyWith(
+    saved: List.from(news)
+  );
 }

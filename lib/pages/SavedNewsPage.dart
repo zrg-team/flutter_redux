@@ -25,7 +25,9 @@ class SavedNewsPage extends StatelessWidget {
           }
         ),
       ),
-      body: new SavedNews(key: key)
+      body: Builder(
+        builder: (context) => new SavedNews(key: key, scaffoldContext: context)
+      )
     );
   }
 }

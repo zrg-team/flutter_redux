@@ -7,8 +7,12 @@ import 'package:cat_dog/pages/LoadingPage.dart';
 import 'package:cat_dog/common/components/NewsList.dart';
 
 class SavedNewsView extends StatefulWidget {
+  final Function removeSavedNews;
+  final BuildContext scaffoldContext;
   const SavedNewsView({
-    Key key
+    Key key,
+    this.removeSavedNews,
+    this.scaffoldContext
   }) : super(key: key);
 
   @override
@@ -25,6 +29,22 @@ class _SavedNewsViewState extends State<SavedNewsView> {
     super.initState();
   }
 
+  void callbackStart (type, item) {
+    if (type == 'remove') {
+      setState(() {
+        loading = true;
+      });
+    }
+  }
+
+  void callbackEnd (type, item) {
+    if (type == 'remove') {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new LoadingPage(
@@ -38,7 +58,13 @@ class _SavedNewsViewState extends State<SavedNewsView> {
             return store.state.user.saved;
           },
           builder: (BuildContext context, news) {
-            return new NewsList(news ?? [], scrollController, widget, { 'download': false, 'share': true });
+            return new NewsList(
+              news ?? [], scrollController,
+              widget,
+              { 'share': true, 'remove': true },
+              callbackStart,
+              callbackEnd
+            );
           }
         )
       )

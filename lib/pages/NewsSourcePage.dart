@@ -4,6 +4,7 @@ import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/common/components/MainDrawer.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
 import 'package:cat_dog/pages/SubNewsPage.dart';
+import 'package:cat_dog/common/configs.dart';
 
 class NewsSourcePage extends StatefulWidget {
   NewsSourcePage({Key key}) : super(key: key);
@@ -13,68 +14,7 @@ class NewsSourcePage extends StatefulWidget {
 }
 
 class _NewsSourcePageState extends State<NewsSourcePage> {
-  var sources = [
-    {
-      'name': 'Zing',
-      'image': 'assets/zing.png',
-      'url': 'https://m.baomoi.com/bao-tri-thuc-truc-tuyen-zing/p/119.epi'
-    },
-    {
-      'name': 'VOV',
-      'image': 'assets/vov.jpg',
-      'url': 'https://m.baomoi.com/bao-vov-vov/p/65.epi'
-    },
-    {
-      'name': 'Thanh Niên',
-      'image': 'assets/thanhnien.jpg',
-      'url': 'https://m.baomoi.com/bao-thanh-nien-thanh-nien/p/19.epi'
-    },
-    {
-      'name': 'Lao Động',
-      'image': 'assets/laodong.jpg',
-      'url': 'https://m.baomoi.com/bao-lao-dong-lao-dong/p/12.epi'
-    },
-    {
-      'name': 'Vietnam Plus',
-      'image': 'assets/vietnamplus.jpg',
-      'url': 'https://baomoi.com/bao-vietnamplus-vietnamplus/p/293.epi'
-    },
-    {
-      'name': 'Vietnam Net',
-      'image': 'assets/vietnamnet.png',
-      'url': 'https://baomoi.com/bao-vietnamnet-vietnamnet/p/23.epi'
-    },
-    {
-      'name': 'VTC',
-      'image': 'assets/vtc.png',
-      'url': 'https://baomoi.com/bao-vtc-news-vtc/p/83.epi'
-    },
-    {
-      'name': 'SaoStart',
-      'image': 'assets/saostart.jpg',
-      'url': 'https://baomoi.com/saostar-saostar/p/329.epi'
-    },
-    {
-      'name': 'VN Media',
-      'image': 'assets/vnmedia.png',
-      'url': 'https://baomoi.com/vnmedia-vnmedia/p/22.epi'
-    },
-    {
-      'name': 'ICT News',
-      'image': 'assets/ictnews.png',
-      'url': 'https://baomoi.com/ictnews-ictnews/p/107.epi'
-    },
-    {
-      'name': 'Tiền Phòng',
-      'image': 'assets/tienphong.png',
-      'url': 'https://baomoi.com/bao-tien-phong-tien-phong/p/20.epi'
-    },
-    {
-      'name': 'Kiến Thức',
-      'image': 'assets/kienthuc.jpeg',
-      'url': 'https://baomoi.com/bao-kien-thuc-kien-thuc/p/180.epi'
-    }
-  ];
+  var sources = SOURCE_NEWS;
   bool change = false;
   final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
 

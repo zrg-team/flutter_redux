@@ -10,6 +10,7 @@ class Newsfeed extends StatelessWidget {
       this.onTap,
       this.onStart,
       this.onShare,
+      this.onRemove,
       this.onDownload,
       @required this.item
     })
@@ -21,6 +22,7 @@ class Newsfeed extends StatelessWidget {
   final Function onDownload;
   final Function onStart;
   final Function onShare;
+  final Function onRemove;
   final dynamic item;
 
   @override
@@ -137,16 +139,26 @@ class Newsfeed extends StatelessWidget {
                             onTap: () {
                               onDownload(item);
                             }
+                          ) : new Container(),
+                          onRemove != null ? new GestureDetector(
+                            child: new Padding(
+                              padding:
+                                  new EdgeInsets.all(5.0),
+                              child: Icon(Icons.delete, color: AppColors.itemDefaultColor)
+                            ),
+                            onTap: () {
+                              onRemove(item);
+                            }
                           ) : new Container()
-                        ],
-                      ),
-                    ],
+                        ]
+                      )
+                    ]
                   )
-                ],
+                ]
               )
-            ],
-          ), ////
-        ),
+            ]
+          )
+        )
       )
     );
   }

@@ -13,6 +13,7 @@ import 'package:cat_dog/pages/CategoriesPage.dart';
 import 'package:cat_dog/pages/TestAnimationPage.dart';
 import 'package:cat_dog/pages/SavedNewsPage.dart';
 import 'package:cat_dog/pages/NewsSourcePage.dart';
+import 'package:cat_dog/pages/AboutPage.dart';
 
 void main() async {
   final store = await createStore();
@@ -49,7 +50,7 @@ class App extends StatelessWidget {
           '/test': (BuildContext context) => new LogoApp(),
           '/saved': (BuildContext context) => new SavedNewsPage(),
           '/source': (BuildContext context) => new NewsSourcePage(),
-          '/about': (BuildContext context) => new NewsSourcePage()
+          '/about': (BuildContext context) => new AboutPage()
         }
       )
     );
