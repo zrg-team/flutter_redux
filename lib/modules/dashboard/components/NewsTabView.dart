@@ -13,12 +13,14 @@ class NewsTabView extends StatefulWidget {
   final Function getHotNews;
   final Function getLatestNews;
   final Function refreshCallback;
+  final BuildContext scaffoldContext;
   const NewsTabView({
     Key key,
     this.saveNews,
     this.refreshCallback,
     this.getHotNews,
-    this.getLatestNews
+    this.getLatestNews,
+    this.scaffoldContext
   }) : super(key: key);
 
   @override
@@ -199,7 +201,7 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                               return store.state.dashboard.hot;
                             },
                             builder: (BuildContext context, news) {
-                              return new NewsList(news ?? [], scrollController, widget);
+                              return new NewsList(news ?? [], scrollController, widget, { 'download': true, 'share': true });
                             }
                           )
                         ),
@@ -211,7 +213,7 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                               return store.state.dashboard.news;
                             },
                             builder: (BuildContext context, news) {
-                              return new NewsList(news ?? [], scrollController, widget);
+                              return new NewsList(news ?? [], scrollController, widget, { 'download': true, 'share': true });
                             }
                           )
                         )

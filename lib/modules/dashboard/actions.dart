@@ -14,9 +14,10 @@ class SetLatestNews {
 }
 
 // FIXME: Convert html to markdown :v
-final Function getDefailNews = (String url) async {
+final Function getDetailNews = (String url) async {
   try {
     String result = await fetchDetailNews(url);
+    var video = [];
     if (result != '') {
       var document = parse(result);
       var breadcrumbs = document.getElementsByClassName('breadcrumbs')[0];
@@ -76,19 +77,31 @@ ${tag.innerHtml.trim()}
 ![Image](${image.attributes['src']})
 
 """;
+        } else if (tag.className.contains('body-video')) {
+          print(tag.getElementsByTagName('iframe'));
+          print(tag.innerHtml);
+          var videoTag = tag.getElementsByTagName('video')[0];
+          video.add(videoTag.getElementsByTagName('source')[0].attributes['data-src']);
         }
       });
       // DEV: remove html tag
-      return texts
-        .replaceAll('<strong>', '')
-        .replaceAll('</strong>', '')
-        .replaceAll('<em>', '')
-        .replaceAll('</em>', '');
+      return {
+        'video': video,
+        'text': texts
+          .replaceAll('<strong>', '')
+          .replaceAll('</strong>', '')
+          .replaceAll('<em>', '')
+          .replaceAll('</em>', '')
+          .replaceAll('<br>', '')
+      };
     }
    } catch (err) {
     print(err);
   }
-  return 'No Content Here';
+  return {
+    'video': [],
+    'text': 'No Content Here'
+  };
 };
 
 final Function parseNews = (result) {

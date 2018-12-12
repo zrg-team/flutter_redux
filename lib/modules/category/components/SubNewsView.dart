@@ -48,7 +48,7 @@ class _SubNewsViewState extends State<SubNewsView> {
       component: new Container(
         // height: MediaQuery.of(context).size.height - 476,
         decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
-        child: new NewsList(list, null, widget)
+        child: new NewsList(list, null, widget, { 'download': true, 'share': true })
       )
     );
   }

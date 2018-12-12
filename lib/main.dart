@@ -31,22 +31,25 @@ class App extends StatelessWidget {
     return StoreProvider(
       store: store,
       child: new MaterialApp(
-        title: 'App',
+        title: 'Tin Mới',
         theme: defaultTargetPlatform == TargetPlatform.iOS
           ? kIOSTheme
           : kDefaultTheme,
-        routes: <String, WidgetBuilder>{
-          '/': (BuildContext context) => new StoreConnector<AppState, dynamic>( 
-              converter: (store) => store.state.user.isAuthenticated, 
-              builder: (BuildContext context, isAuthenticated) => isAuthenticated ? new HomePage() : new LoginPage()
-          ),
+        routes: <String, WidgetBuilder> {
+          // Login feature comming soon
+          // '/': (BuildContext context) => new StoreConnector<AppState, dynamic>( 
+          //     converter: (store) => store.state.user.isAuthenticated, 
+          //     builder: (BuildContext context, isAuthenticated) => isAuthenticated ? new HomePage() : new LoginPage()
+          // ),
+          '/': (BuildContext context) => new HomePage(),
           '/login': (BuildContext context) => new LoginPage(),
           '/home': (BuildContext context) => new HomePage(),
           '/view': (BuildContext context) => new ReadingPage(),
           '/categories': (BuildContext context) => new CategoriesPage(),
           '/test': (BuildContext context) => new LogoApp(),
           '/saved': (BuildContext context) => new SavedNewsPage(),
-          '/source': (BuildContext context) => new NewsSourcePage()
+          '/source': (BuildContext context) => new NewsSourcePage(),
+          '/about': (BuildContext context) => new NewsSourcePage()
         }
       )
     );

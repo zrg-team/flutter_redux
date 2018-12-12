@@ -69,10 +69,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           }
         ),
       ),
-      body: new NewsTab(
-        refreshCallback: (input) {
-          refreshCallback = input;
-        }
+      body: Builder(
+        builder: (context) => new NewsTab(
+          refreshCallback: (input) {
+            refreshCallback = input;
+          },
+          scaffoldContext: context
+        )
       ),
       drawer: new MainDrawer(),
     );

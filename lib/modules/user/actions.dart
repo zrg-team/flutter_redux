@@ -43,9 +43,9 @@ final Function logoutAction = () {
 };
 
 final Function saveNewsAction = (Store<AppState> store, Map<String, dynamic> item) async {
-  var result = await getDefailNews(item['url']);
+  var result = await getDetailNews(item['url']);
   dynamic data = item;
-  data['data'] = result;
+  data['data'] = result['text'];
   store.dispatch(UserSavedNews(item));
   return true;
 };

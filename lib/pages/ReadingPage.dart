@@ -38,7 +38,9 @@ class ReadingPage extends StatelessWidget {
           }
         ),
       ),
-      body: new ReadingView(key: key, news: news)
+      body: Builder(
+        builder: (context) => new ReadingView(key: key, news: news, scaffoldContext: context)
+      )
     );
   }
 }

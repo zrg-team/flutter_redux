@@ -8,8 +8,10 @@ import 'package:cat_dog/modules/user/actions.dart';
 
 class NewsTab extends StatelessWidget {
   final Function refreshCallback;
-  NewsTab({Key key, refreshCallback}) :
+  final BuildContext scaffoldContext;
+  NewsTab({Key key, refreshCallback, scaffoldContext}) :
   refreshCallback = refreshCallback,
+  scaffoldContext = scaffoldContext,
   super(key: key);
 
   @override
@@ -31,7 +33,8 @@ class NewsTab extends StatelessWidget {
           refreshCallback: refreshCallback,
           getHotNews: props['getHotNews'],
           getLatestNews: props['getLatestNews'],
-          saveNews: props['saveNews']
+          saveNews: props['saveNews'],
+          scaffoldContext: scaffoldContext
         );
       }
     );

@@ -38,7 +38,7 @@ class _SavedNewsViewState extends State<SavedNewsView> {
             return store.state.user.saved;
           },
           builder: (BuildContext context, news) {
-            return new NewsList(news ?? [], scrollController, widget);
+            return new NewsList(news ?? [], scrollController, widget, { 'download': false, 'share': true });
           }
         )
       )

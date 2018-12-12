@@ -113,7 +113,7 @@ class Newsfeed extends StatelessWidget {
                       ),
                       new Row(
                         children: <Widget>[
-                          new GestureDetector(
+                          onShare != null ? new GestureDetector(
                             child: new Padding(
                                 padding:
                                     new EdgeInsets.symmetric(
@@ -125,29 +125,19 @@ class Newsfeed extends StatelessWidget {
                                   )
                                 ),
                             onTap: () {
-                              onShare != null && onShare(item);
+                              onShare(item);
                             },
-                          ),
-                          new GestureDetector(
+                          ) : new Container(),
+                          onDownload != null ? new GestureDetector(
                             child: new Padding(
                               padding:
                                   new EdgeInsets.all(5.0),
                               child: Icon(Icons.cloud_download, color: AppColors.itemDefaultColor)
                             ),
                             onTap: () {
-                              onDownload != null && onDownload(item);
+                              onDownload(item);
                             }
-                          ),
-                          new GestureDetector(
-                            child: new Padding(
-                              padding:
-                                new EdgeInsets.all(5.0),
-                              child: Icon(Icons.star, color: AppColors.itemDefaultColor)
-                            ),
-                            onTap: () {
-                              onStart != null && onStart(item);
-                            },
-                          ),
+                          ) : new Container()
                         ],
                       ),
                     ],
