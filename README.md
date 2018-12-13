@@ -2,7 +2,7 @@
 
 **Flutter_redux** is a simple flutter application. It demonstrates how to implement Redux for Dart.
 
-### Why do you need all of this if StatefulWidget exists?
+## Why do you need all of this if StatefulWidget exists?
 
   Redux.JS author advice : If you've got a simple app, use the simplest thing possible. In Flutter, StatefulWidget is perfect for a simple counter app.
 
