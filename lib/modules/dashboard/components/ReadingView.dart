@@ -50,11 +50,10 @@ class _ReadingViewState extends State<ReadingView> {
           margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
           child: FlatButton(
             onPressed: () async {
-              String url = widget.news['url'];
-              url = DEFAULT_URL + url.replaceAll('/c/', '/r/');
-              print(url);
+              String url = video[0];
+              // url = DEFAULT_URL + url.replaceAll('/c/', '/r/');
               if (await canLaunch(url)) {
-                await launch(url, forceWebView: true);
+                await launch(url);
               } else {
                 print('Could not launch $url');
               }

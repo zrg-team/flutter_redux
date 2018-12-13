@@ -6,7 +6,6 @@ class Newsfeed extends StatelessWidget {
   const Newsfeed(
     {
       Key key,
-      @required this.animation,
       this.onTap,
       this.onStart,
       this.onShare,
@@ -14,10 +13,8 @@ class Newsfeed extends StatelessWidget {
       this.onDownload,
       @required this.item
     })
-      : assert(animation != null),
-        assert(item != null),
+      : assert(item != null),
         super(key: key);
-  final Animation<double> animation;
   final Function onTap;
   final Function onDownload;
   final Function onStart;

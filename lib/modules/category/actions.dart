@@ -2,13 +2,14 @@ import 'package:html/parser.dart' show parse;
 import 'package:cat_dog/modules/category/repository.dart';
 
 
-getNewsFromUrl (url) async {
-  String result = await fetchNewsFromUrl(url);
+getNewsFromUrl (String url,int page) async {
+  String urlPage = "${url.replaceAll('.epi', '')}/trang$page.epi?loadmore=1";
+  String result = await fetchNewsFromUrl(urlPage);
   if (result != '') {
     List<Object> data = new List();
     var document = parse(result);
     var elements = document
-      .getElementsByClassName('main-content')[0]
+      .getElementsByTagName('body')[0]
       .getElementsByClassName('story');
     int i;
     int length = elements.length;

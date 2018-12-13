@@ -39,8 +39,10 @@ class _SavedNewsViewState extends State<SavedNewsView> {
 
   void callbackEnd (type, item) {
     if (type == 'remove') {
-      setState(() {
-        loading = false;
+      Future.delayed(new Duration(milliseconds: 1000), () {
+        setState(() {
+          loading = false;
+        });
       });
     }
   }
@@ -59,11 +61,12 @@ class _SavedNewsViewState extends State<SavedNewsView> {
           },
           builder: (BuildContext context, news) {
             return new NewsList(
-              news ?? [], scrollController,
-              widget,
-              { 'share': true, 'remove': true },
-              callbackStart,
-              callbackEnd
+              list: news ?? [],
+              widget: widget,
+              callbackEnd: callbackEnd,
+              controller: scrollController,
+              callbackStart: callbackStart,
+              features: { 'remove': true, 'share': true }
             );
           }
         )

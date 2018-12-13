@@ -83,8 +83,6 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     new SizedBox(
-                      height: 100.0,
-                      width: 100.0,
                       child: new Container(
                         decoration: BoxDecoration(
                           color: AppColors.white

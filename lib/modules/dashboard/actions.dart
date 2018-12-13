@@ -13,6 +13,16 @@ class SetLatestNews {
   SetLatestNews(this.news);
 }
 
+class AppendHotNews {
+  final List<Object> news;
+  AppendHotNews(this.news);
+}
+
+class AppendLatestNews {
+  final List<Object> news;
+  AppendLatestNews(this.news);
+}
+
 // FIXME: Convert html to markdown :v
 final Function getDetailNews = (String url) async {
   try {
@@ -108,7 +118,7 @@ final Function parseNews = (result) {
     List<Object> hots = new List();
     var document = parse(result);
     var elements = document
-      .getElementsByClassName('main-content')[0]
+      .getElementsByTagName('body')[0]
       .getElementsByClassName('story');
     int i;
     int length = elements.length;
@@ -149,8 +159,8 @@ final Function parseNews = (result) {
   };
 };
 
-final Function getHotNewsAction = (Store<AppState> store) async {
-  String result = await fetchHotNews();
+final Function getHotNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchHotNews(page);
   if (result != '') {
     var data = parseNews(result);
     store.dispatch(new SetHotNews(data['data']));
@@ -159,12 +169,28 @@ final Function getHotNewsAction = (Store<AppState> store) async {
   return [];
 };
 
-final Function getLatestNewsAction = (Store<AppState> store) async {
-  String result = await fetchLatestNews();
+final Function getLatestNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchLatestNews(page);
   if (result != '') {
     var data = parseNews(result);
     store.dispatch(new SetLatestNews(data['data']));
     return data;
   }
   return [];
+};
+
+final Function getMoreHotNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchHotNews(page);
+  if (result != '') {
+    var data = parseNews(result);
+    store.dispatch(new AppendHotNews(data['data']));
+  }
+};
+
+final Function getMoreLatestNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchLatestNews(page);
+  if (result != '') {
+    var data = parseNews(result);
+    store.dispatch(new AppendLatestNews(data['data']));
+  }
 };

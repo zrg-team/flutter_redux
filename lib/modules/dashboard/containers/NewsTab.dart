@@ -19,10 +19,14 @@ class NewsTab extends StatelessWidget {
     return new StoreConnector<AppState, dynamic>(
       converter: (Store<AppState> store) {
         return {
-          'getHotNews': () async => 
-            await getHotNewsAction(store),
-          'getLatestNews': () async => 
-            await getLatestNewsAction(store),
+          'getHotNews': (page) async => 
+            await getHotNewsAction(store, page),
+          'getLatestNews': (page) async => 
+            await getLatestNewsAction(store, page),
+          'getMoreHotNews': (page) async => 
+            await getMoreHotNewsAction(store, page),
+          'getMoreLatestNews': (page) async => 
+            await getMoreLatestNewsAction(store, page),
           'saveNews': (item) async => 
             await saveNewsAction(store, item)
         };
@@ -34,7 +38,9 @@ class NewsTab extends StatelessWidget {
           getHotNews: props['getHotNews'],
           getLatestNews: props['getLatestNews'],
           saveNews: props['saveNews'],
-          scaffoldContext: scaffoldContext
+          scaffoldContext: scaffoldContext,
+          getMoreHotNews: props['getMoreHotNews'],
+          getMoreLatestNews: props['getMoreLatestNews']
         );
       }
     );

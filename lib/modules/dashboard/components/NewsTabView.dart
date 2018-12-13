@@ -13,6 +13,8 @@ class NewsTabView extends StatefulWidget {
   final Function getHotNews;
   final Function getLatestNews;
   final Function refreshCallback;
+  final Function getMoreHotNews;
+  final Function getMoreLatestNews;
   final BuildContext scaffoldContext;
   const NewsTabView({
     Key key,
@@ -20,38 +22,57 @@ class NewsTabView extends StatefulWidget {
     this.refreshCallback,
     this.getHotNews,
     this.getLatestNews,
-    this.scaffoldContext
+    this.scaffoldContext,
+    this.getMoreHotNews,
+    this.getMoreLatestNews
   }) : super(key: key);
 
   @override
   _NewsTabViewState createState() => new _NewsTabViewState();
 }
 
-class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStateMixin {
+class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin {
+  int tabIndex = 0;
   bool loading = true;
+  int pageHot = 1;
+  int pageNews = 1;
+  bool onLoadMoreHot = false;
+  bool onLoadMoreNews = false;
   GlobalKey pageKey = new GlobalKey();
-
   AnimationController animationController;
   Animation<double> animation;
-
   ScrollController scrollController = new ScrollController();
-  CarouselSlider instance;
+  TabController tabControllder;
+  TabController tabbarControllder;
+  CarouselSlider carouselInstance;
+
   @override
   void initState() {
     super.initState();
-    getNews();
+    getAllNews();
+    // Animation
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
     animation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
     widget.refreshCallback(() async {
-      await getNews();
+      await getAllNews();
       scrollController.animateTo(
         0,
         duration: new Duration(milliseconds: 400),
         curve: Curves.easeInOut
       );
     });
-    // TODO: Fix it ?
+    // Tab Events
+    tabControllder = new TabController(length: 2, vsync: this);
+    tabbarControllder = new TabController(length: 2, vsync: this);
+    tabbarControllder.addListener(() {
+      tabControllder.animateTo(tabbarControllder.index);
+    });
+    tabControllder.addListener(() {
+      tabbarControllder.animateTo(tabControllder.index);
+      tabIndex = tabControllder.index;
+    });
+    // Scroll Events
     double lastOffset = 0;
     bool onScrollDown;
     double changeOffset = 0;
@@ -62,98 +83,158 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
         if (!animationController.isAnimating) {
           animationController.reverse();
         }
-        return true;
-      }
-      bool stateScrollDown = scrollController.offset - lastOffset > 0;
-      if (onScrollDown == null && stateScrollDown) {
-        onScrollDown = true;
-        animationController.forward();
-      } else if (onScrollDown == null && !stateScrollDown) {
-        onScrollDown = false;
-        animationController.reverse();
-      } else if (onScrollDown && !stateScrollDown) {
-        changeOffset += 1;
-      } else if (!onScrollDown && stateScrollDown) {
-        changeOffset += 1;
-      }
-      if (changeOffset >= 10 && onScrollDown && !stateScrollDown) {
-        changeOffset = 0;
-        onScrollDown = false;
-        if (!animationController.isAnimating) {
-          animationController.reverse();
-        }
-      } else if (changeOffset >= 10 && !onScrollDown && stateScrollDown) {
-        changeOffset = 0;
-        onScrollDown = true;
-        if (!animationController.isAnimating) {
+      } else {
+        bool stateScrollDown = scrollController.offset - lastOffset > 0;
+        if (onScrollDown == null && stateScrollDown) {
+          onScrollDown = true;
           animationController.forward();
+        } else if (onScrollDown == null && !stateScrollDown) {
+          onScrollDown = false;
+          animationController.reverse();
+        } else if (onScrollDown && !stateScrollDown) {
+          changeOffset += 1;
+        } else if (!onScrollDown && stateScrollDown) {
+          changeOffset += 1;
+        }
+        if (changeOffset >= 10 && onScrollDown && !stateScrollDown) {
+          changeOffset = 0;
+          onScrollDown = false;
+          if (!animationController.isAnimating) {
+            animationController.reverse();
+          }
+        } else if (changeOffset >= 10 && !onScrollDown && stateScrollDown) {
+          changeOffset = 0;
+          onScrollDown = true;
+          if (!animationController.isAnimating) {
+            animationController.forward();
+          }
+        }
+        lastOffset = scrollController.offset;
+      }
+
+      if (scrollController.offset >= scrollController.position.maxScrollExtent - 100) {
+        if (tabIndex == 0 && !onLoadMoreHot) {
+          pageHot += 1;
+          onLoadMoreHot = true;
+          getMoreHots();
+        } else if (tabIndex == 1 && !onLoadMoreNews) {
+          pageNews += 1;
+          onLoadMoreNews = true;
+          getMoreNews();
         }
       }
-      lastOffset = scrollController.offset;
     });
   }
 
   @override
   void dispose() {
+    scrollController.removeListener(() {});
+    tabControllder.removeListener(() {});
+    tabbarControllder.removeListener(() {});
+
+    tabControllder.dispose();
     scrollController.dispose();
+    tabbarControllder.dispose();
     super.dispose();
+  }
+
+  CarouselSlider buildCarousel (List<dynamic> hots) {
+    return CarouselSlider(
+      items: hots.map((item) {
+        return new Container(
+          margin: EdgeInsets.all(5.0),
+          width: MediaQuery.of(pageKey.currentContext).size.width - 40,
+          height: 200,
+          decoration: new BoxDecoration(
+            color: AppColors.commonBackgroundColor
+          ),
+          child: Stack(
+            children: <Widget>[
+              new Image(
+                width: MediaQuery.of(pageKey.currentContext).size.width - 40,
+                image: NetworkImage(
+                  item['image']
+                ),
+                fit: BoxFit.fill
+              ),
+              Container(
+                alignment: Alignment(-0.9, 0.8),
+                child: new FlatButton(
+                  child: Text(
+                    item['heading'],
+                    style: new TextStyle(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0
+                    )
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ReadingPage(news: item)
+                      )
+                    );
+                  }
+                )
+              )
+            ]
+          )
+        );
+      }).toList(),
+      autoPlay: true,
+      autoPlayCurve: Curves.fastOutSlowIn
+    );
   }
 
   getNews () async {
     try {
-      widget.getLatestNews();
-      List<dynamic> hots = await widget.getHotNews();
-      instance = CarouselSlider(
-        items: hots.map((item) {
-          return new Container(
-            margin: EdgeInsets.all(5.0),
-            width: MediaQuery.of(pageKey.currentContext).size.width - 40,
-            height: 200,
-            decoration: new BoxDecoration(
-              color: AppColors.commonBackgroundColor
-            ),
-            child: Stack(
-              children: <Widget>[
-                new Image(
-                  width: MediaQuery.of(pageKey.currentContext).size.width - 40,
-                  image: NetworkImage(
-                    item['image']
-                  ),
-                  fit: BoxFit.fill
-                ),
-                Container(
-                  alignment: Alignment(-0.9, 0.8),
-                  child: new FlatButton(
-                    child: Text(
-                      item['heading'],
-                      style: new TextStyle(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17.0
-                      )
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ReadingPage(news: item)
-                        )
-                      );
-                    }
-                  )
-                )
-              ]
-            )
-          );
-        }).toList(),
-        autoPlay: true,
-        autoPlayCurve: Curves.fastOutSlowIn
-      );
+      await widget.getLatestNews(pageNews);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  getAllNews () async {
+    try {
+      await getHots();
+      await getNews();
     } catch (err) {
     }
     Future.delayed(const Duration(milliseconds: 1000), () async {
       setState(() {
         loading = false;
       });
+    });
+  }
+
+  getHots () async {
+    try {
+      List<dynamic> hots = await widget.getHotNews(pageHot);
+      carouselInstance = buildCarousel(hots);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  getMoreNews () async {
+    try {
+      await widget.getMoreLatestNews(pageNews);
+    } catch (err) {
+    }
+    setState(() {
+      onLoadMoreNews = false;
+    });
+  }
+
+  getMoreHots () async {
+    try {
+      await widget.getMoreHotNews(pageHot);
+    } catch (err) {
+    }
+    setState(() {
+      onLoadMoreHot = false;
     });
   }
 
@@ -165,7 +246,7 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
       component: new Flex(
         direction: Axis.vertical,
         children: <Widget>[
-          new NewsCarouselAnimated(animation: animation, instance: instance),
+          new NewsCarouselAnimated(animation: animation, instance: carouselInstance),
           new Expanded(
             child: DefaultTabController(
               length: 2,
@@ -177,6 +258,7 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                       color: AppColors.commonBackgroundColor
                     ),
                     child: TabBar(
+                      controller: tabbarControllder,
                       tabs: [
                         Tab(
                           child: new Text('Tin Nóng', style: TextStyle( color: AppColors.white, fontSize: 16, fontWeight: FontWeight.bold ))
@@ -189,6 +271,7 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                   ),
                   new Expanded(
                     child: TabBarView(
+                      controller: tabControllder,
                       children: [
                         new Container(
                           // height: MediaQuery.of(context).size.height - 476,
@@ -201,12 +284,10 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                             },
                             builder: (BuildContext context, news) {
                               return new NewsList(
-                                news ?? [],
-                                scrollController,
-                                widget,
-                                { 'download': true, 'share': true },
-                                null,
-                                null
+                                list: news ?? [],
+                                widget: widget,
+                                controller: scrollController,
+                                features: { 'download': true, 'share': true }
                               );
                             }
                           )
@@ -220,12 +301,10 @@ class _NewsTabViewState extends State<NewsTabView> with SingleTickerProviderStat
                             },
                             builder: (BuildContext context, news) {
                               return new NewsList(
-                                news ?? [],
-                                scrollController,
-                                widget,
-                                { 'download': true, 'share': true },
-                                null,
-                                null
+                                list: news ?? [],
+                                widget: widget,
+                                controller: scrollController,
+                                features: { 'download': true, 'share': true }
                               );
                             }
                           )

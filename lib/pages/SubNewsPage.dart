@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
-import 'package:cat_dog/modules/category/components/SubNewsView.dart';
+import 'package:cat_dog/modules/category/containers/SubNews.dart';
 
 class SubNewsPage extends StatelessWidget {
   final category;
@@ -26,7 +26,13 @@ class SubNewsPage extends StatelessWidget {
           }
         ),
       ),
-      body: new SubNewsView(key: key, category: category)
+      body: Builder(
+        builder: (context) => SubNews(
+          key: key,
+          category: category,
+          scaffoldContext: context
+        )
+      )
     );
   }
 }

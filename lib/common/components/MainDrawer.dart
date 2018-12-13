@@ -38,9 +38,21 @@ class MainDrawer extends StatelessWidget {
                             borderRadius: BorderRadius.circular(0)
                           ),
                           child: new Center(
-                            child: new FlutterLogo(
-                            colors: AppColors.primary,
-                            size: 54.0,
+                            child: Row(
+                              children: <Widget>[
+                                new Image(
+                                  image: AssetImage('assets/store/icon.png'),
+                                ),
+                                new Text(
+                                  ' EWS',
+                                  style: TextStyle(
+                                    fontSize: 50,
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Tusj'
+                                  ),
+                                )
+                              ],
                             )
                           )
                         )
