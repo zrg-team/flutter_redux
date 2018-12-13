@@ -16,3 +16,6 @@ cung cấp các chức năng chính :
 
 ## Tác giả
   [Hungdt](https://zrg-team.github.io/store/)
+
+## Source
+  https://github.com/zrg-team/flutter_redux
