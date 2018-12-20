@@ -7,7 +7,8 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0+1
+version: 1.2.0+1
+versionCode: 2
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -37,6 +38,7 @@ dependencies:
   timeago: ^2.0.9
   flutter_staggered_grid_view: ^0.2.4
   share: ^0.5.3
+  page_transition: ^1.0.5
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0
@@ -87,6 +89,9 @@ flutter:
   - assets/kienthuc.jpeg
   - assets/videoplayer.jpg
   - assets/store/icon.png
+  - assets/images/banner-1.png
+  - assets/images/banner-2.png
+  - assets/images/banner-3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -107,6 +112,9 @@ flutter:
     - family: Tusj
       fonts:
         - asset: assets/fonts/FFF_Tusj.ttf
+    - family: Circle
+      fonts:
+        - asset: assets/fonts/circle.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
