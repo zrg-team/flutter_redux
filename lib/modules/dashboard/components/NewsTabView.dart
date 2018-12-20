@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:cat_dog/common/state.dart';
-import 'package:cat_dog/pages/ReadingPage.dart';
 import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/pages/LoadingPage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cat_dog/common/components/NewsList.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class NewsTabView extends StatefulWidget {
   final Function saveNews;
@@ -14,6 +14,7 @@ class NewsTabView extends StatefulWidget {
   final Function getLatestNews;
   final Function refreshCallback;
   final Function getMoreHotNews;
+  final Function checkFirstOpen;
   final Function getMoreLatestNews;
   final BuildContext scaffoldContext;
   const NewsTabView({
@@ -24,7 +25,8 @@ class NewsTabView extends StatefulWidget {
     this.getLatestNews,
     this.scaffoldContext,
     this.getMoreHotNews,
-    this.getMoreLatestNews
+    this.getMoreLatestNews,
+    this.checkFirstOpen
   }) : super(key: key);
 
   @override
@@ -50,6 +52,7 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
   void initState() {
     super.initState();
     getAllNews();
+    widget.checkFirstOpen();
     // Animation
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
@@ -169,11 +172,7 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
                     )
                   ),
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ReadingPage(news: item)
-                      )
-                    );
+                    pushByName('/reading', context, { 'news': item });
                   }
                 )
               )

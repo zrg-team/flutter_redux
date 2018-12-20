@@ -2,12 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
-import 'package:cat_dog/modules/category/containers/SubNews.dart';
+import 'package:cat_dog/modules/dashboard/components/TopicView.dart';
 
-class SubNewsPage extends StatelessWidget {
-  final view;
+class TopicPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
-  SubNewsPage({Key key, this.view}) : super(key: key);
+  TopicPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class SubNewsPage extends StatelessWidget {
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
         child: new GradientAppBar(
-          view['title'],
+          'Chủ Đề',
           Icon(
             Icons.arrow_back,
             size: 32
@@ -28,9 +27,8 @@ class SubNewsPage extends StatelessWidget {
         ),
       ),
       body: Builder(
-        builder: (context) => SubNews(
+        builder: (context) => TopicView(
           key: key,
-          view: view,
           scaffoldContext: context
         )
       )

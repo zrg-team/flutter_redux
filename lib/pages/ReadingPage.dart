@@ -4,6 +4,7 @@ import 'package:cat_dog/common/configs.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
 import 'package:cat_dog/modules/dashboard/components/ReadingView.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class ReadingPage extends StatelessWidget {
   final news;
@@ -22,7 +23,9 @@ class ReadingPage extends StatelessWidget {
             Icons.arrow_back,
             size: 32
           ),
-          () => Navigator.of(context).pop(),
+          () {
+            return navigationPop(context);
+          },
           Icon(
             Icons.open_in_browser,
             size: 32

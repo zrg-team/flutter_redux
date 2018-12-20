@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/presentation/platform_adaptive.dart';
 import 'package:cat_dog/common/components/InputFields.dart';
 import 'package:cat_dog/modules/user/components/SignInButton.dart';
@@ -58,7 +58,7 @@ class _LoginFormViewState extends State<LoginFormView> {
                 _submit();
                 var result = widget.login(_username, _password);
                 if (result) {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
+                  pushAndRemoveByName('/home', context, {});
                 }
               },
               icon: new Icon(Icons.done),

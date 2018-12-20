@@ -10,7 +10,7 @@ class CommonState {
   // constructor with default
   CommonState({
     this.language = 'en',
-    this.first = false,
+    this.first = true,
     this.about = ''
   });
 

@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/common/components/MainDrawer.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
-import 'package:cat_dog/pages/SubNewsPage.dart';
 import 'package:cat_dog/common/configs.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class NewsSourcePage extends StatefulWidget {
   NewsSourcePage({Key key}) : super(key: key);
@@ -42,10 +42,9 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
             size: 32
           ),
           () {
-            if (Navigator.of(context).canPop()) {
-              return Navigator.of(context).pop();
+            if (!navigationPop(context)) {
+              pushAndRemoveByName('/home', context, {});
             }
-            Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
           }
         ),
       ),
@@ -97,14 +96,10 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
                   ]
                 ),
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => SubNewsPage(category: {
-                        'url': sources[index]['url'],
-                        'title': sources[index]['name']
-                      }),
-                    ),
-                  );
+                  pushByName('/subview', context, { 'view': {
+                    'url': sources[index]['url'],
+                    'title': sources[index]['name']
+                  } });
                 },
               ),
             ),

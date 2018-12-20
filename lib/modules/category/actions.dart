@@ -40,3 +40,48 @@ getNewsFromUrl (String url,int page) async {
   }
   return [];
 }
+
+getTopics (int page) async {
+  try {
+    String urlPage = "https://m.baomoi.com/chu-de/trang$page.epi?loadmore=1";
+    String result = await fetchNewsFromUrl(urlPage);
+    if (result != '') {
+      List<dynamic> data = new List();
+      var document = parse(result);
+      var elements = document
+        .getElementsByTagName('body')[0]
+        .getElementsByClassName('topic-timeline');
+      int i;
+      int length = elements.length;
+      for (i = 0; i < length; i++) {
+        try {
+          var element = elements[i];
+          var tagTopic = element.getElementsByTagName('h2')[0].getElementsByTagName('a')[0];
+          var storyTag = element.getElementsByClassName('story')[0];
+          var tagSummary = storyTag.getElementsByClassName('story__summary')[0];
+          var tagImage = storyTag.getElementsByTagName('img')[0];
+          var tagMeta = storyTag.getElementsByClassName('story__meta')[0];
+          var item = {
+            'url': tagTopic.attributes['href'],
+            'heading': tagTopic.innerHtml,
+            'summary': tagSummary.innerHtml,
+            'source': tagMeta.getElementsByClassName('source')[0].innerHtml,
+            'time': tagMeta.getElementsByTagName('time')[0].attributes['datetime'],
+            'image': tagImage.attributes['data-src']
+          };
+          data.add(item);
+        } catch (err) {
+        }
+      }
+      if (data.length > 0) {
+        return {
+          'data': data
+        };
+      }
+    }
+  } catch (err) {
+  }
+  return {
+    'data': []
+  };
+}

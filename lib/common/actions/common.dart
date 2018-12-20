@@ -12,6 +12,11 @@ class SetAboutInformation {
   SetAboutInformation(this.data);
 }
 
+class SetFirstOpen {
+  final bool first;
+  SetFirstOpen(this.first);
+}
+
 final Function actionSetUserLanguage = (String language) {
   return (Store<AppState> store) {
     if (language != '') {
@@ -24,5 +29,11 @@ final Function getAboutAction = () {
   return (Store<AppState> store) async {
     var result = await fetchAboutInformation();
     store.dispatch(SetAboutInformation(result));
+  };
+};
+
+final Function setFirstOpenAction = () {
+  return (Store<AppState> store) async {
+    store.dispatch(SetFirstOpen(false));
   };
 };

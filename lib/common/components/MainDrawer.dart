@@ -7,6 +7,8 @@ import 'package:cat_dog/common/state.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cat_dog/common/configs.dart';
 
+import 'package:cat_dog/common/utils/navigation.dart';
+
 class MainDrawer extends StatelessWidget {
   MainDrawer({Key key}): super(key: key);
 
@@ -65,29 +67,43 @@ class MainDrawer extends StatelessWidget {
                 leading: new Icon(Icons.home),
                 title: new Text('Trang Chủ'),
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
+                  pushAndRemoveByName('/home', context, {});
                 }
               ),
               new Divider(),
               new ListTile(
-                leading: new Icon(Icons.apps),
-                title: new Text('Thế Loại'),
+                leading: new Icon(Icons.video_library),
+                title: new Text('Videos'),
                 onTap: () {
-                  Navigator.of(context).pushNamed('/categories');
+                  pushByName('/videos', context, {});
                 }
               ),
               new ListTile(
-                leading: new Icon(Icons.save),
-                title: new Text('Tin Đã Lưu'),
+                leading: new Icon(Icons.apps),
+                title: new Text('Thế Loại'),
                 onTap: () {
-                  Navigator.of(context).pushNamed('/saved');
+                  pushByName('/categories', context, {});
                 }
               ),
               new ListTile(
                 leading: new Icon(Icons.school),
                 title: new Text('Nguồn Tin'),
                 onTap: () {
-                  Navigator.of(context).pushNamed('/source');
+                  pushByName('/source', context, {});
+                }
+              ),
+              new ListTile(
+                leading: new Icon(Icons.details),
+                title: new Text('Chủ Đề'),
+                onTap: () {
+                  pushByName('/topics', context, {});
+                }
+              ),
+              new ListTile(
+                leading: new Icon(Icons.save),
+                title: new Text('Tin Đã Lưu'),
+                onTap: () {
+                  pushByName('/saved', context, {});
                 }
               ),
               new ListTile(
@@ -106,7 +122,7 @@ class MainDrawer extends StatelessWidget {
                 leading: new Icon(Icons.info),
                 title: new Text('Thông Tin'),
                 onTap: () {
-                  Navigator.of(context).pushNamed('/about');
+                  pushByName('/about', context, {});
                 }
               )
               // new ListTile(

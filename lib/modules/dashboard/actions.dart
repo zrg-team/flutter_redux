@@ -89,7 +89,10 @@ ${tag.innerHtml.trim()}
 """;
         } else if (tag.className.contains('body-video')) {
           var videoTag = tag.getElementsByTagName('video')[0];
-          video.add(videoTag.getElementsByTagName('source')[0].attributes['data-src']);
+          video.add({
+            'url': videoTag.getElementsByTagName('source')[0].attributes['data-src'],
+            'image': videoTag.attributes['poster']
+          });
         }
       });
       // DEV: remove html tag

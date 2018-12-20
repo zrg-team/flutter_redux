@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:cat_dog/pages/SubNewsPage.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class CategoriesView extends StatelessWidget {
   @override
@@ -120,14 +120,10 @@ class _Tile extends StatelessWidget {
     return new Card(
       child: new FlatButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => SubNewsPage(category: {
-                'url': url,
-                'title': title
-              }),
-            ),
-          );
+          pushByName('/subview', context, { 'view': {
+            'url': url,
+            'title': title
+          } });
         },
         child: new Column(
           children: <Widget>[

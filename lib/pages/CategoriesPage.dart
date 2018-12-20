@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/modules/category/components/CategoriesView.dart';
 import 'package:cat_dog/common/components/MainDrawer.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
@@ -36,10 +36,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
             size: 32
           ),
           () {
-            if (Navigator.of(context).canPop()) {
-              return Navigator.of(context).pop();
+            if (!navigationPop(context)) {
+              pushAndRemoveByName('/home', context, {});
             }
-            Navigator.of(context).pushNamedAndRemoveUntil('/home', (_) => false);
           }
         ),
       ),

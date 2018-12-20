@@ -52,7 +52,7 @@ class GradientAppBar extends StatelessWidget {
                 title,
                 style: const TextStyle(
                   color: Colors.white,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.bold,
                   fontSize: 30.0
                 )
               )

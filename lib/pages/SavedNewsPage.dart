@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
 import 'package:cat_dog/modules/user/containers/SavedNews.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class SavedNewsPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
@@ -19,7 +20,7 @@ class SavedNewsPage extends StatelessWidget {
             Icons.arrow_back,
             size: 32
           ),
-          () => Navigator.of(context).pop(),
+          () => navigationPop(context),
           null,
           () async {
           }

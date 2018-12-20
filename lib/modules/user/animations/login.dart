@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class StaggerAnimation extends StatelessWidget {
   StaggerAnimation({Key key, this.buttonController})
@@ -119,7 +120,7 @@ class StaggerAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
     buttonController.addListener(() {
       if (buttonController.isCompleted) {
-        Navigator.pushNamed(context, "/home");
+        pushAndRemoveByName('/home', context, {});
       }
     });
     return new AnimatedBuilder(

@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/pages/LoadingPage.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/modules/category/actions.dart';
-import 'package:cat_dog/common/components/NewsList.dart';
+import 'package:cat_dog/common/components/MiniNewsList.dart';
 
-class SubNewsView extends StatefulWidget {
-  final dynamic view;
-  final Function saveNews;
+class TopicView extends StatefulWidget {
   final BuildContext scaffoldContext;
-  const SubNewsView({
+  const TopicView({
     Key key,
-    this.view,
-    this.saveNews,
     this.scaffoldContext
   }) : super(key: key);
 
   @override
-  _SubNewsViewState createState() => new _SubNewsViewState();
+  _TopicViewState createState() => new _TopicViewState();
 }
 
-class _SubNewsViewState extends State<SubNewsView> {
+class _TopicViewState extends State<TopicView> {
   bool loading = true;
   bool onLoadMore = false;
   int page = 1;
   GlobalKey pageKey = new GlobalKey();
-  List<Object> list = [];
+  List<dynamic> list = [];
   ScrollController controller = new ScrollController();
   @override
   void initState() {
@@ -43,12 +40,13 @@ class _SubNewsViewState extends State<SubNewsView> {
 
   getNews (bool replace) async {
     try {
-      List<dynamic> data = await getNewsFromUrl(widget.view['url'], page);
+      var data = await getTopics(page);
+      print(data);
       setState(() {
         if (replace) {
-          list = data;
+          list = data['data'];
         } else {
-          list.addAll(data);
+          list.addAll(data['data']);
         }
       });
     } catch (err) {
@@ -75,13 +73,15 @@ class _SubNewsViewState extends State<SubNewsView> {
       key: pageKey,
       loading: loading,
       component: new Container(
-        height: MediaQuery.of(context).size.height - 100,
+        height: MediaQuery.of(context).size.height,
         decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
-        child: new NewsList(
+        child: new MiniNewsList(
           list: list,
           widget: widget,
           controller: controller,
-          features: { 'download': true, 'share': true }
+          onTap: (seleted) {
+            pushByName('/topic-detail', context, { 'topic': seleted });
+          },
         )
       )
     );

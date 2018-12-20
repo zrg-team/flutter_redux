@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cat_dog/pages/ReadingPage.dart';
 import 'package:cat_dog/common/components/Newsfeed.dart';
 import 'package:share/share.dart';
 import 'package:cat_dog/common/configs.dart';
 import 'package:cat_dog/styles/colors.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class NewsList extends StatefulWidget {
   NewsList({
@@ -75,11 +75,7 @@ class _NewsListState extends State<NewsList> {
     return Newsfeed(
       item: widget.list[index],
       onTap: (seleted) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ReadingPage(news: seleted),
-          ),
-        );
+        pushByName('/reading', context, { 'news': seleted });
       },
       onDownload: widget.features != null && widget.features['download'] != null ? (item) {
         handler('download', item);

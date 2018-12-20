@@ -6,14 +6,8 @@ import 'package:cat_dog/common/store.dart';
 import 'package:cat_dog/common/state.dart';
 import 'package:cat_dog/presentation/platform_adaptive.dart';
 // PAGES
-import 'package:cat_dog/pages/LoginPage.dart';
 import 'package:cat_dog/pages/HomePage.dart';
-import 'package:cat_dog/pages/ReadingPage.dart';
-import 'package:cat_dog/pages/CategoriesPage.dart';
-import 'package:cat_dog/pages/TestAnimationPage.dart';
-import 'package:cat_dog/pages/SavedNewsPage.dart';
-import 'package:cat_dog/pages/NewsSourcePage.dart';
-import 'package:cat_dog/pages/AboutPage.dart';
+import 'package:cat_dog/pages/BoardingPage.dart';
 
 void main() async {
   final store = await createStore();
@@ -38,19 +32,12 @@ class App extends StatelessWidget {
           : kDefaultTheme,
         routes: <String, WidgetBuilder> {
           // Login feature comming soon
-          // '/': (BuildContext context) => new StoreConnector<AppState, dynamic>( 
-          //     converter: (store) => store.state.user.isAuthenticated, 
-          //     builder: (BuildContext context, isAuthenticated) => isAuthenticated ? new HomePage() : new LoginPage()
-          // ),
-          '/': (BuildContext context) => new HomePage(),
-          '/login': (BuildContext context) => new LoginPage(),
-          '/home': (BuildContext context) => new HomePage(),
-          '/view': (BuildContext context) => new ReadingPage(),
-          '/categories': (BuildContext context) => new CategoriesPage(),
-          '/test': (BuildContext context) => new LogoApp(),
-          '/saved': (BuildContext context) => new SavedNewsPage(),
-          '/source': (BuildContext context) => new NewsSourcePage(),
-          '/about': (BuildContext context) => new AboutPage()
+          '/': (BuildContext context) => new StoreConnector<AppState, dynamic>( 
+              converter: (store) {
+                return store.state.common.first;
+              }, 
+              builder: (BuildContext context, first) => !first ? new HomePage() : new BoardingPage()
+          )
         }
       )
     );

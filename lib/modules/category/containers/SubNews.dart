@@ -6,10 +6,10 @@ import 'package:cat_dog/modules/category/components/SubNewsView.dart';
 import 'package:cat_dog/modules/user/actions.dart';
 
 class SubNews extends StatelessWidget {
-  final dynamic category;
+  final dynamic view;
   final BuildContext scaffoldContext;
-  SubNews({Key key, scaffoldContext, category}) :
-  category = category,
+  SubNews({Key key, scaffoldContext, view}) :
+  view = view,
   scaffoldContext = scaffoldContext,
   super(key: key);
 
@@ -25,7 +25,7 @@ class SubNews extends StatelessWidget {
       builder: (BuildContext context, props) {
         return new SubNewsView(
           key: key,
-          category: category,
+          view: view,
           saveNews: props['saveNews'],
           scaffoldContext: scaffoldContext
         );

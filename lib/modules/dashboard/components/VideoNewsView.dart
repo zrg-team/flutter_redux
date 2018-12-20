@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/pages/LoadingPage.dart';
 import 'package:cat_dog/modules/category/actions.dart';
-import 'package:cat_dog/common/components/NewsList.dart';
+import 'package:cat_dog/common/components/MiniNewsList.dart';
 
-class SubNewsView extends StatefulWidget {
-  final dynamic view;
-  final Function saveNews;
+class VideoNewsView extends StatefulWidget {
   final BuildContext scaffoldContext;
-  const SubNewsView({
+  const VideoNewsView({
     Key key,
-    this.view,
-    this.saveNews,
     this.scaffoldContext
   }) : super(key: key);
 
   @override
-  _SubNewsViewState createState() => new _SubNewsViewState();
+  _VideoNewsViewState createState() => new _VideoNewsViewState();
 }
 
-class _SubNewsViewState extends State<SubNewsView> {
+class _VideoNewsViewState extends State<VideoNewsView> {
   bool loading = true;
   bool onLoadMore = false;
   int page = 1;
@@ -43,7 +39,7 @@ class _SubNewsViewState extends State<SubNewsView> {
 
   getNews (bool replace) async {
     try {
-      List<dynamic> data = await getNewsFromUrl(widget.view['url'], page);
+      List<dynamic> data = await getNewsFromUrl('https://m.baomoi.com/tin-video.epi', page);
       setState(() {
         if (replace) {
           list = data;
@@ -77,11 +73,11 @@ class _SubNewsViewState extends State<SubNewsView> {
       component: new Container(
         height: MediaQuery.of(context).size.height - 100,
         decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
-        child: new NewsList(
+        child: new MiniNewsList(
           list: list,
           widget: widget,
           controller: controller,
-          features: { 'download': true, 'share': true }
+          metaData: true
         )
       )
     );
