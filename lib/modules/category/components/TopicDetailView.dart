@@ -114,12 +114,12 @@ class _TopicDetailViewState extends State<TopicDetailView> {
 
   Widget _buildVideoScroller() {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
+      padding: const EdgeInsets.only(top: 0.0),
       child: SizedBox.fromSize(
-        size: Size.fromHeight(245.0),
+        size: Size.fromHeight(260.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 0.0),
           itemCount: list.length ?? 0,
           itemBuilder: (BuildContext context, int index) {
             var news = list[index];

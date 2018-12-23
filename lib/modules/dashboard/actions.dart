@@ -27,7 +27,8 @@ class AppendLatestNews {
 final Function getDetailNews = (String url) async {
   try {
     String result = await fetchDetailNews(url);
-    var video = [];
+    List<Object> video = [];
+    List<Object> list = [];
     if (result != '') {
       var document = parse(result);
       var breadcrumbs = document.getElementsByClassName('breadcrumbs')[0];
@@ -95,6 +96,10 @@ ${tag.innerHtml.trim()}
           });
         }
       });
+      try {
+        list = parseNews(result)['data'];
+      } catch (error) {
+      }
       // DEV: remove html tag
       return {
         'video': video,
@@ -103,7 +108,8 @@ ${tag.innerHtml.trim()}
           .replaceAll('</strong>', '')
           .replaceAll('<em>', '')
           .replaceAll('</em>', '')
-          .replaceAll('<br>', '')
+          .replaceAll('<br>', ''),
+        'related': list
       };
     }
    } catch (err) {
@@ -111,6 +117,7 @@ ${tag.innerHtml.trim()}
   }
   return {
     'video': [],
+    'relate': [],
     'text': 'No Content Here'
   };
 };

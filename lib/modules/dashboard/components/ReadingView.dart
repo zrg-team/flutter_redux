@@ -5,6 +5,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/pages/LoadingPage.dart';
+import 'package:cat_dog/common/components/MiniNewsfeed.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
@@ -22,6 +24,8 @@ class _ReadingViewState extends State<ReadingView> {
   String html = '';
   bool loading = true;
   CarouselSlider carouselInstance;
+  List<Widget> relatedInstance = [];
+  ScrollController scrollController = new ScrollController();
   @override
   void initState() {
     super.initState();
@@ -43,11 +47,43 @@ class _ReadingViewState extends State<ReadingView> {
           if (result['video'] != null && result['video'].length > 0) {
             carouselInstance = buildCarousel(result['video'] ?? []);
           }
+          if (result['related'] != null && result['related'].length > 0) {
+            relatedInstance = result['related'].map<Widget>((item) => 
+              Container(
+                child: MiniNewsfeed(
+                  item: item,
+                  metaData: true,
+                  onTap: (seleted) {
+                    pushAndReplaceByName('/reading', context, { 'news': seleted });
+                  }
+                )
+              )
+            ).toList();
+          }
           loading = false;
         });
       });
     } catch (err) {
     }
+  }
+
+  Widget _buildPlayButton() {
+    return Center(
+      child: Material(
+        color: Colors.black87,
+        type: MaterialType.circle,
+        child: InkWell(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.play_arrow,
+              size: 56,
+              color: AppColors.white,
+            )
+          )
+        )
+      )
+    );
   }
 
   CarouselSlider buildCarousel (List<dynamic> data) {
@@ -67,13 +103,14 @@ class _ReadingViewState extends State<ReadingView> {
             child: Stack(
               children: <Widget>[
                 new Center(
-                  child: new Image(
+                  child: item['image'] != null ? new Image(
                     image: NetworkImage(item['image']),
+                  ) : Container(
+                    color: Colors.black54,
+                    height: 180
                   )
                 ),
-                new Center(
-                  child: Icon(Icons.play_arrow, size: 56, color: AppColors.white)
-                ),
+                _buildPlayButton()
               ]
             )
           )
@@ -86,22 +123,22 @@ class _ReadingViewState extends State<ReadingView> {
 
   @override
   Widget build(BuildContext context) {
-     return new LoadingPage(
+    List<Widget> columns = [
+      carouselInstance != null
+        ? carouselInstance : new Container( width: 0, height: 0 ),
+      Padding(
+        padding: EdgeInsets.all(10),
+        child: MarkdownBody(
+          data: html
+        )
+      )
+    ];
+    columns.addAll(relatedInstance);
+    return new LoadingPage(
       loading: loading,
-      component: Column(
-        children: <Widget>[
-          carouselInstance != null
-            ? carouselInstance : new Container( width: 0, height: 0 ),
-          new Expanded(
-            child: new Center(
-              child: new Container(
-                child: new Markdown(
-                  data: html
-                )
-              )
-            )
-          )
-        ]
+      component: new ListView(
+        controller: scrollController,
+        children: columns
       )
     );
   }

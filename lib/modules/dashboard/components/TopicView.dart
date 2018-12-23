@@ -41,7 +41,6 @@ class _TopicViewState extends State<TopicView> {
   getNews (bool replace) async {
     try {
       var data = await getTopics(page);
-      print(data);
       setState(() {
         if (replace) {
           list = data['data'];

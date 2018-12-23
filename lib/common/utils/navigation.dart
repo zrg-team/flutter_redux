@@ -12,72 +12,146 @@ import 'package:cat_dog/pages/VideosPage.dart';
 import 'package:cat_dog/pages/TopicPage.dart';
 import 'package:cat_dog/pages/TopicDetailPage.dart';
 
-final Function pushByName = (String url, BuildContext context, dynamic params) {
+
+const int DEFAULT_TIME = 200;
+final Function getNavigationData = (
+  Function navigationFunction,
+  String url,
+  BuildContext context,
+  dynamic params
+) {
   switch (url) {
     case '':
       case '/home':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.leftToRight, alignment: Alignment.centerLeft, child: HomePage())
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.centerLeft,
+            child: HomePage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/categories':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.downToUp, alignment: Alignment.bottomCenter, child: CategoriesPage())
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.bottomCenter,
+            child: CategoriesPage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/saved':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.downToUp, alignment: Alignment.bottomCenter, child: SavedNewsPage())
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.bottomCenter,
+            child: SavedNewsPage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/source':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.downToUp, alignment: Alignment.bottomCenter, child: NewsSourcePage())
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.bottomCenter,
+            child: NewsSourcePage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/videos':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.leftToRight, alignment: Alignment.centerLeft, child: VideosPage())
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.centerLeft,
+            child: VideosPage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/about':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.downToUp, alignment: Alignment.bottomCenter, child: AboutPage())
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.bottomCenter,
+            child: AboutPage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/reading':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.leftToRight, alignment: Alignment.centerLeft, child: ReadingPage(news: params['news']))
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.centerLeft,
+            child: ReadingPage(news: params['news']),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/subview':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.leftToRight, alignment: Alignment.centerLeft, child: SubNewsPage(view: params['view']))
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.centerLeft,
+            child: SubNewsPage(view: params['view']),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/topics':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.leftToRight, alignment: Alignment.centerLeft, child: TopicPage())
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.centerLeft,
+            child: TopicPage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       case '/topic-detail':
-        Navigator.push(
+        navigationFunction(
           context,
-          PageTransition(type: PageTransitionType.leftToRight, alignment: Alignment.centerLeft, child: TopicDetailPage(topic: params['topic']))
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.centerLeft,
+            child: TopicDetailPage(topic: params['topic']),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
         );
         break;
       default:
         return null;
   }
+};
+final Function pushByName = (String url, BuildContext context, dynamic params) {
+  getNavigationData(Navigator.push, url, context, params);
+};
+
+final Function pushAndReplaceByName = (String url, BuildContext context, dynamic params) {
+  getNavigationData(Navigator.pushReplacement, url, context, params);
 };
 
 final Function pushAndRemoveByName = (String url, BuildContext context, dynamic params) {
@@ -86,7 +160,13 @@ final Function pushAndRemoveByName = (String url, BuildContext context, dynamic 
       case '/home':
         Navigator.pushAndRemoveUntil(
           context,
-          PageTransition(type: PageTransitionType.leftToRight, alignment: Alignment.bottomCenter, child: HomePage()),
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            alignment: Alignment.bottomCenter,
+            child: HomePage(),
+            curve: Curves.bounceInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          ),
           (_) => false
         );
         break;

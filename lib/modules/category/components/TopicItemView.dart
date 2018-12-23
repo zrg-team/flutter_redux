@@ -36,25 +36,6 @@ class TopicItemView extends StatelessWidget {
     );
   }
 
-  Widget _buildPlayButton() {
-    return Material(
-      color: Colors.black87,
-      type: MaterialType.circle,
-      child: InkWell(
-        onTap: () async {
-          onTap(news);
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            Icons.play_arrow,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildInfo() {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, left: 4.0, right: 4.0),
@@ -74,7 +55,7 @@ class TopicItemView extends StatelessWidget {
       child: Container(
         width: 175.0,
         padding: const EdgeInsets.all(8.0),
-        margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+        margin: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         decoration: _buildShadowAndRoundedCorners(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

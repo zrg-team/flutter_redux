@@ -93,7 +93,7 @@ class MainDrawer extends StatelessWidget {
                 }
               ),
               new ListTile(
-                leading: new Icon(Icons.details),
+                leading: new Icon(Icons.category),
                 title: new Text('Chủ Đề'),
                 onTap: () {
                   pushByName('/topics', context, {});
