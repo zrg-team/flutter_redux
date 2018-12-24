@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:cat_dog/styles/colors.dart';
+import 'package:cat_dog/common/components/SpinLoading.dart';
 
-class LoadingPage extends StatelessWidget {
-    
-  LoadingPage({Key key}): super(key: key);
+class LoadingPage extends StatefulWidget {
+  final Widget component;
+  final bool loading;
+  const LoadingPage({
+    Key key,
+    this.component,
+    this.loading
+  }) : super(key: key);
+
+  @override
+  _LoadingPageState createState() => new _LoadingPageState();
+}
+
+class _LoadingPageState extends State<LoadingPage> {
+  _LoadingPageState({Key key});
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        body: new Center(
-          child: new CircularProgressIndicator(
-            backgroundColor: colorStyles['gray'],
-            strokeWidth: 2.0
-          ),
-        ),
-      ),
-    );
+    if (widget.loading) {
+      return new SpinLoading();
+    }
+    return widget.component;
   }
 }

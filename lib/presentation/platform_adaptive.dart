@@ -8,67 +8,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:cat_dog/styles/colors.dart';
 
 final ThemeData kIOSTheme = new ThemeData(
-  primarySwatch: colorStyles['primary'],
-  primaryColor: colorStyles['primary'],
+  primarySwatch: AppColors.primary,
+  primaryColor: AppColors.primary,
   primaryColorBrightness: Brightness.light,
 );
 
 final ThemeData kDefaultTheme = new ThemeData(
-  primarySwatch: colorStyles['primary'],
-  accentColor: colorStyles['primary'],
+  primarySwatch: AppColors.primary,
+  accentColor: AppColors.primary,
 );
-
-/// App bar that uses iOS styling on iOS
-class PlatformAdaptiveAppBar extends AppBar {
-  PlatformAdaptiveAppBar({
-    Key key,
-    TargetPlatform platform,
-    List<Widget> actions,
-    Widget title,
-    Widget body,
-    Widget bottom,
-    Color backgroundColor,
-    bool centerTitle,
-    IconThemeData iconTheme,
-    TextTheme textTheme
-  })
-    : super(
-      key: key,
-      elevation: platform == TargetPlatform.iOS ? 0.0 : 4.0,
-      title: title,
-      actions: actions,
-      bottom: bottom,
-      backgroundColor: backgroundColor,
-      centerTitle: centerTitle ?? true,
-      iconTheme: iconTheme,
-      textTheme: textTheme
-    );
-}
-
-/// Button that is Material on Android and Cupertino on iOS
-/// On Android an icon button; on iOS, text is used
-class PlatformAdaptiveButton extends StatelessWidget {
-  PlatformAdaptiveButton({Key key, this.child, this.icon, this.onPressed})
-    : super(key: key);
-  final Widget child;
-  final Widget icon;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    if (Theme.of(context).platform == TargetPlatform.iOS) {
-      return new CupertinoButton(
-        child: child,
-        onPressed: onPressed,
-      );
-    } else {
-      return new IconButton(
-        icon: icon,
-        onPressed: onPressed,
-      );
-    }
-  }
-}
 
 // Bottom navigation bar that is Material on Android and Cupertino on iOS.
 class PlatformAdaptiveBottomBar extends StatelessWidget {
@@ -94,6 +42,31 @@ class PlatformAdaptiveBottomBar extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         onTap: onTap,
         items: items,
+      );
+    }
+  }
+}
+
+/// Button that is Material on Android and Cupertino on iOS
+/// On Android an icon button; on iOS, text is used
+class PlatformAdaptiveButton extends StatelessWidget {
+  PlatformAdaptiveButton({Key key, this.child, this.icon, this.onPressed})
+    : super(key: key);
+  final Widget child;
+  final Widget icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      return new CupertinoButton(
+        child: child,
+        onPressed: onPressed,
+      );
+    } else {
+      return new IconButton(
+        icon: icon,
+        onPressed: onPressed,
       );
     }
   }

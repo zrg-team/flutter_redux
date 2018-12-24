@@ -15,12 +15,12 @@ class FormContainer extends StatelessWidget {
             children: <Widget>[
               new InputFieldArea(
                 hint: "Username",
-                obscure: false,
+                obscureText: false,
                 icon: Icons.person_outline,
               ),
               new InputFieldArea(
                 hint: "Password",
-                obscure: true,
+                obscureText: true,
                 icon: Icons.lock_outline,
               ),
             ],

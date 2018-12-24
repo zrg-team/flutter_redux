@@ -1,38 +1,58 @@
 import 'package:redux/redux.dart';
-
 import 'package:cat_dog/modules/user/actions.dart';
 import 'package:cat_dog/modules/user/state.dart';
 
-Reducer<AuthState> authReducer = combineReducers([
-  new TypedReducer<AuthState, UserLoginRequest>(userLoginRequestReducer),
-  new TypedReducer<AuthState, UserLoginSuccess>(userLoginSuccessReducer),
-  new TypedReducer<AuthState, UserLoginFailure>(userLoginFailureReducer),
-  new TypedReducer<AuthState, UserLogout>(userLogoutReducer),
+Reducer<UserState> authReducer = combineReducers([
+  new TypedReducer<UserState, UserLoginRequest>(userLoginRequestReducer),
+  new TypedReducer<UserState, UserLoginSuccess>(userLoginSuccessReducer),
+  new TypedReducer<UserState, UserLoginFailure>(userLoginFailureReducer),
+  new TypedReducer<UserState, UserLogout>(userLogoutReducer),
+  new TypedReducer<UserState, UserSavedNews>(userSavedNewsReducer),
+  new TypedReducer<UserState, UserRemoveSavedNews>(userRemoveSavedNewsReducer),
 ]);
 
-AuthState userLoginRequestReducer(AuthState auth, UserLoginRequest action) {
-  return new AuthState().copyWith(
+UserState userLoginRequestReducer(UserState user, UserLoginRequest action) {
+  return new UserState().copyWith(
     isAuthenticated: false,
     isAuthenticating: true,
   );
 }
 
-AuthState userLoginSuccessReducer(AuthState auth, UserLoginSuccess action) {
-  return new AuthState().copyWith(
+UserState userLoginSuccessReducer(UserState user, UserLoginSuccess action) {
+  return new UserState().copyWith(
     isAuthenticated: true,
     isAuthenticating: false,
     user: action.user
   );
 }
 
-AuthState userLoginFailureReducer(AuthState auth, UserLoginFailure action) {
-  return new AuthState().copyWith(
+UserState userLoginFailureReducer(UserState user, UserLoginFailure action) {
+  return new UserState().copyWith(
     isAuthenticated: false,
     isAuthenticating: false,
     error: action.error
   );
 }
 
-AuthState userLogoutReducer(AuthState auth, UserLogout action) {
-  return new AuthState();
+UserState userSavedNewsReducer(UserState user, UserSavedNews action) {
+  var news = user.saved;
+  news.insert(0, action.news);
+  return user.copyWith(
+    saved: news
+  );
+}
+
+UserState userLogoutReducer(UserState user, UserLogout action) {
+  return new UserState();
+}
+
+UserState userRemoveSavedNewsReducer(UserState user, UserRemoveSavedNews action) {
+  var news = user.saved;
+  int index = user.saved.indexWhere((dynamic item) {
+    return item['url'] == action.news['url'];
+  });
+  news.removeAt(index);
+  return user.copyWith(
+    saved: List.from(news)
+  );
 }

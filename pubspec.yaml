@@ -7,7 +7,8 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.0+1
+version: 1.5.5+1
+versionCode: 2
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -15,7 +16,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  url_launcher: 
+    git:
+      url: git://github.com/flutter/plugins
+      path: packages/url_launcher
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   intl: "^0.15.2"
@@ -26,8 +30,23 @@ dependencies:
   redux_thunk: ^0.2.1
   redux_persist_flutter: ^0.8.0
   redux_persist: ^0.8.0
+  http: ^0.12.0
+  html: ^0.13.3+3
+  flutter_markdown: ^0.2.0
+  flutter_spinkit: ^3.0.0
+  carousel_slider: ^1.0.1
+  timeago: ^2.0.9
+  flutter_staggered_grid_view: ^0.2.4
+  share: ^0.5.3
+  page_transition: ^1.0.5
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.7.0
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/store/store-3.png"
 
 
 # For information on the generic Dart part of this file, see the
@@ -45,7 +64,34 @@ flutter:
   assets:
   - assets/images/login.jpg
   - assets/images/tick.png
-  
+  - assets/images/xahoi.jpg
+  - assets/images/thegioi.jpg
+  - assets/images/vanhoa.jpg
+  - assets/images/kinhte.jpg
+  - assets/images/giaoduc.jpg
+  - assets/images/thethao.jpg
+  - assets/images/giaitri.jpg
+  - assets/images/congnghe.jpg
+  - assets/images/khoahoc.jpg
+  - assets/images/tinhot.png
+  - assets/images/latest.jpg
+  - assets/zing.png
+  - assets/vov.jpg
+  - assets/thanhnien.jpg
+  - assets/laodong.jpg
+  - assets/vietnamplus.jpg
+  - assets/vietnamnet.png
+  - assets/vtc.png
+  - assets/saostart.jpg
+  - assets/vnmedia.png
+  - assets/ictnews.png
+  - assets/tienphong.png
+  - assets/kienthuc.jpeg
+  - assets/videoplayer.jpg
+  - assets/store/icon.png
+  - assets/images/banner-1.png
+  - assets/images/banner-2.png
+  - assets/images/banner-3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -58,7 +104,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+    - family: Tusj
+      fonts:
+        - asset: assets/fonts/FFF_Tusj.ttf
+    - family: Circle
+      fonts:
+        - asset: assets/fonts/circle.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
