@@ -26,26 +26,29 @@ class MiniNewsfeed extends StatelessWidget {
           padding: new EdgeInsets.all(10.0),
           child: new Column(
             children: [
-              new Row(
-                children: [
-                  new Column(
-                    children: <Widget>[
-                      new Padding(
-                        padding:
-                            new EdgeInsets.only(top: 8.0),
-                        child: new SizedBox(
-                          height: 100.0,
-                          width: 100.0,
-                          child: new Image.network(
-                            item['image'],
-                            fit: BoxFit.cover,
+              new GestureDetector(
+                onTap: () {
+                  onTap != null && onTap(item);
+                },
+                child: new Row(
+                  children: [
+                    new Column(
+                      children: <Widget>[
+                        new Padding(
+                          padding:
+                              new EdgeInsets.only(top: 8.0),
+                          child: new SizedBox(
+                            height: 100.0,
+                            width: 100.0,
+                            child: new Image.network(
+                              item['image'],
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                      )
-                    ]
-                  ),
-                  new Expanded(
-                    child: new GestureDetector(
+                        )
+                      ]
+                    ),
+                    new Expanded(
                       child: new Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment:
@@ -89,13 +92,10 @@ class MiniNewsfeed extends StatelessWidget {
                             ),
                           )
                         ],
-                      ),
-                      onTap: () {
-                        onTap != null && onTap(item);
-                      },
-                    ),
-                  )
-                ]
+                      )
+                    )
+                  ]
+                )
               )
             ]
           )

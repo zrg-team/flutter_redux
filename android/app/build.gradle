@@ -42,7 +42,7 @@ android {
         applicationId "com.zrgteam.tinmoi"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode flutterVersionCode.toInteger()
+        versionCode 6
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

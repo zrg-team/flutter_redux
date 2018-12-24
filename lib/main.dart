@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:cat_dog/common/store.dart';
 import 'package:cat_dog/common/state.dart';
+import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/presentation/platform_adaptive.dart';
 // PAGES
 import 'package:cat_dog/pages/HomePage.dart';
@@ -27,6 +28,8 @@ class App extends StatelessWidget {
       store: store,
       child: new MaterialApp(
         title: 'Tin Mới',
+        color: AppColors.commonBackgroundColor,
+        debugShowCheckedModeBanner: false,
         theme: defaultTargetPlatform == TargetPlatform.iOS
           ? kIOSTheme
           : kDefaultTheme,

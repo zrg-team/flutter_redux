@@ -65,7 +65,7 @@ class _TopicDetailViewState extends State<TopicDetailView> {
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white30),
       ),
-      margin: const EdgeInsets.only(top: 32.0, left: 16.0),
+      margin: const EdgeInsets.only(top: 20.0, left: 16.0),
       padding: const EdgeInsets.all(3.0),
       child: ClipOval(
         child: Image.network(widget.topic['image']),
@@ -84,19 +84,12 @@ class _TopicDetailViewState extends State<TopicDetailView> {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 30.0,
-            ),
-          ),
-          Text(
-            '',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.85),
-              fontWeight: FontWeight.w500,
+              fontSize: 26.0,
             ),
           ),
           Container(
             color: Colors.white.withOpacity(0.85),
-            margin: const EdgeInsets.symmetric(vertical: 16.0),
+            margin: const EdgeInsets.symmetric(vertical: 14.0),
             width: 225.0,
             height: 1.0,
           ),

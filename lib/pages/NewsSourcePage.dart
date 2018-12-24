@@ -28,9 +28,9 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
     return new Scaffold(
       key: _mainKey,
       backgroundColor: AppColors.commonBackgroundColor,
-      appBar: new PreferredSize(
+      appBar: PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: new GradientAppBar(
+        child: GradientAppBar(
           'Nguồn Tin',
           Icon(
             Icons.dehaze,
@@ -48,58 +48,54 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
           }
         ),
       ),
-      drawer: new MainDrawer(),
-      body: new GridView.builder(
+      drawer: MainDrawer(),
+      body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, mainAxisSpacing: 25.0),
         padding: const EdgeInsets.all(10.0),
         itemCount: 12,
         itemBuilder: (BuildContext context, int index) {
-          return new GridTile(
-            footer: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Flexible(
-                    child: new SizedBox(
-                      height: 16.0,
-                      width: 100.0,
-                      child: new Text(
-                        sources[index]['name'],
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: AppColors.white
-                        )
-                      ),
-                    ),
-                  )
-                ]),
-            child: new Container(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: new FlatButton(
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    new SizedBox(
-                      child: new Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.white
-                        ),
-                        child: Center(
-                          child: Image.asset(
-                            sources[index]['image']
-                          )
-                        )
+          return GridTile(
+            footer: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  child: SizedBox(
+                    height: 16.0,
+                    width: 100.0,
+                    child: Text(
+                      sources[index]['name'],
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: AppColors.white
                       )
+                    ),
+                  ),
+                )
+            ]),
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 32.0),
+              child: FlatButton(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.white
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      sources[index]['image'],
+                      fit: BoxFit.cover,
                     )
-                  ]
+                  )
                 ),
                 onPressed: () {
-                  pushByName('/subview', context, { 'view': {
-                    'url': sources[index]['url'],
-                    'title': sources[index]['name']
-                  } });
+                  pushByName('/subview', context, {
+                    'view': {
+                      'url': sources[index]['url'],
+                      'title': sources[index]['name']
+                    }
+                  });
                 },
               ),
             ),

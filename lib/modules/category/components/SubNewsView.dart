@@ -75,7 +75,6 @@ class _SubNewsViewState extends State<SubNewsView> {
       key: pageKey,
       loading: loading,
       component: new Container(
-        height: MediaQuery.of(context).size.height - 100,
         decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
         child: new NewsList(
           list: list,
