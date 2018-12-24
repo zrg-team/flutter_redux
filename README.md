@@ -2,7 +2,7 @@
 
 **Flutter_redux** is a simple flutter application. It demonstrates how to implement Redux for Dart.
 
-## Why do you need all of this if StatefulWidget exists?
+## Redux
 
   Redux.JS author advice : If you've got a simple app, use the simplest thing possible. In Flutter, StatefulWidget is perfect for a simple counter app.
 
@@ -33,18 +33,16 @@
     6. actions.dart: contains Redux actions that can be triggered from widgets
   * **pages**: Screen of your application which made up of many components of module
   * **styles**: your styles
-## Why ?
-  Find out yourself
 
-## Demo ?
+## Demo
   download at: https://play.google.com/store/apps/details?id=com.zrgteam.tinmoi
  
   Checkout "develop" branch
  
-  ![Demo 1](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/1-2.png)
-  ![Demo 2](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/1-3.png)
-  ![Demo 3](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/1-4.png)
-  ![Demo 4](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/1-5.png)
+  ![Demo 1](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/698b8869f84f384b4e4515d367e2a353.png)
+  ![Demo 2](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/7344391926af2b52a529c1fb2ee81b51.png)
+  ![Demo 3](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/7c17d105cf0be4bb1140a02c5c45ae17.png)
+  ![Demo 4](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/8c4c261ab8ec68da14b93205045eb8c7.png)
   
-## Donate ?
+## Donate
   ethereum address: 0x46D1c53249cA6232eb7d3E046713Bc3D2Ae15BA3
