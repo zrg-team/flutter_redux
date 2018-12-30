@@ -95,14 +95,11 @@ final Function getNavigationData = (
         );
         break;
       case '/reading':
-        navigationFunction(
+        Navigator.push(
           context,
-          PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
-            child: ReadingPage(news: params['news']),
-            curve: Curves.bounceInOut,
-            duration: Duration(milliseconds: DEFAULT_TIME)
+          MaterialPageRoute(
+            fullscreenDialog: true,
+            builder: (BuildContext context) => ReadingPage(news: params['news'])
           )
         );
         break;
@@ -131,16 +128,22 @@ final Function getNavigationData = (
         );
         break;
       case '/topic-detail':
-        navigationFunction(
+        Navigator.push(
           context,
-          PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
-            child: TopicDetailPage(topic: params['topic']),
-            curve: Curves.bounceInOut,
-            duration: Duration(milliseconds: DEFAULT_TIME)
+          MaterialPageRoute(
+            builder: (BuildContext context) => TopicDetailPage(topic: params['topic'])
           )
         );
+        // navigationFunction(
+        //   context,
+        //   PageTransition(
+        //     type: PageTransitionType.leftToRight,
+        //     alignment: Alignment.centerLeft,
+        //     child: TopicDetailPage(topic: params['topic']),
+        //     curve: Curves.bounceInOut,
+        //     duration: Duration(milliseconds: DEFAULT_TIME)
+        //   )
+        // );
         break;
       default:
         return null;

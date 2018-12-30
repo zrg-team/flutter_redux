@@ -12,7 +12,7 @@ class NewsTabView extends StatefulWidget {
   final Function saveNews;
   final Function getHotNews;
   final Function getLatestNews;
-  final Function refreshCallback;
+  final Function hideCallback;
   final Function getMoreHotNews;
   final Function checkFirstOpen;
   final Function getMoreLatestNews;
@@ -20,7 +20,7 @@ class NewsTabView extends StatefulWidget {
   const NewsTabView({
     Key key,
     this.saveNews,
-    this.refreshCallback,
+    this.hideCallback,
     this.getHotNews,
     this.getLatestNews,
     this.scaffoldContext,
@@ -57,13 +57,12 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
     animation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
-    widget.refreshCallback(() async {
-      await getAllNews();
-      scrollController.animateTo(
-        0,
-        duration: new Duration(milliseconds: 400),
-        curve: Curves.easeInOut
-      );
+    widget.hideCallback(() async {
+      if (!animationController.isAnimating && !animationController.isCompleted) {
+        animationController.forward();
+      } else if (!animationController.isAnimating && animationController.isCompleted) {
+        animationController.reverse();
+      }
     });
     // Tab Events
     tabControllder = new TabController(length: 2, vsync: this);
@@ -75,59 +74,48 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
       tabbarControllder.animateTo(tabControllder.index);
       tabIndex = tabControllder.index;
     });
-    // Scroll Events
-    double lastOffset = 0;
-    bool onScrollDown;
-    double changeOffset = 0;
-    scrollController.addListener(() {
-      if (scrollController.offset < 5) {
-        onScrollDown = false;
-        changeOffset = 0;
-        if (!animationController.isAnimating) {
-          animationController.reverse();
-        }
-      } else {
-        bool stateScrollDown = scrollController.offset - lastOffset > 0;
-        if (onScrollDown == null && stateScrollDown) {
-          onScrollDown = true;
-          animationController.forward();
-        } else if (onScrollDown == null && !stateScrollDown) {
-          onScrollDown = false;
-          animationController.reverse();
-        } else if (onScrollDown && !stateScrollDown) {
-          changeOffset += 1;
-        } else if (!onScrollDown && stateScrollDown) {
-          changeOffset += 1;
-        }
-        if (changeOffset >= 10 && onScrollDown && !stateScrollDown) {
-          changeOffset = 0;
-          onScrollDown = false;
-          if (!animationController.isAnimating) {
-            animationController.reverse();
-          }
-        } else if (changeOffset >= 10 && !onScrollDown && stateScrollDown) {
-          changeOffset = 0;
-          onScrollDown = true;
-          if (!animationController.isAnimating) {
-            animationController.forward();
-          }
-        }
-        lastOffset = scrollController.offset;
-      }
-
-      if (scrollController.offset >= scrollController.position.maxScrollExtent - 100) {
-        if (tabIndex == 0 && !onLoadMoreHot) {
-          pageHot += 1;
-          onLoadMoreHot = true;
-          getMoreHots();
-        } else if (tabIndex == 1 && !onLoadMoreNews) {
-          pageNews += 1;
-          onLoadMoreNews = true;
-          getMoreNews();
-        }
-      }
-    });
   }
+
+  // double lastOffset = 0;
+  // bool onScrollDown;
+  // double changeOffset = 0;
+
+  // void onScroll(bool up, double offset) {
+  //   if (offset < 5) {
+  //       onScrollDown = false;
+  //       changeOffset = 0;
+  //       if (!animationController.isAnimating) {
+  //         animationController.reverse();
+  //       }
+  //     } else {
+  //       bool stateScrollDown = offset - lastOffset > 0;
+  //       if (onScrollDown == null && stateScrollDown) {
+  //         onScrollDown = true;
+  //         animationController.forward();
+  //       } else if (onScrollDown == null && !stateScrollDown) {
+  //         onScrollDown = false;
+  //         animationController.reverse();
+  //       } else if (onScrollDown && !stateScrollDown) {
+  //         changeOffset += 1;
+  //       } else if (!onScrollDown && stateScrollDown) {
+  //         changeOffset += 1;
+  //       }
+  //       if (changeOffset >= 10 && onScrollDown && !stateScrollDown) {
+  //         changeOffset = 0;
+  //         onScrollDown = false;
+  //         if (!animationController.isAnimating) {
+  //           animationController.reverse();
+  //         }
+  //       } else if (changeOffset >= 10 && !onScrollDown && stateScrollDown) {
+  //         changeOffset = 0;
+  //         onScrollDown = true;
+  //         if (!animationController.isAnimating) {
+  //           animationController.forward();
+  //         }
+  //       }
+  //       lastOffset = offset;
+  //     }
+  //  }
 
   @override
   void dispose() {
@@ -139,6 +127,36 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
     scrollController.dispose();
     tabbarControllder.dispose();
     super.dispose();
+  }
+
+  void handleRefresh(dynamic refreshController, bool isUp) async {
+    try {
+      if (isUp) {
+        await getAllNews();
+        scrollController.animateTo(
+          0,
+          duration: new Duration(milliseconds: 400),
+          curve: Curves.easeInOut
+        );
+      } else {
+        if (tabIndex == 0 && !onLoadMoreHot) {
+          pageHot += 1;
+          onLoadMoreHot = true;
+          await getMoreHots();
+        } else if (tabIndex == 1 && !onLoadMoreNews) {
+          pageNews += 1;
+          onLoadMoreNews = true;
+          await getMoreNews();
+        }
+      }
+      Future.delayed(Duration(milliseconds: 3000), () {
+        refreshController.sendBack(isUp, 3); // Status completed
+      });
+    } catch (err) {
+      Future.delayed(Duration(milliseconds: 3000), () {
+        refreshController.sendBack(isUp, 4); // Status fail
+      });
+    }
   }
 
   CarouselSlider buildCarousel (List<dynamic> hots) {
@@ -281,14 +299,14 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
                             converter: (Store<AppState> store) {
                               return store.state.dashboard.hot;
                             },
-                            builder: (BuildContext context, news) {
-                              return new NewsList(
-                                list: news ?? [],
-                                widget: widget,
-                                controller: scrollController,
-                                features: { 'download': true, 'share': true }
-                              );
-                            }
+                            builder: (BuildContext context, news) => NewsList(
+                              list: news ?? [],
+                              widget: widget,
+                              controller: scrollController,
+                              handleRefresh: handleRefresh,
+                              // onOffsetChange: onScroll,
+                              features: { 'download': true, 'share': true }
+                            )
                           )
                         ),
                         new Container(
@@ -298,14 +316,14 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
                             converter: (Store<AppState> store) {
                               return store.state.dashboard.news;
                             },
-                            builder: (BuildContext context, news) {
-                              return new NewsList(
-                                list: news ?? [],
-                                widget: widget,
-                                controller: scrollController,
-                                features: { 'download': true, 'share': true }
-                              );
-                            }
+                            builder: (BuildContext context, news) => NewsList(
+                              list: news ?? [],
+                              widget: widget,
+                              controller: scrollController,
+                              handleRefresh: handleRefresh,
+                              // onOffsetChange: onScroll,
+                              features: { 'download': true, 'share': true }
+                            )
                           )
                         )
                       ]

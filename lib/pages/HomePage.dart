@@ -12,25 +12,27 @@ class HomePage extends StatefulWidget {
 }
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
-  Function refreshCallback;
 
-  AnimationController animationController;
-  Animation<double> animation;
-  Future timeout;
-  var timeoutSteam;
+  Function hideCallback;
+
+  // Function refreshCallback;
+  // AnimationController animationController;
+  // Animation<double> animation;
+  // Future timeout;
+  // var timeoutSteam;
 
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 2000), vsync: this);
-    animation = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+    // animationController = AnimationController(
+    //     duration: const Duration(milliseconds: 2000), vsync: this);
+    // animation = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
 
-    animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        animationController.repeat();
-      }
-    });
+    // animation.addStatusListener((status) {
+    //   if (status == AnimationStatus.completed) {
+    //     animationController.repeat();
+    //   }
+    // });
   }
 
   @override
@@ -46,33 +48,45 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             size: 32
           ),
           () => _mainKey.currentState.openDrawer(),
-          new AnimatedIcon(animation: animation),
-          () async {
-            if (animationController.isAnimating) {
-              return false;
+          Icon(
+            Icons.chrome_reader_mode,
+            size: 32
+          ),
+          () {
+            if (hideCallback != null) {
+              hideCallback();
             }
-            if (timeout != null && timeoutSteam != null) {
-              timeoutSteam.cancel();
-              timeout = null;
-              timeoutSteam = null;
-            }
-            animationController.forward();
-            if (refreshCallback != null) {
-              refreshCallback();
-            }
-            timeout = Future.delayed(const Duration(milliseconds: 4000));
-            timeoutSteam = timeout.asStream().listen((_) {
-              animationController.stop();
-              timeout = null;
-              timeoutSteam = null;
-            });
           }
+          // new AnimatedIcon(animation: animation),
+          // () async {
+          //   if (animationController.isAnimating) {
+          //     return false;
+          //   }
+          //   if (timeout != null && timeoutSteam != null) {
+          //     timeoutSteam.cancel();
+          //     timeout = null;
+          //     timeoutSteam = null;
+          //   }
+          //   animationController.forward();
+          //   if (refreshCallback != null) {
+          //     refreshCallback();
+          //   }
+          //   timeout = Future.delayed(const Duration(milliseconds: 4000));
+          //   timeoutSteam = timeout.asStream().listen((_) {
+          //     animationController.stop();
+          //     timeout = null;
+          //     timeoutSteam = null;
+          //   });
+          // }
         ),
       ),
       body: Builder(
         builder: (context) => new NewsTab(
-          refreshCallback: (input) {
-            refreshCallback = input;
+          // refreshCallback: (input) {
+          //   refreshCallback = input;
+          // },
+          hideCallback: (input) {
+            hideCallback = input;
           },
           scaffoldContext: context
         )

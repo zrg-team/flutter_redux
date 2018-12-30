@@ -10,8 +10,9 @@ class SpinLoading extends StatelessWidget {
         color: AppColors.commonBackgroundColor
       ),
       child: new Center(
-        child: SpinKitCubeGrid(
-          color: AppColors.white
+        child: SpinKitDoubleBounce(
+          color: AppColors.white,
+          size: 100
         )
       )
     ));

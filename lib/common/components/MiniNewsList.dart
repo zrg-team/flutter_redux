@@ -10,18 +10,21 @@ class MiniNewsList extends StatefulWidget {
     dynamic controller,
     dynamic widget,
     dynamic features,
-    Function onTap
+    Function onTap,
+    Function handleRefresh,
   }) :
   metaData = metaData,
   list = list,
   onTap = onTap,
   parentWidget = widget,
   controller = controller,
+  handleRefresh = handleRefresh,
   super(key: key);
 
   final List<Object> list;
   final ScrollController controller;
   final Function onTap;
+  final Function handleRefresh;
   final parentWidget;
   final bool metaData;
 

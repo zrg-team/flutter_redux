@@ -7,14 +7,22 @@ import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/pages/LoadingPage.dart';
 import 'package:cat_dog/common/components/MiniNewsfeed.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+import 'package:cat_dog/common/configs.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
+  final int readingCount;
   final BuildContext scaffoldContext;
+  final Function clearReadingCount;
+  final Function addReadingCount;
   const ReadingView({
     Key key,
     this.news,
-    this.scaffoldContext
+    this.scaffoldContext,
+    this.readingCount,
+    this.addReadingCount,
+    this.clearReadingCount
   }) : super(key: key);
 
   @override
@@ -25,11 +33,32 @@ class _ReadingViewState extends State<ReadingView> {
   bool loading = true;
   CarouselSlider carouselInstance;
   List<Widget> relatedInstance = [];
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    childDirected: true,
+    nonPersonalizedAds: false,
+  );
   ScrollController scrollController = new ScrollController();
+  InterstitialAd interstitialAd;
   @override
   void initState() {
     super.initState();
     this.getDetail();
+    FirebaseAdMob.instance.initialize(appId: APP_ID);
+    widget.addReadingCount();
+    if (widget.readingCount > SHOW_ADS_COUNT) {
+      interstitialAd = InterstitialAd(
+      adUnitId: READING_ADS_ID,
+      targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        if (event == MobileAdEvent.loaded) {
+          interstitialAd?.show();
+        }
+        if (event == MobileAdEvent.clicked || event == MobileAdEvent.closed) {
+          widget.clearReadingCount();
+        }
+      },
+    )..load();
+    }
   }
   
   getDetail () async {
@@ -125,7 +154,14 @@ class _ReadingViewState extends State<ReadingView> {
   Widget build(BuildContext context) {
     List<Widget> columns = [
       carouselInstance != null
-        ? carouselInstance : new Container( width: 0, height: 0 ),
+        ? carouselInstance
+        : Hero(
+          tag: "news-feed-${widget.news['url']}",
+          child: new Image.network(
+            widget.news['image'],
+            fit: BoxFit.cover,
+          )
+        ),
       Padding(
         padding: EdgeInsets.all(10),
         child: MarkdownBody(

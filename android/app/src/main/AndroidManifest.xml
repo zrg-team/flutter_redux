@@ -16,6 +16,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="Tin Mới"
         android:icon="@mipmap/launcher_icon">
+        <meta-data
+            android:name="com.google.android.gms.ads.com.zrgteam.tinmoi"
+            android:value="ca-app-pub-6308632307209872~8632944973"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

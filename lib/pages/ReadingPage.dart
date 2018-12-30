@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/common/configs.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
-import 'package:cat_dog/modules/dashboard/components/ReadingView.dart';
+import 'package:cat_dog/modules/dashboard/containers/Reading.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 
@@ -42,7 +42,7 @@ class ReadingPage extends StatelessWidget {
         ),
       ),
       body: Builder(
-        builder: (context) => new ReadingView(key: key, news: news, scaffoldContext: context)
+        builder: (context) => new Reading(key: key, news: news, scaffoldContext: context)
       )
     );
   }

@@ -25,7 +25,7 @@ class TopicItemView extends StatelessWidget {
       borderRadius: BorderRadius.circular(8.0),
       child: Stack(
         children: <Widget>[
-          Image.network(news['image']),
+          Image.network(news['image'])
           // Positioned(
           //   bottom: 12.0,
           //   right: 12.0,

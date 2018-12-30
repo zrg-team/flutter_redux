@@ -65,19 +65,23 @@ class _VideoNewsViewState extends State<VideoNewsView> {
     super.dispose();
   }
 
+  Future<void> handleRefresh () {
+    return getNews(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new LoadingPage(
       key: pageKey,
       loading: loading,
       component: new Container(
-        height: MediaQuery.of(context).size.height - 100,
         decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
         child: new MiniNewsList(
           list: list,
           widget: widget,
           controller: controller,
-          metaData: true
+          metaData: true,
+          handleRefresh: handleRefresh
         )
       )
     );

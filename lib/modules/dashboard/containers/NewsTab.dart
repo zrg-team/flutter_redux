@@ -8,10 +8,11 @@ import 'package:cat_dog/modules/user/actions.dart';
 import 'package:cat_dog/common/actions/common.dart';
 
 class NewsTab extends StatelessWidget {
-  final Function refreshCallback;
+  // final Function refreshCallback;
+  final Function hideCallback;
   final BuildContext scaffoldContext;
-  NewsTab({Key key, refreshCallback, scaffoldContext}) :
-  refreshCallback = refreshCallback,
+  NewsTab({Key key, hideCallback, scaffoldContext}) :
+  hideCallback = hideCallback,
   scaffoldContext = scaffoldContext,
   super(key: key);
 
@@ -40,7 +41,7 @@ class NewsTab extends StatelessWidget {
       builder: (BuildContext context, props) {
         return new NewsTabView(
           key: key,
-          refreshCallback: refreshCallback,
+          hideCallback: hideCallback,
           getHotNews: props['getHotNews'],
           getLatestNews: props['getLatestNews'],
           saveNews: props['saveNews'],

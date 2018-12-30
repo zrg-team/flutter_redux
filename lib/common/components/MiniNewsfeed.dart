@@ -40,9 +40,12 @@ class MiniNewsfeed extends StatelessWidget {
                           child: new SizedBox(
                             height: 100.0,
                             width: 100.0,
-                            child: new Image.network(
-                              item['image'],
-                              fit: BoxFit.cover,
+                            child: Hero(
+                              tag: "mini-news-feed-${item['url']}",
+                              child: new Image.network(
+                                item['image'],
+                                fit: BoxFit.cover,
+                              )
                             ),
                           ),
                         )

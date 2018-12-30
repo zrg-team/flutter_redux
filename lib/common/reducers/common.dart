@@ -5,7 +5,9 @@ import 'package:cat_dog/common/states/common.dart';
 Reducer<CommonState> commonReducer = combineReducers([
   new TypedReducer<CommonState, SetFirstOpen>(setFirstOpenReducer),
   new TypedReducer<CommonState, SetUserLanguage>(setUserLanguageReducer),
-  new TypedReducer<CommonState, SetAboutInformation>(setAboutInformationReducer)
+  new TypedReducer<CommonState, SetAboutInformation>(setAboutInformationReducer),
+  new TypedReducer<CommonState, AddReadingCount>(addReadingCountReducer),
+  new TypedReducer<CommonState, ClearReadingCount>(clearReadingCountReducer),
 ]);
 
 CommonState setUserLanguageReducer(CommonState common, SetUserLanguage action) {
@@ -23,5 +25,17 @@ CommonState setAboutInformationReducer(CommonState common, SetAboutInformation a
 CommonState setFirstOpenReducer(CommonState common, SetFirstOpen action) {
   return common.copyWith(
     first: action.first
+  );
+}
+
+CommonState addReadingCountReducer(CommonState common, AddReadingCount action) {
+  return common.copyWith(
+    readingCount: (common.readingCount ?? 0) + 1
+  );
+}
+
+CommonState clearReadingCountReducer(CommonState common, ClearReadingCount action) {
+  return common.copyWith(
+    readingCount: 0
   );
 }
