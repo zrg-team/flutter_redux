@@ -25,7 +25,9 @@ class _VideoNewsViewState extends State<VideoNewsView> {
   @override
   void initState() {
     super.initState();
-    getNews(true);
+    Future.delayed(const Duration(milliseconds: 650), () {
+      getNews(true);
+    });
     controller.addListener(() {
       if (controller.offset >= controller.position.maxScrollExtent - 100 && !onLoadMore) {
         setState(() {

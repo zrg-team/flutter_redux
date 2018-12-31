@@ -123,7 +123,7 @@ class Newsfeed extends StatelessWidget {
                                         horizontal: 5.0),
                                 child: Icon(
                                     Icons.share,
-                                    color: AppColors.itemDefaultColor
+                                    color: Colors.black
                                   )
                                 ),
                             onTap: () {
@@ -134,7 +134,7 @@ class Newsfeed extends StatelessWidget {
                             child: new Padding(
                               padding:
                                   new EdgeInsets.all(5.0),
-                              child: Icon(Icons.cloud_download, color: AppColors.itemDefaultColor)
+                              child: Icon(Icons.cloud_download, color: Colors.black)
                             ),
                             onTap: () {
                               onDownload(item);
@@ -144,7 +144,7 @@ class Newsfeed extends StatelessWidget {
                             child: new Padding(
                               padding:
                                   new EdgeInsets.all(5.0),
-                              child: Icon(Icons.delete, color: AppColors.itemDefaultColor)
+                              child: Icon(Icons.delete, color: Colors.black)
                             ),
                             onTap: () {
                               onRemove(item);

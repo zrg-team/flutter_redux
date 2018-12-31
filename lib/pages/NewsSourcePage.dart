@@ -69,7 +69,7 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: AppColors.white
+                        color: Colors.grey[500]
                       )
                     ),
                   ),

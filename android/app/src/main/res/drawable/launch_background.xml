@@ -13,6 +13,6 @@
      <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/store100" />
+            android:src="@drawable/splash" />
     </item>
 </layer-list>

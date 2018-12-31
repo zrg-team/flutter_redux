@@ -53,7 +53,7 @@ class _NewsListState extends State<NewsList> {
         if (widget.parentWidget.saveNews != null) {
           await widget.parentWidget.saveNews(item);
           Scaffold.of(widget.parentWidget.scaffoldContext).showSnackBar(new SnackBar(
-            backgroundColor: AppColors.itemDefaultColor,
+            backgroundColor: AppColors.specicalBackgroundColor,
             content: new Text('Đã Lưu !')
           ));
         }
@@ -66,7 +66,7 @@ class _NewsListState extends State<NewsList> {
         if (widget.parentWidget.removeSavedNews != null) {
           await widget.parentWidget.removeSavedNews(item);
           Scaffold.of(widget.parentWidget.scaffoldContext).showSnackBar(new SnackBar(
-            backgroundColor: AppColors.itemDefaultColor,
+            backgroundColor: AppColors.specicalBackgroundColor,
             content: new Text('Đã Xóa Tin !')
           ));
         }
