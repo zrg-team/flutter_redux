@@ -104,7 +104,7 @@ class _NewsListState extends State<NewsList> {
       margin: EdgeInsets.only(bottom: 10, top: 10),
       child: Center(
         child: SpinKitWave(
-          color: AppColors.white,
+          color: AppColors.specicalBackgroundColor,
           size: 32
         )
       )
@@ -112,7 +112,7 @@ class _NewsListState extends State<NewsList> {
   }
 
   Widget buildRefreshFooter(context,mode){
-   return new ClassicIndicator(mode: mode, textStyle: TextStyle(color: AppColors.white));
+   return new ClassicIndicator(mode: mode, textStyle: TextStyle(color: AppColors.specicalBackgroundColor));
   }
 
   @override

@@ -30,7 +30,7 @@ class _TopicDetailViewState extends State<TopicDetailView> {
   }
 
   getNews (bool replace) async {
-    await Future.delayed(Duration(milliseconds: 600), () async {
+    await Future.delayed(Duration(milliseconds: 800), () async {
       try {
         List<dynamic> data = await getNewsFromUrl(GET_NEWS_API + widget.topic['url'], 1);
         setState(() {
@@ -116,10 +116,10 @@ class _TopicDetailViewState extends State<TopicDetailView> {
 
   Widget _buildVideoScroller() {
     return Container(
-      height: 285,
-      padding: const EdgeInsets.only(top: 5.0, bottom: 20.0),
+      height: 295,
+      padding: const EdgeInsets.only(top: 5.0, bottom: 15.0),
       child: SizedBox.fromSize(
-        size: Size.fromHeight(260.0),
+        size: Size.fromHeight(275.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 0.0),
