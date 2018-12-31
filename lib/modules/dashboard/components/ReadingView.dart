@@ -46,9 +46,11 @@ class _ReadingViewState extends State<ReadingView> {
   @override
   void initState() {
     super.initState();
-    this.getDetail();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      this.getDetail();
+    });
 
-    FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
+    FirebaseAdMob.instance.initialize(appId: APP_ID);
     widget.addReadingCount();
     if (widget.readingCount > SHOW_ADS_COUNT) {
       interstitialAd = InterstitialAd(

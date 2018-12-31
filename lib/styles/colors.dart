@@ -13,8 +13,10 @@ class AppColors {
   static const Color appBarGradientStart = const Color(0xFF3383FC);
   static const Color appBarGradientEnd = const Color(0xFF00C6FF);
   
-  static const Color commonBackgroundColor = const Color(0xFF3E3963);
-  static const Color itemDefaultColor = const Color(0xFF434273);
+  static const Color commonBackgroundColor = const Color(0xFFFAFAFA);
+  static const Color specicalBackgroundColor = const Color(0xFF3E3963);
+  static const Color itemDefaultColor = const Color(0xFFFAFAFA);
+  static const Color specicalDefaultColor = const Color(0xFF434273);
 
   static const Color readingNewsBackgroundColor = const Color(0xFFFAFAFA);
 }

@@ -173,10 +173,11 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
             children: <Widget>[
               new Image(
                 width: MediaQuery.of(pageKey.currentContext).size.width - 40,
+                height: 200,
                 image: NetworkImage(
                   item['image']
                 ),
-                fit: BoxFit.fill
+                fit: BoxFit.cover
               ),
               Container(
                 alignment: Alignment(-0.9, 0.8),
@@ -276,12 +277,13 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
                     ),
                     child: TabBar(
                       controller: tabbarControllder,
+                      indicatorColor: AppColors.specicalBackgroundColor,
                       tabs: [
                         Tab(
-                          child: new Text('Tin Nóng', style: TextStyle( color: AppColors.white, fontSize: 16, fontWeight: FontWeight.bold ))
+                          child: new Text('Tin Nóng', style: TextStyle( color: AppColors.specicalBackgroundColor, fontSize: 16, fontWeight: FontWeight.bold ))
                         ),
                         Tab(
-                          child: new Text('Tin Mới', style: TextStyle( color: AppColors.white, fontSize: 16, fontWeight: FontWeight.bold ))
+                          child: new Text('Tin Mới', style: TextStyle( color: AppColors.specicalBackgroundColor, fontSize: 16, fontWeight: FontWeight.bold ))
                         )
                       ]
                     )

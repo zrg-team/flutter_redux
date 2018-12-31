@@ -7,7 +7,7 @@ class SpinLoading extends StatelessWidget {
   final Color iconColor;
   SpinLoading({ Key key, dynamic overlay, dynamic iconColor }) :
     overlay = overlay == null ? false : overlay,
-    iconColor = iconColor == null ? AppColors.white : iconColor,
+    iconColor = iconColor == null ? AppColors.specicalBackgroundColor : iconColor,
     super(key: key);
   @override
   Widget build(BuildContext context) {

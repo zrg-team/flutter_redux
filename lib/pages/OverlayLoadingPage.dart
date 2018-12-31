@@ -43,7 +43,7 @@ class _OverlayLoadingPageState extends State<OverlayLoadingPage> {
                 )
               ),
               child: Center(
-                child: SpinLoading(overlay: true, iconColor: AppColors.commonBackgroundColor)
+                child: SpinLoading(overlay: true, iconColor: AppColors.specicalBackgroundColor)
               )
             )
           )

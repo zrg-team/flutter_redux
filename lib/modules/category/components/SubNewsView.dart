@@ -30,7 +30,9 @@ class _SubNewsViewState extends State<SubNewsView> {
   @override
   void initState() {
     super.initState();
-    getNews(true);
+    Future.delayed(const Duration(milliseconds: 600), () {
+      getNews(true);
+    });
     // controller.addListener(() {
     //   if (controller.offset >= controller.position.maxScrollExtent - 100 && !onLoadMore) {
     //     setState(() {
