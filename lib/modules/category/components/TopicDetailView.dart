@@ -30,18 +30,20 @@ class _TopicDetailViewState extends State<TopicDetailView> {
   }
 
   getNews (bool replace) async {
-    try {
-      List<dynamic> data = await getNewsFromUrl(GET_NEWS_API + widget.topic['url'], 1);
-      setState(() {
-        if (replace) {
-          list = data;
-        } else {
-          list.addAll(data);
-        }
-      });
-    } catch (err) {
-      print(err);
-    }
+    await Future.delayed(Duration(milliseconds: 600), () async {
+      try {
+        List<dynamic> data = await getNewsFromUrl(GET_NEWS_API + widget.topic['url'], 1);
+        setState(() {
+          if (replace) {
+            list = data;
+          } else {
+            list.addAll(data);
+          }
+        });
+      } catch (err) {
+        print(err);
+      }
+    });
   }
 
   Widget _buildContent() {

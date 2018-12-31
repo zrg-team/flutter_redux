@@ -6,7 +6,6 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
-
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -17,8 +16,11 @@
         android:label="Tin Mới"
         android:icon="@mipmap/launcher_icon">
         <meta-data
-            android:name="com.google.android.gms.ads.com.zrgteam.tinmoi"
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6308632307209872~8632944973"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

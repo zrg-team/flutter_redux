@@ -4,11 +4,12 @@ import 'package:cat_dog/modules/dashboard/actions.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cat_dog/styles/colors.dart';
-import 'package:cat_dog/pages/LoadingPage.dart';
+import 'package:cat_dog/pages/OverlayLoadingPage.dart';
 import 'package:cat_dog/common/components/MiniNewsfeed.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:cat_dog/common/configs.dart';
+import 'package:flutter_parallax/flutter_parallax.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
@@ -29,35 +30,39 @@ class ReadingView extends StatefulWidget {
   _ReadingViewState createState() => new _ReadingViewState();
 }
 class _ReadingViewState extends State<ReadingView> {
+
   String html = '';
   bool loading = true;
   CarouselSlider carouselInstance;
   List<Widget> relatedInstance = [];
+
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     childDirected: true,
     nonPersonalizedAds: false,
   );
   ScrollController scrollController = new ScrollController();
   InterstitialAd interstitialAd;
+
   @override
   void initState() {
     super.initState();
     this.getDetail();
-    FirebaseAdMob.instance.initialize(appId: APP_ID);
+
+    FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     widget.addReadingCount();
     if (widget.readingCount > SHOW_ADS_COUNT) {
       interstitialAd = InterstitialAd(
-      adUnitId: READING_ADS_ID,
-      targetingInfo: targetingInfo,
-      listener: (MobileAdEvent event) {
-        if (event == MobileAdEvent.loaded) {
-          interstitialAd?.show();
+        adUnitId: READING_ADS_ID,
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          if (event == MobileAdEvent.loaded) {
+            interstitialAd?.show();
+          }
+          if (event == MobileAdEvent.clicked || event == MobileAdEvent.closed) {
+            widget.clearReadingCount();
+          }
         }
-        if (event == MobileAdEvent.clicked || event == MobileAdEvent.closed) {
-          widget.clearReadingCount();
-        }
-      },
-    )..load();
+      )..load();
     }
   }
   
@@ -70,7 +75,7 @@ class _ReadingViewState extends State<ReadingView> {
         });
       }
       var result = await getDetailNews(widget.news['url']);
-      Future.delayed(const Duration(milliseconds: 400), () {
+      Future.delayed(const Duration(milliseconds: 600), () {
         setState(() {
           html = result['text'];
           if (result['video'] != null && result['video'].length > 0) {
@@ -154,25 +159,74 @@ class _ReadingViewState extends State<ReadingView> {
   Widget build(BuildContext context) {
     List<Widget> columns = [
       carouselInstance != null
-        ? carouselInstance
-        : Hero(
-          tag: "news-feed-${widget.news['url']}",
-          child: new Image.network(
-            widget.news['image'],
-            fit: BoxFit.cover,
-          )
+      ? carouselInstance
+      : Container(
+        margin: EdgeInsets.only(bottom: 0),
+        padding: EdgeInsets.only(bottom: 0),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.readingNewsBackgroundColor),
         ),
-      Padding(
-        padding: EdgeInsets.all(10),
-        child: MarkdownBody(
-          data: html
+        child: Stack(
+          children: <Widget>[
+            loading
+            ? Hero(
+              tag: "news-feed-${widget.news['url']}",
+              child: Image.network(
+                widget.news['image'],
+                fit: BoxFit.cover,
+                height: 180,
+                width: MediaQuery.of(widget.scaffoldContext).size.width
+              )
+            )
+            : Hero(
+              tag: "news-feed-${widget.news['url']}",
+              child: Parallax.inside(
+                child: Image.network(
+                  widget.news['image'],
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(widget.scaffoldContext).size.width
+                ),
+                mainAxisExtent: 180,
+              )
+            ),
+            Positioned(
+              left: 0.0,
+              right: 0.0,
+              height: 180,
+              child: Container(
+                decoration: BoxDecoration(
+                  // border: new Border.all(color: AppColors.readingNewsBackgroundColor),
+                  gradient: LinearGradient(
+                    begin: Alignment.center,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppColors.readingNewsBackgroundColor.withOpacity(0),
+                      AppColors.readingNewsBackgroundColor.withOpacity(1)
+                    ],
+                    stops: [0.0, 100.0],
+                    tileMode: TileMode.clamp
+                  )
+                ),
+              )
+            )
+          ]
+        )
+      ),
+      AnimatedOpacity(
+        opacity: loading ? 0 : 1,
+        duration: Duration(milliseconds: 800),
+        child: Padding(
+          padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          child: MarkdownBody(
+            data: html
+          )
         )
       )
     ];
     columns.addAll(relatedInstance);
-    return new LoadingPage(
+    return OverlayLoadingPage(
       loading: loading,
-      component: new ListView(
+      component: ListView(
         controller: scrollController,
         children: columns
       )

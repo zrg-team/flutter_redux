@@ -42,7 +42,7 @@ android {
         applicationId "com.zrgteam.tinmoi"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 8
+        versionCode 10
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -80,3 +80,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

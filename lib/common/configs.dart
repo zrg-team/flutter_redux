@@ -69,6 +69,7 @@ const List<dynamic> SOURCE_NEWS = [
 
 
 const String APP_ID = 'com.zrgteam.tinmoi';
+const String ADMOB_APP_ID = 'ca-app-pub-6308632307209872~8632944973';
 
 const int SHOW_ADS_COUNT = 5;
 const String READING_ADS_ID = 'ca-app-pub-6308632307209872/4190797775';

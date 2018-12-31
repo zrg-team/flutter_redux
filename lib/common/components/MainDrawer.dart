@@ -72,6 +72,13 @@ class MainDrawer extends StatelessWidget {
               ),
               new Divider(),
               new ListTile(
+                leading: new Icon(Icons.category),
+                title: new Text('Chủ Đề Nóng'),
+                onTap: () {
+                  pushByName('/topics', context, {});
+                }
+              ),
+              new ListTile(
                 leading: new Icon(Icons.video_library),
                 title: new Text('Videos'),
                 onTap: () {
@@ -90,13 +97,6 @@ class MainDrawer extends StatelessWidget {
                 title: new Text('Nguồn Tin'),
                 onTap: () {
                   pushByName('/source', context, {});
-                }
-              ),
-              new ListTile(
-                leading: new Icon(Icons.category),
-                title: new Text('Chủ Đề'),
-                onTap: () {
-                  pushByName('/topics', context, {});
                 }
               ),
               new ListTile(

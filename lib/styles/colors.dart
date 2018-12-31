@@ -15,4 +15,6 @@ class AppColors {
   
   static const Color commonBackgroundColor = const Color(0xFF3E3963);
   static const Color itemDefaultColor = const Color(0xFF434273);
+
+  static const Color readingNewsBackgroundColor = const Color(0xFFFAFAFA);
 }
