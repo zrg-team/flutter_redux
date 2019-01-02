@@ -7,9 +7,30 @@ class ImageCached extends StatelessWidget {
   final String url;
   final double width;
   final double height;
-  ImageCached({ Key key, this.url, dynamic width, dynamic height }) :
+  final Widget placeholder;
+  final String noimage;
+  final BoxFit fit;
+  ImageCached({
+    Key key,
+    this.url,
+    dynamic fit,
+    dynamic width,
+    dynamic height,
+    dynamic noimage,
+    dynamic placeholder
+  }) :
+    noimage = noimage,
+    fit = fit == null ? BoxFit.cover : fit,
     width = width == null ? double.infinity : width,
     height = height == null ? double.infinity : height,
+    placeholder = placeholder != null
+      ? placeholder
+      : Center(
+        child: SpinKitCubeGrid(
+          color: AppColors.specicalBackgroundColor,
+          size: 32
+        )
+      ),
     super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -17,14 +38,14 @@ class ImageCached extends StatelessWidget {
       imageUrl: url,
       width: width,
       height: height,
-      placeholder: new Center(
-        child: SpinKitCubeGrid(
-          color: AppColors.specicalBackgroundColor,
-          size: 32
-        )
-      ),
-      errorWidget: new Icon(Icons.broken_image, color: AppColors.specicalBackgroundColor),
-      fit: BoxFit.cover
+      placeholder: placeholder,
+      errorWidget: noimage == null
+        ? Icon(Icons.broken_image, color: AppColors.specicalBackgroundColor)
+        : Image.asset(
+          noimage,
+          fit: BoxFit.cover
+        ),
+      fit: fit
     );
   }
 }

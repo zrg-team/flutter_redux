@@ -45,7 +45,7 @@ final Function getNavigationData = (
             type: PageTransitionType.leftToRight,
             alignment: Alignment.centerLeft,
             child: HomePage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -54,10 +54,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: CategoriesPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -66,10 +66,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: SavedNewsPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -78,10 +78,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: NewsSourcePage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -90,10 +90,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
+            type: PageTransitionType.scale,
+            alignment: Alignment.bottomCenter,
             child: VideosPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -102,10 +102,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: AboutPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -122,10 +122,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
+            type: PageTransitionType.scale,
+            alignment: Alignment.bottomCenter,
             child: SubNewsPage(view: params['view']),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -134,10 +134,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
+            type: PageTransitionType.scale,
+            alignment: Alignment.bottomCenter,
             child: TopicPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );

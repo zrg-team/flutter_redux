@@ -179,14 +179,10 @@ class _ReadingViewState extends State<ReadingView> {
               child: ImageCached(
                 height: 180.0,
                 width: MediaQuery.of(widget.scaffoldContext).size.width,
-                url: widget.news['image']
+                url: widget.news['image'],
+                placeholder: Container(),
+                noimage: 'assets/images/noimage-reading.jpg'
               )
-              // Image.network(
-              //   widget.news['image'],
-              //   fit: BoxFit.cover,
-              //   height: 180,
-              //   width: MediaQuery.of(widget.scaffoldContext).size.width
-              // )
             )
             : Hero(
               tag: "news-feed-${widget.news['url']}",
@@ -194,7 +190,9 @@ class _ReadingViewState extends State<ReadingView> {
                 child: ImageCached(
                   height: 180.0,
                   width: MediaQuery.of(widget.scaffoldContext).size.width,
-                  url: widget.news['image']
+                  url: widget.news['image'],
+                  placeholder: Container(),
+                  noimage: 'assets/images/noimage-reading.jpg'
                 ),
                 mainAxisExtent: 180,
               )

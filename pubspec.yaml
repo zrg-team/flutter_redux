@@ -7,7 +7,7 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 2.0.0+1
+version: 2.0.1+1
 versionCode: 20
 
 environment:
@@ -97,6 +97,8 @@ flutter:
   - assets/images/banner-1.png
   - assets/images/banner-2.png
   - assets/images/banner-3.png
+  - assets/images/noimage-reading.jpg
+  - assets/images/noimage.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

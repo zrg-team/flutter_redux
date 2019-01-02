@@ -8,9 +8,24 @@ class GradientAppBar extends StatelessWidget {
   final Function onPressLeftButton;
   final dynamic iconRighButton;
   final Function onPressRightButton;
+  final Function onPressRightButtonDownload;
+  final Function onPressRightButtonShare;
   final double barHeight = 60.0;
 
-  GradientAppBar(this.title, this.iconLeftButton, this.onPressLeftButton, this.iconRighButton, this.onPressRightButton);
+  GradientAppBar(
+    this.title,
+    this.iconLeftButton,
+    this.onPressLeftButton,
+    this.iconRighButton,
+    this.onPressRightButton,
+    {
+      dynamic onPressRightButtonDownload,
+      dynamic onPressRightButtonShare
+    }
+  ) :
+    onPressRightButtonShare = onPressRightButtonShare,
+    onPressRightButtonDownload = onPressRightButtonDownload,
+    super();
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +73,34 @@ class GradientAppBar extends StatelessWidget {
               )
             )
           ),
-          iconRighButton != null ? Container(
-            child: IconButton(
-              color: AppColors.white,
-              icon: iconRighButton,
-              iconSize: 32,
-              onPressed: onPressRightButton
-            )
-          ) : Container(width: 32, height: 32)
+          new Row(
+            children: <Widget>[
+              iconRighButton != null ? Container(
+                child: IconButton(
+                  color: AppColors.white,
+                  icon: iconRighButton,
+                  iconSize: 32,
+                  onPressed: onPressRightButton
+                )
+              ) : Container(width: 32, height: 32),
+              onPressRightButtonDownload != null ? Container(
+                child: IconButton(
+                  color: AppColors.white,
+                  icon: Icon(Icons.save),
+                  iconSize: 32,
+                  onPressed: onPressRightButtonDownload
+                )
+              ) : Container(width: 0, height: 0),
+              onPressRightButtonShare != null ? Container(
+                child: IconButton(
+                  color: AppColors.white,
+                  icon: Icon(Icons.share),
+                  iconSize: 32,
+                  onPressed: onPressRightButtonShare
+                )
+              ) : Container(width: 0, height: 0)
+            ]
+          )
         ]
       )
     );

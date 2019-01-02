@@ -60,17 +60,20 @@ class AboutPage extends StatelessWidget {
       key: _mainKey,
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: new GradientAppBar(
-          'Trang Chủ',
-          Icon(
-            Icons.dehaze,
-            size: 32
-          ),
-          () => _mainKey.currentState.openDrawer(),
-          null,
-          () async {
-          }
-        ),
+        child: Hero(
+          tag: "app-bar-hero",
+          child: new GradientAppBar(
+            'Thông Tin',
+            Icon(
+              Icons.dehaze,
+              size: 32
+            ),
+            () => _mainKey.currentState.openDrawer(),
+            null,
+            () async {
+            }
+          )
+        )
       ),
       body: Builder(
         builder: (context) => new StoreConnector<AppState, dynamic>(

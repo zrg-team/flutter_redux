@@ -41,44 +41,47 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       key: _mainKey,
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: new GradientAppBar(
-          'Trang Chủ',
-          Icon(
-            Icons.dehaze,
-            size: 32
-          ),
-          () => _mainKey.currentState.openDrawer(),
-          Icon(
-            Icons.chrome_reader_mode,
-            size: 32
-          ),
-          () {
-            if (hideCallback != null) {
-              hideCallback();
+        child: Hero(
+          tag: "app-bar-hero",
+          child: new GradientAppBar(
+            'Trang Chủ',
+            Icon(
+              Icons.dehaze,
+              size: 32
+            ),
+            () => _mainKey.currentState.openDrawer(),
+            Icon(
+              Icons.chrome_reader_mode,
+              size: 32
+            ),
+            () {
+              if (hideCallback != null) {
+                hideCallback();
+              }
             }
-          }
-          // new AnimatedIcon(animation: animation),
-          // () async {
-          //   if (animationController.isAnimating) {
-          //     return false;
-          //   }
-          //   if (timeout != null && timeoutSteam != null) {
-          //     timeoutSteam.cancel();
-          //     timeout = null;
-          //     timeoutSteam = null;
-          //   }
-          //   animationController.forward();
-          //   if (refreshCallback != null) {
-          //     refreshCallback();
-          //   }
-          //   timeout = Future.delayed(const Duration(milliseconds: 4000));
-          //   timeoutSteam = timeout.asStream().listen((_) {
-          //     animationController.stop();
-          //     timeout = null;
-          //     timeoutSteam = null;
-          //   });
-          // }
-        ),
+            // new AnimatedIcon(animation: animation),
+            // () async {
+            //   if (animationController.isAnimating) {
+            //     return false;
+            //   }
+            //   if (timeout != null && timeoutSteam != null) {
+            //     timeoutSteam.cancel();
+            //     timeout = null;
+            //     timeoutSteam = null;
+            //   }
+            //   animationController.forward();
+            //   if (refreshCallback != null) {
+            //     refreshCallback();
+            //   }
+            //   timeout = Future.delayed(const Duration(milliseconds: 4000));
+            //   timeoutSteam = timeout.asStream().listen((_) {
+            //     animationController.stop();
+            //     timeout = null;
+            //     timeoutSteam = null;
+            //   });
+            // }
+          )
+        )
       ),
       body: Builder(
         builder: (context) => new NewsTab(

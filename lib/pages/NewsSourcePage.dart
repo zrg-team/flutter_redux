@@ -30,23 +30,20 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
       backgroundColor: AppColors.commonBackgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: GradientAppBar(
-          'Nguồn Tin',
-          Icon(
-            Icons.dehaze,
-            size: 32
-          ),
-          () => _mainKey.currentState.openDrawer(),
-          Icon(
-            Icons.home,
-            size: 32
-          ),
-          () {
-            if (!navigationPop(context)) {
-              pushAndRemoveByName('/home', context, {});
+        child: Hero(
+          tag: "app-bar-hero",
+          child: new GradientAppBar(
+            'Nguồn Tin',
+            Icon(
+              Icons.dehaze,
+              size: 32
+            ),
+            () => _mainKey.currentState.openDrawer(),
+            null,
+            () async {
             }
-          }
-        ),
+          )
+        )
       ),
       drawer: MainDrawer(),
       body: GridView.builder(

@@ -86,7 +86,6 @@ class _MiniNewsListState extends State<MiniNewsList> {
   }
   @override
   Widget build(BuildContext context) {
-    print(widget.list.length);
     return ListView.builder(
       controller: widget.controller,
       itemCount: widget.list.length,

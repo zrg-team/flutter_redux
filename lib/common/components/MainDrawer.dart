@@ -85,38 +85,38 @@ class MainDrawer extends StatelessWidget {
                               ),
                               new Divider(),
                               new ListTile(
-                                leading: new Icon(Icons.category),
+                                leading: new Icon(Icons.tv),
                                 title: new Text('Chủ Đề Nóng'),
                                 onTap: () {
-                                  pushByName('/topics', context, {});
+                                  pushAndReplaceByName('/topics', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.video_library),
                                 title: new Text('Videos'),
                                 onTap: () {
-                                  pushByName('/videos', context, {});
+                                  pushAndReplaceByName('/videos', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.apps),
                                 title: new Text('Thế Loại'),
                                 onTap: () {
-                                  pushByName('/categories', context, {});
+                                  pushAndReplaceByName('/categories', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.school),
                                 title: new Text('Nguồn Tin'),
                                 onTap: () {
-                                  pushByName('/source', context, {});
+                                  pushAndReplaceByName('/source', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.save),
                                 title: new Text('Tin Đã Lưu'),
                                 onTap: () {
-                                  pushByName('/saved', context, {});
+                                  pushAndReplaceByName('/saved', context, {});
                                 }
                               ),
                               new ListTile(
@@ -135,7 +135,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.info),
                                 title: new Text('Thông Tin'),
                                 onTap: () {
-                                  pushByName('/about', context, {});
+                                  pushAndReplaceByName('/about', context, {});
                                 }
                               )
                               // new ListTile(
