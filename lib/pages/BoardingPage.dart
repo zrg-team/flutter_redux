@@ -74,9 +74,12 @@ class _BoardingPageState extends State<BoardingPage> with TickerProviderStateMix
         }
       });
     });
-
-
-}
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    slideUpdateStream.close();
+  }
 
   @override
   Widget build(BuildContext context) {

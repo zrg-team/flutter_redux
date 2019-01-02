@@ -12,15 +12,23 @@ Future<String> fetchHotNews(int page) async {
 Future<String> fetchLatestNews(int page) async {
   String url = GET_NEWS_API + "/tin-moi/trang$page.epi?loadmore=1";
   var response = await http.get(url);
-  // print("Response status: ${response.statusCode}");
-  // print("Response body: ${response.body}");
+  return response.body;
+}
+
+Future<String> fetchTopicNews(int page) async {
+  String url = GET_NEWS_API + "/chu-de/trang$page.epi?loadmore=1";
+  var response = await http.get(url);
+  return response.body;
+}
+
+Future<String> fetchVideoNews(int page) async {
+  String url = GET_NEWS_API + "/tin-video/trang$page.epi?loadmore=1";
+  var response = await http.get(url);
   return response.body;
 }
 
 Future<String> fetchDetailNews(item) async {
   String url = GET_NEWS_API + item;
   var response = await http.get(url);
-  // print("Response status: ${response.statusCode}");
-  // print("Response body: ${response.body}");
   return response.body;
 }

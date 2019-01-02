@@ -14,6 +14,22 @@ import 'package:cat_dog/pages/TopicDetailPage.dart';
 
 
 const int DEFAULT_TIME = 200;
+class NoTransmissionRoute<T> extends MaterialPageRoute<T> {
+  NoTransmissionRoute({ WidgetBuilder builder, RouteSettings settings })
+      : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    if (settings.isInitialRoute)
+      return child;
+    // Fades between routes. (If you don't want any animation, 
+    // just return child.)
+    return child;
+  }
+}
 final Function getNavigationData = (
   Function navigationFunction,
   String url,
@@ -95,10 +111,9 @@ final Function getNavigationData = (
         );
         break;
       case '/reading':
-        Navigator.push(
+        navigationFunction(
           context,
-          MaterialPageRoute(
-            fullscreenDialog: true,
+          NoTransmissionRoute(
             builder: (BuildContext context) => ReadingPage(news: params['news'])
           )
         );
@@ -128,27 +143,18 @@ final Function getNavigationData = (
         );
         break;
       case '/topic-detail':
-        Navigator.push(
+        navigationFunction(
           context,
           MaterialPageRoute(
             builder: (BuildContext context) => TopicDetailPage(topic: params['topic'])
           )
         );
-        // navigationFunction(
-        //   context,
-        //   PageTransition(
-        //     type: PageTransitionType.leftToRight,
-        //     alignment: Alignment.centerLeft,
-        //     child: TopicDetailPage(topic: params['topic']),
-        //     curve: Curves.bounceInOut,
-        //     duration: Duration(milliseconds: DEFAULT_TIME)
-        //   )
-        // );
         break;
       default:
         return null;
   }
 };
+
 final Function pushByName = (String url, BuildContext context, dynamic params) {
   getNavigationData(Navigator.push, url, context, params);
 };

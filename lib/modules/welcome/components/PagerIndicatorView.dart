@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/modules/welcome/components/PagerView.dart';
 
+const BUBBLE_WIDHT = 55.0 ;
 class PagerIndicatorView extends StatelessWidget {
   final PagerIndicatorViewModel viewModel;
 
@@ -42,14 +43,12 @@ class PagerIndicatorView extends StatelessWidget {
         ),
       );
     }
-
-    final BUBBLE_WIDHT = 55.0 ;
     final baseTranslation = ((viewModel.pages.length * BUBBLE_WIDHT) / 2) - (BUBBLE_WIDHT / 2) ;
     var translation = baseTranslation - (viewModel.activeIndex * BUBBLE_WIDHT);
 
     if (viewModel.slideDirection == SlideDirection.leftToRight){
         translation += BUBBLE_WIDHT * viewModel.slidePercent;
-    }else if (viewModel.slideDirection == SlideDirection.rightToLeft){
+    } else if (viewModel.slideDirection == SlideDirection.rightToLeft){
         translation -= BUBBLE_WIDHT * viewModel.slidePercent;
     }
 

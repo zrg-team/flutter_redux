@@ -12,7 +12,10 @@ Future<Store<AppState>> createStore() async {
     serializer: JsonSerializer<AppState>(AppState.rehydrationJSON)
   );
   // Load initial state
-  final initialState = await persistor.load();
+  var initialState;
+  try {
+    initialState = await persistor.load();
+  } catch (err) {}
   final store = Store<AppState>(
     appReducer,
     initialState: initialState ?? AppState(),

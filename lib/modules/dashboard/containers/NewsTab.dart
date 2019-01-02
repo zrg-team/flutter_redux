@@ -30,12 +30,21 @@ class NewsTab extends StatelessWidget {
             await getHotNewsAction(store, page),
           'getLatestNews': (page) async => 
             await getLatestNewsAction(store, page),
+          'getTopicNews': (page) async => 
+            await getTopicNewsAction(store, page),
+          'getVideoNews': (page) async => 
+            await getVideoNewsAction(store, page),
           'getMoreHotNews': (page) async => 
             await getMoreHotNewsAction(store, page),
           'getMoreLatestNews': (page) async => 
             await getMoreLatestNewsAction(store, page),
+          'getMoreTopicNews': (page) async => 
+            await getMoreTopicNewsAction(store, page),
+          'getMoreVideoNews': (page) async => 
+            await getMoreVideoNewsAction(store, page),
           'saveNews': (item) async => 
-            await saveNewsAction(store, item)
+            await saveNewsAction(store, item),
+          'shouldLoading': store.state.dashboard.hot == null || store.state.dashboard.hot.length == 0
         };
       },
       builder: (BuildContext context, props) {
@@ -44,11 +53,16 @@ class NewsTab extends StatelessWidget {
           hideCallback: hideCallback,
           getHotNews: props['getHotNews'],
           getLatestNews: props['getLatestNews'],
+          getMoreHotNews: props['getMoreHotNews'],
+          getTopicNews: props['getTopicNews'],
+          getVideoNews: props['getVideoNews'],
+          getMoreTopicNews: props['getMoreTopicNews'],
+          getMoreVideoNews: props['getMoreVideoNews'],
+          getMoreLatestNews: props['getMoreLatestNews'],
+          checkFirstOpen: props['checkFirstOpen'],
+          shouldLoading: props['shouldLoading'],
           saveNews: props['saveNews'],
           scaffoldContext: scaffoldContext,
-          getMoreHotNews: props['getMoreHotNews'],
-          getMoreLatestNews: props['getMoreLatestNews'],
-          checkFirstOpen: props['checkFirstOpen']
         );
       }
     );

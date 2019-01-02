@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cat_dog/styles/colors.dart';
+import 'package:cat_dog/common/components/ImageCached.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Newsfeed extends StatelessWidget {
@@ -29,7 +30,7 @@ class Newsfeed extends StatelessWidget {
       child: new Container(
         decoration: new BoxDecoration(color: AppColors.white),
         child: new Padding(
-          padding: new EdgeInsets.all(10.0),
+          padding: new EdgeInsets.all(4.0),
           child: new Column(
             children: [
               new Row(
@@ -41,16 +42,18 @@ class Newsfeed extends StatelessWidget {
                       style: new TextStyle(
                         fontWeight: FontWeight.w400,
                         color: Colors.grey[600],
+                        fontSize: 12
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: new EdgeInsets.all(5.0),
+                    padding: new EdgeInsets.all(4.0),
                     child: new Text(
                       item['source'],
                       style: new TextStyle(
                         fontWeight: FontWeight.w500,
                         color: Colors.grey[700],
+                        fontSize: 12
                       ),
                     ),
                   ),
@@ -58,58 +61,28 @@ class Newsfeed extends StatelessWidget {
               ),
               new Row(
                 children: [
-                  new Expanded(
-                    child: new GestureDetector(
-                      child: new Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          new Padding(
-                            padding: new EdgeInsets.only(
-                                left: 4.0,
-                                right: 8.0,
-                                bottom: 8.0,
-                                top: 8.0),
-                            child: new Text(
-                              item['heading'],
-                              style: new TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          new Padding(
-                            padding: new EdgeInsets.only(
-                                left: 4.0,
-                                right: 4.0,
-                                bottom: 4.0),
-                            child: new Text(
-                              item['summary'],
-                              style: new TextStyle(
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        onTap != null && onTap(item);
-                      },
-                    ),
-                  ),
                   new Column(
                     children: <Widget>[
                       new Padding(
                         padding:
-                            new EdgeInsets.only(top: 8.0),
+                          new EdgeInsets.only(
+                            left: 4.0,
+                            right: 4.0,
+                            bottom: 4.0,
+                            top: 2.0
+                          ),
                         child: new SizedBox(
-                          height: 100.0,
-                          width: 100.0,
+                          height: 80.0,
+                          width: 80.0,
                           child: Hero(
                             tag: "news-feed-${item['url']}",
-                            child: new Image.network(
-                              item['image'],
-                              fit: BoxFit.cover,
+                            child: ImageCached(
+                              url: item['image']
                             )
+                            // new Image.network(
+                            //   item['image'],
+                            //   fit: BoxFit.cover,
+                            // )
                           ),
                         ),
                       ),
@@ -118,9 +91,9 @@ class Newsfeed extends StatelessWidget {
                           onShare != null ? new GestureDetector(
                             child: new Padding(
                                 padding:
-                                    new EdgeInsets.symmetric(
-                                        vertical: 10.0,
-                                        horizontal: 5.0),
+                                  new EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                    horizontal: 5.0),
                                 child: Icon(
                                     Icons.share,
                                     color: Colors.black
@@ -153,6 +126,48 @@ class Newsfeed extends StatelessWidget {
                         ]
                       )
                     ]
+                  ),
+                  new Expanded(
+                    child: new Container(
+                      height: 125,
+                      child: new GestureDetector(
+                        child: new Column(
+                          children: [
+                            new Padding(
+                              padding: new EdgeInsets.only(
+                                left: 4.0,
+                                right: 4.0,
+                                bottom: 4.0,
+                                top: 2.0),
+                              child: new Text(
+                                "${item['heading']}",
+                                style: new TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            new Container(
+                              height: 50,
+                              padding: new EdgeInsets.only(
+                                left: 4.0,
+                                right: 4.0,
+                                bottom: 2.0),
+                              child: new Text(
+                                "    ${item['summary'].toString().trim()}",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                                style: new TextStyle(
+                                  color: Colors.grey[500]
+                                )
+                              )
+                            )
+                          ]
+                        ),
+                        onTap: () {
+                          onTap != null && onTap(item);
+                        }
+                      )
+                    )
                   )
                 ]
               )

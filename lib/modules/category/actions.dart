@@ -55,20 +55,7 @@ getTopics (int page) async {
       int length = elements.length;
       for (i = 0; i < length; i++) {
         try {
-          var element = elements[i];
-          var tagTopic = element.getElementsByTagName('h2')[0].getElementsByTagName('a')[0];
-          var storyTag = element.getElementsByClassName('story')[0];
-          var tagSummary = storyTag.getElementsByClassName('story__summary')[0];
-          var tagImage = storyTag.getElementsByTagName('img')[0];
-          var tagMeta = storyTag.getElementsByClassName('story__meta')[0];
-          var item = {
-            'url': tagTopic.attributes['href'],
-            'heading': tagTopic.innerHtml,
-            'summary': tagSummary.innerHtml,
-            'source': tagMeta.getElementsByClassName('source')[0].innerHtml,
-            'time': tagMeta.getElementsByTagName('time')[0].attributes['datetime'],
-            'image': tagImage.attributes['data-src']
-          };
+          var item = parsetTopicItem(elements[i]);
           data.add(item);
         } catch (err) {
         }
@@ -83,5 +70,21 @@ getTopics (int page) async {
   }
   return {
     'data': []
+  };
+}
+
+parsetTopicItem (element) {
+  var tagTopic = element.getElementsByTagName('h2')[0].getElementsByTagName('a')[0];
+  var storyTag = element.getElementsByClassName('story')[0];
+  var tagSummary = storyTag.getElementsByClassName('story__summary')[0];
+  var tagImage = storyTag.getElementsByTagName('img')[0];
+  var tagMeta = storyTag.getElementsByClassName('story__meta')[0];
+  return {
+    'url': tagTopic.attributes['href'],
+    'heading': tagTopic.innerHtml,
+    'summary': tagSummary.innerHtml,
+    'source': tagMeta.getElementsByClassName('source')[0].innerHtml,
+    'time': tagMeta.getElementsByTagName('time')[0].attributes['datetime'],
+    'image': tagImage.attributes['data-src']
   };
 }

@@ -2,15 +2,11 @@ import 'package:html/parser.dart' show parse;
 import 'package:redux/redux.dart';
 import 'package:cat_dog/common/state.dart';
 import 'package:cat_dog/modules/dashboard/repository.dart';
+import 'package:cat_dog/modules/category/actions.dart';
 
 class SetHotNews {
   final List<Object> news;
   SetHotNews(this.news);
-}
-
-class SetLatestNews {
-  final List<Object> news;
-  SetLatestNews(this.news);
 }
 
 class AppendHotNews {
@@ -18,13 +14,38 @@ class AppendHotNews {
   AppendHotNews(this.news);
 }
 
+class SetLatestNews {
+  final List<Object> news;
+  SetLatestNews(this.news);
+}
+
 class AppendLatestNews {
   final List<Object> news;
   AppendLatestNews(this.news);
 }
 
+class SetTopicNews {
+  final List<Object> news;
+  SetTopicNews(this.news);
+}
+
+class AppendTopicNews {
+  final List<Object> news;
+  AppendTopicNews(this.news);
+}
+
+class SetVideoNews {
+  final List<Object> news;
+  SetVideoNews(this.news);
+}
+
+class AppendVideoNews {
+  final List<Object> news;
+  AppendVideoNews(this.news);
+}
+
 // FIXME: Convert html to markdown :v
-final Function getDetailNews = (String url) async {
+getDetailNews (String url) async {
   try {
     String result = await fetchDetailNews(url);
     List<Object> video = [];
@@ -118,11 +139,27 @@ ${tag.innerHtml.trim()}
   return {
     'video': [],
     'relate': [],
-    'text': 'No Content Here'
+    'text': ''
   };
-};
+}
 
-final Function parseNews = (result) {
+parseNewsItem (element) {
+  var tagLink = element.getElementsByClassName('story__link')[0];
+  var tagHeading = element.getElementsByClassName('story__heading')[0];
+  var tagSummary = element.getElementsByClassName('story__summary')[0];
+  var tagImage = element.getElementsByTagName('img')[0];
+  var tagMeta = element.getElementsByClassName('story__meta')[0];
+  return {
+    'url': tagLink.attributes['href'],
+    'heading': tagHeading.innerHtml,
+    'summary': tagSummary.innerHtml,
+    'source': tagMeta.getElementsByClassName('source')[0].innerHtml,
+    'time': tagMeta.getElementsByTagName('time')[0].attributes['datetime'],
+    'image': tagImage.attributes['data-src']
+  };
+}
+
+parseNews (result) {
   try {
     List<Object> data = new List();
     List<Object> hots = new List();
@@ -134,20 +171,7 @@ final Function parseNews = (result) {
     int length = elements.length;
     for (i = 0; i < length; i++) {
       try {
-        var element = elements[i];
-        var tagLink = element.getElementsByClassName('story__link')[0];
-        var tagHeading = element.getElementsByClassName('story__heading')[0];
-        var tagSummary = element.getElementsByClassName('story__summary')[0];
-        var tagImage = element.getElementsByTagName('img')[0];
-        var tagMeta = element.getElementsByClassName('story__meta')[0];
-        var item = {
-          'url': tagLink.attributes['href'],
-          'heading': tagHeading.innerHtml,
-          'summary': tagSummary.innerHtml,
-          'source': tagMeta.getElementsByClassName('source')[0].innerHtml,
-          'time': tagMeta.getElementsByTagName('time')[0].attributes['datetime'],
-          'image': tagImage.attributes['data-src']
-        };
+        var item = parseNewsItem(elements[i]);
         data.add(item);
         if (hots.length < 7) {
           hots.add(item);
@@ -167,7 +191,47 @@ final Function parseNews = (result) {
     'hot': [],
     'data': []
   };
-};
+}
+
+parseTopic (result) {
+  try {
+    if (result != '') {
+      List<dynamic> data = new List();
+      var document = parse(result);
+      var elements = document
+        .getElementsByTagName('body')[0]
+        .getElementsByClassName('topic-timeline');
+      int i;
+      int length = elements.length;
+      for (i = 0; i < length; i++) {
+        try {
+          var element = elements[i];
+          var item = parsetTopicItem(element);
+          var topicNews = element
+            .getElementsByClassName('story');
+          int j;
+          int lengthNews = topicNews.length;
+          List<dynamic> news = new List();
+          for (j = 0; j < lengthNews; j++) {
+            news.add(parseNewsItem(topicNews[j]));
+          }
+          item['news'] = news;
+          data.add(item);
+        } catch (err) {
+        }
+      }
+      if (data.length > 0) {
+        return {
+          'data': data
+        };
+      }
+    }
+  } catch (err) {
+  }
+  return {
+    'data': []
+  };
+}
 
 final Function getHotNewsAction = (Store<AppState> store, int page) async {
   String result = await fetchHotNews(page);
@@ -175,16 +239,6 @@ final Function getHotNewsAction = (Store<AppState> store, int page) async {
     var data = parseNews(result);
     store.dispatch(new SetHotNews(data['data']));
     return data['hot'];
-  }
-  return [];
-};
-
-final Function getLatestNewsAction = (Store<AppState> store, int page) async {
-  String result = await fetchLatestNews(page);
-  if (result != '') {
-    var data = parseNews(result);
-    store.dispatch(new SetLatestNews(data['data']));
-    return data;
   }
   return [];
 };
@@ -197,10 +251,56 @@ final Function getMoreHotNewsAction = (Store<AppState> store, int page) async {
   }
 };
 
+final Function getLatestNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchLatestNews(page);
+  if (result != '') {
+    var data = parseNews(result);
+    store.dispatch(new SetLatestNews(data['data']));
+    return data;
+  }
+  return [];
+};
+
 final Function getMoreLatestNewsAction = (Store<AppState> store, int page) async {
   String result = await fetchLatestNews(page);
   if (result != '') {
     var data = parseNews(result);
     store.dispatch(new AppendLatestNews(data['data']));
+  }
+};
+
+final Function getTopicNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchTopicNews(page);
+  if (result != '') {
+    var data = parseTopic(result);
+    store.dispatch(new SetTopicNews(data['data']));
+    return data;
+  }
+  return [];
+};
+
+final Function getMoreTopicNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchTopicNews(page);
+  if (result != '') {
+    var data = parseTopic(result);
+    store.dispatch(new AppendTopicNews(data['data']));
+  }
+};
+
+final Function getVideoNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchVideoNews(page);
+  if (result != '') {
+    var data = parseNews(result);
+    store.dispatch(new SetVideoNews(data['data']));
+    return data;
+  }
+  return [];
+};
+
+final Function getMoreVideoNewsAction = (Store<AppState> store, int page) async {
+  String result = await fetchVideoNews(page);
+  if (result != '') {
+    var data = parseNews(result);
+    store.dispatch(new AppendVideoNews(data['data']));
   }
 };

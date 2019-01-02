@@ -91,7 +91,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           scaffoldContext: context
         )
       ),
-      drawer: new MainDrawer(),
+      drawer: PreferredSize(
+        preferredSize: const Size.fromHeight(48.0),
+        child: new MainDrawer()
+      )
     );
   }
 }

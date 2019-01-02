@@ -10,6 +10,7 @@ import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:cat_dog/common/configs.dart';
 import 'package:flutter_parallax/flutter_parallax.dart';
+import 'package:cat_dog/common/components/ImageCached.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
@@ -35,6 +36,7 @@ class _ReadingViewState extends State<ReadingView> {
   bool loading = true;
   CarouselSlider carouselInstance;
   List<Widget> relatedInstance = [];
+  List<dynamic> related = [];
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     childDirected: true,
@@ -46,11 +48,9 @@ class _ReadingViewState extends State<ReadingView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 300), () {
-      this.getDetail();
-    });
+    this.getDetail();
 
-    FirebaseAdMob.instance.initialize(appId: APP_ID);
+    FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     widget.addReadingCount();
     if (widget.readingCount > SHOW_ADS_COUNT) {
       interstitialAd = InterstitialAd(
@@ -77,26 +77,29 @@ class _ReadingViewState extends State<ReadingView> {
         });
       }
       var result = await getDetailNews(widget.news['url']);
-      Future.delayed(const Duration(milliseconds: 600), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         setState(() {
           html = result['text'];
+          loading = false;
+        });
+      });
+      Future.delayed(const Duration(milliseconds: 600), () {
+        setState(() {
           if (result['video'] != null && result['video'].length > 0) {
             carouselInstance = buildCarousel(result['video'] ?? []);
           }
           if (result['related'] != null && result['related'].length > 0) {
+            related = result['related'];
             relatedInstance = result['related'].map<Widget>((item) => 
-              Container(
-                child: MiniNewsfeed(
-                  item: item,
-                  metaData: true,
-                  onTap: (seleted) {
-                    pushAndReplaceByName('/reading', context, { 'news': seleted });
-                  }
-                )
+              MiniNewsfeed(
+                item: item,
+                metaData: true,
+                onTap: (seleted) {
+                  pushAndReplaceByName('/reading', context, { 'news': seleted });
+                }
               )
             ).toList();
           }
-          loading = false;
         });
       });
     } catch (err) {
@@ -173,20 +176,25 @@ class _ReadingViewState extends State<ReadingView> {
             loading
             ? Hero(
               tag: "news-feed-${widget.news['url']}",
-              child: Image.network(
-                widget.news['image'],
-                fit: BoxFit.cover,
-                height: 180,
-                width: MediaQuery.of(widget.scaffoldContext).size.width
+              child: ImageCached(
+                height: 180.0,
+                width: MediaQuery.of(widget.scaffoldContext).size.width,
+                url: widget.news['image']
               )
+              // Image.network(
+              //   widget.news['image'],
+              //   fit: BoxFit.cover,
+              //   height: 180,
+              //   width: MediaQuery.of(widget.scaffoldContext).size.width
+              // )
             )
             : Hero(
               tag: "news-feed-${widget.news['url']}",
               child: Parallax.inside(
-                child: Image.network(
-                  widget.news['image'],
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(widget.scaffoldContext).size.width
+                child: ImageCached(
+                  height: 180.0,
+                  width: MediaQuery.of(widget.scaffoldContext).size.width,
+                  url: widget.news['image']
                 ),
                 mainAxisExtent: 180,
               )
@@ -228,9 +236,24 @@ class _ReadingViewState extends State<ReadingView> {
     columns.addAll(relatedInstance);
     return OverlayLoadingPage(
       loading: loading,
-      component: ListView(
-        controller: scrollController,
-        children: columns
+      component: related == null || related.length <= 1
+      ? ListView(
+          controller: scrollController,
+          children: columns
+        )
+      : Dismissible(
+        onDismissed: (DismissDirection direction) {
+          if (direction == DismissDirection.endToStart) {
+            pushAndReplaceByName('/reading', context, { 'news': related[0] });
+          } else {
+            pushAndReplaceByName('/reading', context, { 'news': related[1] });
+          }
+        },
+        key: new ValueKey('reading_page'),
+        child: ListView(
+          controller: scrollController,
+          children: columns
+        )
       )
     );
   }
