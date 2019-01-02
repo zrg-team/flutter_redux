@@ -154,7 +154,6 @@ final Function getNavigationData = (
         return null;
   }
 };
-
 final Function pushByName = (String url, BuildContext context, dynamic params) {
   getNavigationData(Navigator.push, url, context, params);
 };

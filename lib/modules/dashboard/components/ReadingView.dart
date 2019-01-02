@@ -31,7 +31,6 @@ class ReadingView extends StatefulWidget {
   _ReadingViewState createState() => new _ReadingViewState();
 }
 class _ReadingViewState extends State<ReadingView> {
-
   String html = '';
   bool loading = true;
   CarouselSlider carouselInstance;

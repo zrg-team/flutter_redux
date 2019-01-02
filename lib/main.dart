@@ -10,7 +10,6 @@ import 'package:cat_dog/presentation/platform_adaptive.dart';
 import 'package:cat_dog/pages/HomePage.dart';
 import 'package:cat_dog/pages/BoardingPage.dart';
 
-
 void main() async {
   final store = await createStore();
   runApp(new App(
