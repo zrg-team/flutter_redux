@@ -17,6 +17,14 @@ class SetFirstOpen {
   SetFirstOpen(this.first);
 }
 
+class AddReadingCount {
+  AddReadingCount();
+}
+
+class ClearReadingCount {
+  ClearReadingCount();
+}
+
 final Function actionSetUserLanguage = (String language) {
   return (Store<AppState> store) {
     if (language != '') {
@@ -35,5 +43,17 @@ final Function getAboutAction = () {
 final Function setFirstOpenAction = () {
   return (Store<AppState> store) async {
     store.dispatch(SetFirstOpen(false));
+  };
+};
+
+final Function addReadingCountAction = () {
+  return (Store<AppState> store) async {
+    store.dispatch(AddReadingCount());
+  };
+};
+
+final Function clearReadingCountAction = () {
+  return (Store<AppState> store) async {
+    store.dispatch(ClearReadingCount());
   };
 };

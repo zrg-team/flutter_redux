@@ -30,30 +30,31 @@ class _TopicDetailViewState extends State<TopicDetailView> {
   }
 
   getNews (bool replace) async {
-    try {
-      List<dynamic> data = await getNewsFromUrl(GET_NEWS_API + widget.topic['url'], 1);
-      setState(() {
-        if (replace) {
-          list = data;
-        } else {
-          list.addAll(data);
-        }
-      });
-    } catch (err) {
-      print(err);
-    }
+    await Future.delayed(Duration(milliseconds: 800), () async {
+      try {
+        List<dynamic> data = await getNewsFromUrl(GET_NEWS_API + widget.topic['url'], 1);
+        setState(() {
+          if (replace) {
+            list = data;
+          } else {
+            list.addAll(data);
+          }
+        });
+      } catch (err) {
+        print(err);
+      }
+    });
   }
 
   Widget _buildContent() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildAvatar(),
-          _buildInfo(),
-          _buildVideoScroller(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        _buildAvatar(),
+        _buildInfo(),
+        _buildVideoScroller(),
+      ],
     );
   }
 
@@ -68,48 +69,57 @@ class _TopicDetailViewState extends State<TopicDetailView> {
       margin: const EdgeInsets.only(top: 20.0, left: 16.0),
       padding: const EdgeInsets.all(3.0),
       child: ClipOval(
-        child: Image.network(widget.topic['image']),
+        child: Hero(
+          tag: "mini-news-feed-${widget.topic['url']}",
+          child: Image.network(widget.topic['image'], fit: BoxFit.cover)
+        )
       ),
     );
   }
 
   Widget _buildInfo() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            widget.topic['heading'],
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 26.0,
-            ),
+    return Expanded(
+      flex: 1,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                widget.topic['heading'],
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26.0,
+                ),
+              ),
+              Container(
+                color: Colors.white.withOpacity(0.85),
+                margin: const EdgeInsets.symmetric(vertical: 14.0),
+                width: 225.0,
+                height: 1.0,
+              ),
+              Text(
+                widget.topic['summary'],
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.85),
+                  height: 1.4,
+                ),
+              ),
+            ],
           ),
-          Container(
-            color: Colors.white.withOpacity(0.85),
-            margin: const EdgeInsets.symmetric(vertical: 14.0),
-            width: 225.0,
-            height: 1.0,
-          ),
-          Text(
-            widget.topic['summary'],
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.85),
-              height: 1.4,
-            ),
-          ),
-        ],
-      ),
+        )
+      )
     );
   }
 
   Widget _buildVideoScroller() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 0.0),
+    return Container(
+      height: 295,
+      padding: const EdgeInsets.only(top: 5.0, bottom: 15.0),
       child: SizedBox.fromSize(
-        size: Size.fromHeight(260.0),
+        size: Size.fromHeight(275.0),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 0.0),

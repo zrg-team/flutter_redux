@@ -25,20 +25,23 @@ class _SubNewsViewState extends State<SubNewsView> {
   int page = 1;
   GlobalKey pageKey = new GlobalKey();
   List<Object> list = [];
-  ScrollController controller = new ScrollController();
+  // ScrollController controller = new ScrollController();
+
   @override
   void initState() {
     super.initState();
-    getNews(true);
-    controller.addListener(() {
-      if (controller.offset >= controller.position.maxScrollExtent - 100 && !onLoadMore) {
-        setState(() {
-          page += 1;
-          onLoadMore = true;
-        });
-        getNews(false);
-      }
+    Future.delayed(const Duration(milliseconds: 600), () {
+      getNews(true);
     });
+    // controller.addListener(() {
+    //   if (controller.offset >= controller.position.maxScrollExtent - 100 && !onLoadMore) {
+    //     setState(() {
+    //       page += 1;
+    //       onLoadMore = true;
+    //     });
+    //     getNews(false);
+    //   }
+    // });
   }
 
   getNews (bool replace) async {
@@ -64,9 +67,25 @@ class _SubNewsViewState extends State<SubNewsView> {
 
   @override
   void dispose() {
-    controller.removeListener(() {});
-    controller.dispose();
+    // controller.removeListener(() {});
+    // controller.dispose();
     super.dispose();
+  }
+
+  void handleRefresh (dynamic refreshController, bool isUp) {
+    try {
+      if (isUp) {
+        getNews(true);
+      } else {
+        setState(() {
+          page += 1;
+          onLoadMore = true;
+        });
+        getNews(false);
+      }
+    } catch (err) {
+    }
+    refreshController.sendBack(isUp, 3); // Status completed
   }
 
   @override
@@ -79,7 +98,8 @@ class _SubNewsViewState extends State<SubNewsView> {
         child: new NewsList(
           list: list,
           widget: widget,
-          controller: controller,
+          // controller: controller,
+          handleRefresh: handleRefresh,
           features: { 'download': true, 'share': true }
         )
       )

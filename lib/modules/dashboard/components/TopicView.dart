@@ -66,6 +66,10 @@ class _TopicViewState extends State<TopicView> {
     super.dispose();
   }
 
+  Future<void> handleRefresh () {
+    return getNews(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new LoadingPage(
@@ -78,6 +82,7 @@ class _TopicViewState extends State<TopicView> {
           list: list,
           widget: widget,
           controller: controller,
+          handleRefresh: handleRefresh,
           onTap: (seleted) {
             pushByName('/topic-detail', context, { 'topic': seleted });
           },

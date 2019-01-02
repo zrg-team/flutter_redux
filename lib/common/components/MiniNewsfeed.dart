@@ -7,14 +7,21 @@ class MiniNewsfeed extends StatelessWidget {
     {
       Key key,
       this.onTap,
-      this.metaData,
+      dynamic metaData,
+      dynamic imageWidth,
+      dynamic imageHeight,
       @required this.item
     })
       : assert(item != null),
+      imageWidth = imageWidth != null ? imageWidth : 100.0,
+      imageHeight = imageHeight != null ? imageHeight : 100.0,
+      metaData = metaData != null ? metaData : false,
       super(key: key);
   final Function onTap;
   final dynamic item;
   final bool metaData;
+  final double imageWidth;
+  final double imageHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,7 @@ class MiniNewsfeed extends StatelessWidget {
       child: new Container(
         decoration: new BoxDecoration(color: AppColors.white),
         child: new Padding(
-          padding: new EdgeInsets.all(10.0),
+          padding: new EdgeInsets.all(5.0),
           child: new Column(
             children: [
               new GestureDetector(
@@ -36,13 +43,16 @@ class MiniNewsfeed extends StatelessWidget {
                       children: <Widget>[
                         new Padding(
                           padding:
-                              new EdgeInsets.only(top: 8.0),
+                            new EdgeInsets.only(top: 8.0),
                           child: new SizedBox(
-                            height: 100.0,
-                            width: 100.0,
-                            child: new Image.network(
-                              item['image'],
-                              fit: BoxFit.cover,
+                            height: imageWidth,
+                            width: imageHeight,
+                            child: Hero(
+                              tag: "mini-news-feed-${item['url']}",
+                              child: new Image.network(
+                                item['image'],
+                                fit: BoxFit.cover,
+                              )
                             ),
                           ),
                         )

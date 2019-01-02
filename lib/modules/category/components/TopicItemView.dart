@@ -14,7 +14,7 @@ class TopicItemView extends StatelessWidget {
         BoxShadow(
           spreadRadius: 2.0,
           blurRadius: 10.0,
-          color: Colors.black26,
+          // color: Colors.black26,
         ),
       ],
     );
@@ -25,7 +25,7 @@ class TopicItemView extends StatelessWidget {
       borderRadius: BorderRadius.circular(8.0),
       child: Stack(
         children: <Widget>[
-          Image.network(news['image']),
+          Image.network(news['image'])
           // Positioned(
           //   bottom: 12.0,
           //   right: 12.0,
@@ -54,7 +54,8 @@ class TopicItemView extends StatelessWidget {
       },
       child: Container(
         width: 175.0,
-        padding: const EdgeInsets.all(8.0),
+        height: 245,
+        padding: const EdgeInsets.all(5.0),
         margin: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         decoration: _buildShadowAndRoundedCorners(),
         child: Column(

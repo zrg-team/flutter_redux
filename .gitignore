@@ -71,4 +71,8 @@ build/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
+# Firebase config
+ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
+
 

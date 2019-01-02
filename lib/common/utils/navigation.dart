@@ -14,6 +14,22 @@ import 'package:cat_dog/pages/TopicDetailPage.dart';
 
 
 const int DEFAULT_TIME = 200;
+class NoTransmissionRoute<T> extends MaterialPageRoute<T> {
+  NoTransmissionRoute({ WidgetBuilder builder, RouteSettings settings })
+      : super(builder: builder, settings: settings);
+
+  @override
+  Widget buildTransitions(BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    if (settings.isInitialRoute)
+      return child;
+    // Fades between routes. (If you don't want any animation, 
+    // just return child.)
+    return child;
+  }
+}
 final Function getNavigationData = (
   Function navigationFunction,
   String url,
@@ -29,7 +45,7 @@ final Function getNavigationData = (
             type: PageTransitionType.leftToRight,
             alignment: Alignment.centerLeft,
             child: HomePage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -38,10 +54,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: CategoriesPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -50,10 +66,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: SavedNewsPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -62,10 +78,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: NewsSourcePage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -74,10 +90,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
+            type: PageTransitionType.scale,
+            alignment: Alignment.bottomCenter,
             child: VideosPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -86,10 +102,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
+            type: PageTransitionType.scale,
             alignment: Alignment.bottomCenter,
             child: AboutPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -97,12 +113,8 @@ final Function getNavigationData = (
       case '/reading':
         navigationFunction(
           context,
-          PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
-            child: ReadingPage(news: params['news']),
-            curve: Curves.bounceInOut,
-            duration: Duration(milliseconds: DEFAULT_TIME)
+          NoTransmissionRoute(
+            builder: (BuildContext context) => ReadingPage(news: params['news'])
           )
         );
         break;
@@ -110,10 +122,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
+            type: PageTransitionType.scale,
+            alignment: Alignment.bottomCenter,
             child: SubNewsPage(view: params['view']),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -122,10 +134,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
+            type: PageTransitionType.scale,
+            alignment: Alignment.bottomCenter,
             child: TopicPage(),
-            curve: Curves.bounceInOut,
+            curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -133,12 +145,8 @@ final Function getNavigationData = (
       case '/topic-detail':
         navigationFunction(
           context,
-          PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
-            child: TopicDetailPage(topic: params['topic']),
-            curve: Curves.bounceInOut,
-            duration: Duration(milliseconds: DEFAULT_TIME)
+          MaterialPageRoute(
+            builder: (BuildContext context) => TopicDetailPage(topic: params['topic'])
           )
         );
         break;
