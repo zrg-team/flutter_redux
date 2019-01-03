@@ -10,8 +10,8 @@ import 'package:cat_dog/common/components/MiniNewsList.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/common/components/ImageCached.dart';
 
-const int TAB_HOT = 0;
-const int TAB_LATEST = 1;
+const int TAB_LATEST = 0;
+const int TAB_HOT = 1;
 const int TAB_VIDEO = 2;
 const int TAB_TOPIC = 3;
 
@@ -53,7 +53,7 @@ class NewsTabView extends StatefulWidget {
 }
 
 class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin {
-  int tabIndex = TAB_HOT;
+  int tabIndex = TAB_LATEST;
   bool loading = true;
 
   int pageHot = 1;
@@ -159,13 +159,13 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
 
   getAllNews () async {
     try {
-      await getHots();
-      getNews();
+      getHots();
+      await getNews();
       getVideos();
       getTopics();
     } catch (err) {
     }
-    Future.delayed(const Duration(milliseconds: 1000), () async {
+    Future.delayed(const Duration(milliseconds: 300), () async {
       setState(() {
         loading = false;
       });
@@ -184,8 +184,10 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
   getHots () async {
     try {
       List<dynamic> hots = await widget.getHotNews(pageHot);
-      carouselInstance = buildCarousel(hots);
-      animationController.forward();
+      Future.delayed(Duration(milliseconds: 300), () {
+        carouselInstance = buildCarousel(hots);
+        animationController.forward();
+      });
       return true;
     } catch (err) {
       return false;
@@ -303,13 +305,15 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
         converter: (Store<AppState> store) {
           return getData(store);
         },
-        builder: (BuildContext context, news) => NewsList(
-          list: news ?? [],
-          widget: widget,
-          controller: scrollController,
-          handleRefresh: handleRefresh,
-          features: { 'download': true, 'share': true }
-        )
+        builder: (BuildContext context, news) {
+          return NewsList(
+            list: news ?? [],
+            widget: widget,
+            controller: scrollController,
+            handleRefresh: handleRefresh,
+            features: { 'download': true, 'share': true }
+          );
+        }
       )
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cat_dog/styles/colors.dart';
-import 'package:cat_dog/common/components/MainDrawer.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
 import 'package:cat_dog/common/configs.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
@@ -30,22 +29,20 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
       backgroundColor: AppColors.commonBackgroundColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: Hero(
-          tag: "app-bar-hero",
-          child: new GradientAppBar(
-            'Nguồn Tin',
-            Icon(
-              Icons.dehaze,
-              size: 32
-            ),
-            () => _mainKey.currentState.openDrawer(),
-            null,
-            () async {
-            }
-          )
+        child: new GradientAppBar(
+          'Nguồn Tin',
+          Icon(
+            Icons.arrow_back,
+            size: 32
+          ),
+          () {
+            navigationPop(context);
+          },
+          null,
+          () async {
+          }
         )
       ),
-      drawer: MainDrawer(),
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, mainAxisSpacing: 25.0),

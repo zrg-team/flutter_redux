@@ -48,7 +48,8 @@ class _MiniNewsListState extends State<MiniNewsList> {
           item: widget.list[index],
           metaData: widget.metaData,
           imageWidth: 120.0,
-          imageHeight: 120.0
+          imageHeight: 120.0,
+          folding: true
         ),
         innerTopWidget: Newsfeed(
           item: widget.list[index]['news'][0],

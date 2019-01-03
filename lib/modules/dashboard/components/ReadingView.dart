@@ -47,8 +47,10 @@ class _ReadingViewState extends State<ReadingView> {
   @override
   void initState() {
     super.initState();
-    this.getDetail();
-
+    Future.delayed(const Duration(milliseconds: 250), () {
+      this.getDetail();
+    });
+    
     FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     widget.addReadingCount();
     if (widget.readingCount > SHOW_ADS_COUNT) {
@@ -70,37 +72,36 @@ class _ReadingViewState extends State<ReadingView> {
   getDetail () async {
     try {
       if (widget.news['data'] != null) {
-        return setState(() {
+        setState(() {
           html = widget.news['data'];
           loading = false;
         });
-      }
-      var result = await getDetailNews(widget.news['url']);
-      Future.delayed(const Duration(milliseconds: 300), () {
+      } else {
+        var result = await getDetailNews(widget.news['url']);
         setState(() {
           html = result['text'];
           loading = false;
         });
-      });
-      Future.delayed(const Duration(milliseconds: 600), () {
-        setState(() {
-          if (result['video'] != null && result['video'].length > 0) {
-            carouselInstance = buildCarousel(result['video'] ?? []);
-          }
-          if (result['related'] != null && result['related'].length > 0) {
-            related = result['related'];
-            relatedInstance = result['related'].map<Widget>((item) => 
-              MiniNewsfeed(
-                item: item,
-                metaData: true,
-                onTap: (seleted) {
-                  pushAndReplaceByName('/reading', context, { 'news': seleted });
-                }
-              )
-            ).toList();
-          }
+        Future.delayed(const Duration(milliseconds: 600), () {
+          setState(() {
+            if (result['video'] != null && result['video'].length > 0) {
+              carouselInstance = buildCarousel(result['video'] ?? []);
+            }
+            if (result['related'] != null && result['related'].length > 0) {
+              related = result['related'];
+              relatedInstance = result['related'].map<Widget>((item) => 
+                MiniNewsfeed(
+                  item: item,
+                  metaData: true,
+                  onTap: (seleted) {
+                    pushAndReplaceByName('/reading', context, { 'news': seleted });
+                  }
+                )
+              ).toList();
+            }
+          });
         });
-      });
+      }
     } catch (err) {
     }
   }

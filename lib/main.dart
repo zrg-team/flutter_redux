@@ -8,7 +8,6 @@ import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/presentation/platform_adaptive.dart';
 // PAGES
 import 'package:cat_dog/pages/HomePage.dart';
-import 'package:cat_dog/pages/BoardingPage.dart';
 
 void main() async {
   final store = await createStore();
@@ -39,7 +38,7 @@ class App extends StatelessWidget {
               converter: (store) {
                 return store.state.common.first;
               }, 
-              builder: (BuildContext context, first) => !first ? new HomePage() : new BoardingPage()
+              builder: (BuildContext context, first) => new HomePage()
           )
         }
       )

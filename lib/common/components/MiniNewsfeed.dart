@@ -7,6 +7,7 @@ class MiniNewsfeed extends StatelessWidget {
     {
       Key key,
       this.onTap,
+      dynamic folding,
       dynamic metaData,
       dynamic imageWidth,
       dynamic imageHeight,
@@ -16,10 +17,12 @@ class MiniNewsfeed extends StatelessWidget {
       imageWidth = imageWidth != null ? imageWidth : 100.0,
       imageHeight = imageHeight != null ? imageHeight : 100.0,
       metaData = metaData != null ? metaData : false,
+      folding = folding != null ? folding : false,
       super(key: key);
   final Function onTap;
   final dynamic item;
   final bool metaData;
+  final bool folding;
   final double imageWidth;
   final double imageHeight;
 
@@ -34,9 +37,9 @@ class MiniNewsfeed extends StatelessWidget {
           child: new Column(
             children: [
               new GestureDetector(
-                onTap: () {
+                onTap: !folding ? () {
                   onTap != null && onTap(item);
-                },
+                } : null,
                 child: new Row(
                   children: [
                     new Column(

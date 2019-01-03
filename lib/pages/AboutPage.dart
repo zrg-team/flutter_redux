@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:cat_dog/common/state.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/common/actions/common.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:cat_dog/common/components/MainDrawer.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
 
 class AboutView extends StatefulWidget {
@@ -60,19 +60,18 @@ class AboutPage extends StatelessWidget {
       key: _mainKey,
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: Hero(
-          tag: "app-bar-hero",
-          child: new GradientAppBar(
-            'Thông Tin',
-            Icon(
-              Icons.dehaze,
-              size: 32
-            ),
-            () => _mainKey.currentState.openDrawer(),
-            null,
-            () async {
-            }
-          )
+        child: new GradientAppBar(
+          'Thông Tin',
+          Icon(
+            Icons.arrow_back,
+            size: 32
+          ),
+          () {
+            navigationPop(context);
+          },
+          null,
+          () async {
+          }
         )
       ),
       body: Builder(
@@ -88,8 +87,7 @@ class AboutPage extends StatelessWidget {
             );
           }
         )
-      ),
-      drawer: new MainDrawer(),
+      )
     );
   }
 }
