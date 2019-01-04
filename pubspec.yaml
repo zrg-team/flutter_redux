@@ -8,7 +8,7 @@ description: A new Flutter project.
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
 version: 2.0.3+1
-versionCode: 23
+versionCode: 24
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -44,6 +44,7 @@ dependencies:
   flutter_parallax: ^0.1.2
   cached_network_image: ^0.5.1
   folding_cell: ^0.1.0
+  shimmer: ^0.0.6
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0
@@ -99,6 +100,8 @@ flutter:
   - assets/images/banner-3.png
   - assets/images/noimage-reading.jpg
   - assets/images/noimage.jpg
+  - assets/images/swipeleft.png
+  - assets/images/swiperight.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

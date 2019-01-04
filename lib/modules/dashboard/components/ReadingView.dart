@@ -11,6 +11,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:cat_dog/common/configs.dart';
 import 'package:flutter_parallax/flutter_parallax.dart';
 import 'package:cat_dog/common/components/ImageCached.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
@@ -47,7 +48,7 @@ class _ReadingViewState extends State<ReadingView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 250), () {
+    Future.delayed(const Duration(milliseconds: 150), () {
       this.getDetail();
     });
     
@@ -106,7 +107,7 @@ class _ReadingViewState extends State<ReadingView> {
     }
   }
 
-  Widget _buildPlayButton() {
+  Widget buildPlayButton() {
     return Center(
       child: Material(
         color: Colors.black87,
@@ -149,7 +150,7 @@ class _ReadingViewState extends State<ReadingView> {
                     height: 180
                   )
                 ),
-                _buildPlayButton()
+                buildPlayButton()
               ]
             )
           )
@@ -160,66 +161,188 @@ class _ReadingViewState extends State<ReadingView> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> columns = [
-      carouselInstance != null
-      ? carouselInstance
-      : Container(
-        margin: EdgeInsets.only(bottom: 0),
-        padding: EdgeInsets.only(bottom: 0),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.readingNewsBackgroundColor),
+  Widget buildNextPage(dynamic item, double width) {
+    return item != null
+    ? ListView(
+      children: <Widget>[
+        Container(
+          width: width,
+          margin: EdgeInsets.only(bottom: 0),
+          padding: EdgeInsets.only(bottom: 0),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.readingNewsBackgroundColor),
+          ),
+          child: Stack(
+            children: <Widget>[
+              Image.network(
+                item['image'],
+                height: 180.0,
+                width: width,
+                fit: BoxFit.cover,
+              ),
+              Positioned(
+                left: 0.0,
+                right: 0.0,
+                height: 180,
+                child: Container(
+                  decoration: BoxDecoration(
+                    // border: new Border.all(color: AppColors.readingNewsBackgroundColor),
+                    gradient: LinearGradient(
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.readingNewsBackgroundColor.withOpacity(0),
+                        AppColors.readingNewsBackgroundColor.withOpacity(1)
+                      ],
+                      stops: [0.0, 100.0],
+                      tileMode: TileMode.clamp
+                    )
+                  ),
+                )
+              )
+            ]
+          )
         ),
-        child: Stack(
-          children: <Widget>[
-            loading
-            ? Hero(
-              tag: "news-feed-${widget.news['url']}",
+        Padding(
+          padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          child: MarkdownBody(
+            data: """
+  **${item['heading'].trim()}**
+  =======
+  ---
+
+  **${item['summary'].trim()}**
+
+  ---
+  """
+          )
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey[300],
+            highlightColor: Colors.grey[100],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 8.0,
+                  color: Colors.white,
+                ),
+                Padding(
+                  padding:
+                    const EdgeInsets.symmetric(vertical: 4.0),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 8.0,
+                  color: Colors.white,
+                ),
+                Padding(
+                  padding:
+                    const EdgeInsets.symmetric(vertical: 4.0),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 8.0,
+                  color: Colors.white,
+                ),
+                Padding(
+                  padding:
+                    const EdgeInsets.symmetric(vertical: 4.0),
+                ),
+                Container(
+                  width: 40.0,
+                  height: 8.0,
+                  color: Colors.white,
+                ),
+                Padding(
+                  padding:
+                    const EdgeInsets.symmetric(vertical: 4.0),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  color: Colors.white,
+                )
+              ]
+            )
+          )
+        )
+      ]
+    )
+    : Center(
+      child: Image.asset('assets/images/banner-2.png')
+    );
+  }
+
+  Widget buildBanner(double width) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 0),
+      padding: EdgeInsets.only(bottom: 0),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.readingNewsBackgroundColor),
+      ),
+      child: Stack(
+        children: <Widget>[
+          loading
+          ? Hero(
+            tag: "news-feed-${widget.news['url']}",
+            child: ImageCached(
+              height: 180.0,
+              width: width,
+              url: widget.news['image'],
+              placeholder: Container(),
+              noimage: 'assets/images/noimage-reading.jpg'
+            )
+          )
+          : Hero(
+            tag: "news-feed-${widget.news['url']}",
+            child: Parallax.inside(
               child: ImageCached(
                 height: 180.0,
-                width: MediaQuery.of(widget.scaffoldContext).size.width,
+                width: width,
                 url: widget.news['image'],
                 placeholder: Container(),
                 noimage: 'assets/images/noimage-reading.jpg'
-              )
+              ),
+              mainAxisExtent: 180,
             )
-            : Hero(
-              tag: "news-feed-${widget.news['url']}",
-              child: Parallax.inside(
-                child: ImageCached(
-                  height: 180.0,
-                  width: MediaQuery.of(widget.scaffoldContext).size.width,
-                  url: widget.news['image'],
-                  placeholder: Container(),
-                  noimage: 'assets/images/noimage-reading.jpg'
-                ),
-                mainAxisExtent: 180,
-              )
-            ),
-            Positioned(
-              left: 0.0,
-              right: 0.0,
-              height: 180,
-              child: Container(
-                decoration: BoxDecoration(
-                  // border: new Border.all(color: AppColors.readingNewsBackgroundColor),
-                  gradient: LinearGradient(
-                    begin: Alignment.center,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      AppColors.readingNewsBackgroundColor.withOpacity(0),
-                      AppColors.readingNewsBackgroundColor.withOpacity(1)
-                    ],
-                    stops: [0.0, 100.0],
-                    tileMode: TileMode.clamp
-                  )
-                ),
-              )
+          ),
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            height: 180,
+            child: Container(
+              decoration: BoxDecoration(
+                // border: new Border.all(color: AppColors.readingNewsBackgroundColor),
+                gradient: LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.readingNewsBackgroundColor.withOpacity(0),
+                    AppColors.readingNewsBackgroundColor.withOpacity(1)
+                  ],
+                  stops: [0.0, 100.0],
+                  tileMode: TileMode.clamp
+                )
+              ),
             )
-          ]
-        )
-      ),
+          )
+        ]
+      )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(widget.scaffoldContext).size.width;
+
+    List<Widget> columns = [
+      carouselInstance != null
+      ? carouselInstance
+      : buildBanner(width),
       AnimatedOpacity(
         opacity: loading ? 0 : 1,
         duration: Duration(milliseconds: 800),
@@ -231,24 +354,26 @@ class _ReadingViewState extends State<ReadingView> {
         )
       )
     ];
+
     columns.addAll(relatedInstance);
+
     return OverlayLoadingPage(
       loading: loading,
-      component: related == null || related.length <= 1
-      ? ListView(
-          controller: scrollController,
-          children: columns
-        )
-      : Dismissible(
+      component: Dismissible(
+        background: !loading && 0 < related.length
+          ? buildNextPage(related[0] ?? null, width) : Container(),
+        secondaryBackground: !loading && 1 < related.length
+          ? buildNextPage(related[1] ?? null, width) : Container(),
         onDismissed: (DismissDirection direction) {
-          if (direction == DismissDirection.endToStart) {
+          if (direction == DismissDirection.endToStart && related[0] != null) {
             pushAndReplaceByName('/reading', context, { 'news': related[0] });
-          } else {
+          } else if(related[1] != null) {
             pushAndReplaceByName('/reading', context, { 'news': related[1] });
           }
         },
         key: new ValueKey('reading_page'),
         child: ListView(
+          physics: BouncingScrollPhysics(),
           controller: scrollController,
           children: columns
         )

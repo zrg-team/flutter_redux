@@ -6,11 +6,14 @@ import 'package:cat_dog/modules/user/actions.dart';
 import 'package:cat_dog/common/state.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cat_dog/common/configs.dart';
-
 import 'package:cat_dog/common/utils/navigation.dart';
 
 class MainDrawer extends StatelessWidget {
-  MainDrawer({Key key}): super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  MainDrawer({Key key, dynamic scaffoldKey}):
+    scaffoldKey = scaffoldKey != null ? scaffoldKey : new GlobalKey<ScaffoldState>(),
+    super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +91,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.tv),
                                 title: new Text('Chủ Đề Nóng'),
                                 onTap: () {
+                                  Navigator.of(scaffoldKey.currentContext).pop();
                                   pushByName('/topics', context, {});
                                 }
                               ),
@@ -95,6 +99,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.video_library),
                                 title: new Text('Videos'),
                                 onTap: () {
+                                  Navigator.of(scaffoldKey.currentContext).pop();
                                   pushByName('/videos', context, {});
                                 }
                               ),
@@ -102,6 +107,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.apps),
                                 title: new Text('Thế Loại'),
                                 onTap: () {
+                                  Navigator.of(scaffoldKey.currentContext).pop();
                                   pushByName('/categories', context, {});
                                 }
                               ),
@@ -109,6 +115,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.school),
                                 title: new Text('Nguồn Tin'),
                                 onTap: () {
+                                  Navigator.of(scaffoldKey.currentContext).pop();
                                   pushByName('/source', context, {});
                                 }
                               ),
@@ -116,6 +123,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.save),
                                 title: new Text('Tin Đã Lưu'),
                                 onTap: () {
+                                  Navigator.of(scaffoldKey.currentContext).pop();
                                   pushByName('/saved', context, {});
                                 }
                               ),
@@ -135,6 +143,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.info),
                                 title: new Text('Thông Tin'),
                                 onTap: () {
+                                  Navigator.of(scaffoldKey.currentContext).pop();
                                   pushByName('/about', context, {});
                                 }
                               ),
@@ -142,6 +151,7 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.store_mall_directory),
                                 title: new Text('Giới Thiệu'),
                                 onTap: () {
+                                  Navigator.of(scaffoldKey.currentContext).pop();
                                   pushByName('/boarding', context, {});
                                 }
                               )

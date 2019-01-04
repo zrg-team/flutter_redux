@@ -25,7 +25,7 @@ class _VideoNewsViewState extends State<VideoNewsView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 650), () {
+    Future.delayed(const Duration(milliseconds: 450), () {
       getNews(true);
     });
     controller.addListener(() {
@@ -52,7 +52,7 @@ class _VideoNewsViewState extends State<VideoNewsView> {
     } catch (err) {
       print(err);
     }
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 800), () {
       setState(() {
         loading = false;
         onLoadMore = false;

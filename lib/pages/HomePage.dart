@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => new _HomePageState();
 }
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> mainKey = new GlobalKey<ScaffoldState>();
 
   Function hideCallback;
 
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      key: _mainKey,
+      key: mainKey,
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
         child: new GradientAppBar(
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             Icons.dehaze,
             size: 32
           ),
-          () => _mainKey.currentState.openDrawer(),
+          () => mainKey.currentState.openDrawer(),
           Icon(
             Icons.chrome_reader_mode,
             size: 32
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
       drawer: PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: new MainDrawer()
+        child: new MainDrawer(scaffoldKey: mainKey)
       )
     );
   }

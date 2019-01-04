@@ -26,7 +26,7 @@ class ImageCached extends StatelessWidget {
     placeholder = placeholder != null
       ? placeholder
       : Center(
-        child: SpinKitCubeGrid(
+        child: SpinKitPulse(
           color: AppColors.specicalBackgroundColor,
           size: 32
         )
