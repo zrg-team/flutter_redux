@@ -7,63 +7,78 @@ const String ABOUT_URL = 'https://raw.githubusercontent.com/zrg-team/flutter_red
 const List<dynamic> SOURCE_NEWS = [
   {
     'name': 'Zing',
-    'image': 'assets/zing.png',
+    'image': 'assets/images/zing.png',
     'url': 'https://m.baomoi.com/bao-tri-thuc-truc-tuyen-zing/p/119.epi'
   },
   {
     'name': 'VOV',
-    'image': 'assets/vov.jpg',
+    'image': 'assets/images/vov.jpg',
     'url': 'https://m.baomoi.com/bao-vov-vov/p/65.epi'
   },
   {
     'name': 'Thanh Niên',
-    'image': 'assets/thanhnien.jpg',
+    'image': 'assets/images/thanhnien.jpg',
     'url': 'https://m.baomoi.com/bao-thanh-nien-thanh-nien/p/19.epi'
   },
   {
     'name': 'Lao Động',
-    'image': 'assets/laodong.jpg',
+    'image': 'assets/images/laodong.jpg',
     'url': 'https://m.baomoi.com/bao-lao-dong-lao-dong/p/12.epi'
   },
   {
     'name': 'Vietnam Plus',
-    'image': 'assets/vietnamplus.jpg',
+    'image': 'assets/images/vietnamplus.jpg',
     'url': 'https://m.baomoi.com/bao-vietnamplus-vietnamplus/p/293.epi'
   },
   {
     'name': 'Vietnam Net',
-    'image': 'assets/vietnamnet.png',
+    'image': 'assets/images/vietnamnet.png',
     'url': 'https://m.baomoi.com/bao-vietnamnet-vietnamnet/p/23.epi'
   },
   {
     'name': 'VTC',
-    'image': 'assets/vtc.png',
+    'image': 'assets/images/vtc.png',
     'url': 'https://m.baomoi.com/bao-vtc-news-vtc/p/83.epi'
   },
   {
     'name': 'SaoStart',
-    'image': 'assets/saostart.jpg',
+    'image': 'assets/images/saostart.jpg',
     'url': 'https://m.baomoi.com/saostar-saostar/p/329.epi'
   },
   {
     'name': 'VN Media',
-    'image': 'assets/vnmedia.png',
+    'image': 'assets/images/vnmedia.png',
     'url': 'https://m.baomoi.com/vnmedia-vnmedia/p/22.epi'
   },
   {
     'name': 'ICT News',
-    'image': 'assets/ictnews.png',
+    'image': 'assets/images/ictnews.png',
     'url': 'https://m.baomoi.com/ictnews-ictnews/p/107.epi'
   },
   {
-    'name': 'Tiền Phòng',
-    'image': 'assets/tienphong.png',
+    'name': 'Tiền Phong',
+    'image': 'assets/images/tienphong.png',
     'url': 'https://m.baomoi.com/bao-tien-phong-tien-phong/p/20.epi'
   },
   {
     'name': 'Kiến Thức',
-    'image': 'assets/kienthuc.jpeg',
+    'image': 'assets/images/kienthuc.jpeg',
     'url': 'https://m.baomoi.com/bao-kien-thuc-kien-thuc/p/180.epi'
+  },
+  {
+    'name': 'Petro Times',
+    'image': 'assets/images/petrotimes.png',
+    'url': 'https://m.baomoi.com/bao-nang-luong-moi-petrotimes/p/232.epi'
+  },
+  {
+    'name': 'Chính Phủ',
+    'image': 'assets/images/chinhphu.jpg',
+    'url': 'https://m.baomoi.com/bao-chinh-phu-chinh-phu/p/146.epi'
+  },
+  {
+    'name': 'Chính Phủ',
+    'image': 'assets/images/phapluat.png',
+    'url': 'https://m.baomoi.com/bao-chinh-phu-chinh-phu/p/146.epi'
   }
 ];
 

@@ -47,7 +47,7 @@ class _NewsSourcePageState extends State<NewsSourcePage> {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, mainAxisSpacing: 25.0),
         padding: const EdgeInsets.all(10.0),
-        itemCount: 12,
+        itemCount: sources.length,
         itemBuilder: (BuildContext context, int index) {
           return GridTile(
             footer: Row(

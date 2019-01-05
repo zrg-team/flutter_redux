@@ -2,14 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
-import 'package:cat_dog/modules/category/components/NewDetailTopicView.dart';
+import 'package:cat_dog/modules/soccer/containers/SoccerCalendar.dart';
 
-class TopicDetailPage extends StatelessWidget {
-  final dynamic topic;
+class SoccerPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
-  TopicDetailPage({Key key, dynamic topic}) :
-    topic = topic,
-    super(key: key);
+  SoccerPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +15,21 @@ class TopicDetailPage extends StatelessWidget {
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
         child: new GradientAppBar(
-          'Nội Dung',
+          'Lịch Bóng Đá',
           Icon(
             Icons.arrow_back,
             size: 32
           ),
-          () => navigationPop(context),
+          () {
+            navigationPop(context);
+          },
           null,
           () async {
           }
-        ),
+        )
       ),
       body: Builder(
-        builder: (context) => NewDetailTopicView(
-          key: key,
-          topic: topic,
-          scaffoldContext: context
-        )
+        builder: (context) => new SoccerCalendar(key: key, scaffoldContext: context)
       )
     );
   }

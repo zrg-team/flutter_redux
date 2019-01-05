@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cat_dog/styles/colors.dart';
-import 'package:cat_dog/pages/LoadingPage.dart';
+import 'package:cat_dog/pages/ContentLoadingPage.dart';
 import 'package:cat_dog/modules/category/actions.dart';
 import 'package:cat_dog/common/components/NewsList.dart';
 
@@ -30,7 +30,7 @@ class _SubNewsViewState extends State<SubNewsView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 600), () {
+    Future.delayed(const Duration(milliseconds: 180), () {
       getNews(true);
     });
     // controller.addListener(() {
@@ -57,7 +57,7 @@ class _SubNewsViewState extends State<SubNewsView> {
     } catch (err) {
       print(err);
     }
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         loading = false;
         onLoadMore = false;
@@ -75,7 +75,9 @@ class _SubNewsViewState extends State<SubNewsView> {
   void handleRefresh (dynamic refreshController, bool isUp) {
     try {
       if (isUp) {
-        getNews(true);
+        Future.delayed(Duration(microseconds: 320), () {
+          getNews(true);
+        });
       } else {
         setState(() {
           page += 1;
@@ -90,12 +92,12 @@ class _SubNewsViewState extends State<SubNewsView> {
 
   @override
   Widget build(BuildContext context) {
-    return new LoadingPage(
+    return ContentLoadingPage(
       key: pageKey,
       loading: loading,
-      component: new Container(
-        decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
-        child: new NewsList(
+      component: Container(
+        decoration: BoxDecoration(color: AppColors.commonBackgroundColor),
+        child: NewsList(
           list: list,
           widget: widget,
           // controller: controller,

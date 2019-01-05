@@ -12,9 +12,10 @@ import 'package:cat_dog/pages/SubNewsPage.dart';
 import 'package:cat_dog/pages/VideosPage.dart';
 import 'package:cat_dog/pages/TopicPage.dart';
 import 'package:cat_dog/pages/TopicDetailPage.dart';
+import 'package:cat_dog/pages/SoccerPage.dart';
 
 
-const int DEFAULT_TIME = 200;
+const int DEFAULT_TIME = 180;
 class NoTransmissionRoute<T> extends MaterialPageRoute<T> {
   NoTransmissionRoute({ WidgetBuilder builder, RouteSettings settings })
       : super(builder: builder, settings: settings);
@@ -154,6 +155,18 @@ final Function getNavigationData = (
             type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: BoardingPage(),
+            curve: Curves.elasticInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
+        );
+        break;
+      case '/soccer':
+        navigationFunction(
+          context,
+          PageTransition(
+            type: PageTransitionType.rightToLeft,
+            alignment: Alignment.bottomCenter,
+            child: SoccerPage(),
             curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )

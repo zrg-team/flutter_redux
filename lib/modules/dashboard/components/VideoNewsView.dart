@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cat_dog/styles/colors.dart';
-import 'package:cat_dog/pages/LoadingPage.dart';
+import 'package:cat_dog/pages/ContentLoadingPage.dart';
 import 'package:cat_dog/modules/category/actions.dart';
 import 'package:cat_dog/common/components/MiniNewsList.dart';
 
@@ -25,7 +25,7 @@ class _VideoNewsViewState extends State<VideoNewsView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 450), () {
+    Future.delayed(const Duration(milliseconds: 180), () {
       getNews(true);
     });
     controller.addListener(() {
@@ -52,7 +52,7 @@ class _VideoNewsViewState extends State<VideoNewsView> {
     } catch (err) {
       print(err);
     }
-    Future.delayed(const Duration(milliseconds: 800), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         loading = false;
         onLoadMore = false;
@@ -73,12 +73,12 @@ class _VideoNewsViewState extends State<VideoNewsView> {
 
   @override
   Widget build(BuildContext context) {
-    return new LoadingPage(
+    return ContentLoadingPage(
       key: pageKey,
       loading: loading,
-      component: new Container(
-        decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
-        child: new MiniNewsList(
+      component: Container(
+        decoration: BoxDecoration(color: AppColors.commonBackgroundColor),
+        child: MiniNewsList(
           list: list,
           widget: widget,
           controller: controller,

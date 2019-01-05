@@ -4,14 +4,14 @@ import 'package:cat_dog/modules/dashboard/actions.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cat_dog/styles/colors.dart';
-import 'package:cat_dog/pages/OverlayLoadingPage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cat_dog/common/components/MiniNewsfeed.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:cat_dog/common/configs.dart';
 import 'package:flutter_parallax/flutter_parallax.dart';
 import 'package:cat_dog/common/components/ImageCached.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:cat_dog/common/components/ContentLoading.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
@@ -48,9 +48,8 @@ class _ReadingViewState extends State<ReadingView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 150), () {
-      this.getDetail();
-    });
+    
+    this.getDetail();
     
     FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     widget.addReadingCount();
@@ -79,11 +78,13 @@ class _ReadingViewState extends State<ReadingView> {
         });
       } else {
         var result = await getDetailNews(widget.news['url']);
-        setState(() {
-          html = result['text'];
-          loading = false;
+        Future.delayed(const Duration(milliseconds: 200), () {
+          setState(() {
+            html = result['text'];
+            loading = false;
+          });
         });
-        Future.delayed(const Duration(milliseconds: 600), () {
+        Future.delayed(const Duration(milliseconds: 400), () {
           setState(() {
             if (result['video'] != null && result['video'].length > 0) {
               carouselInstance = buildCarousel(result['video'] ?? []);
@@ -161,12 +162,30 @@ class _ReadingViewState extends State<ReadingView> {
     );
   }
 
+  Widget generateMarkdownData (dynamic item) {
+    return Padding(
+      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: MarkdownBody(
+        data: """
+**${item['heading'].trim()}**
+=======
+---
+
+**${item['summary'].trim()}**
+
+---
+"""
+      )
+    );
+  }
+
   Widget buildNextPage(dynamic item, double width) {
     return item != null
     ? ListView(
       children: <Widget>[
         Container(
           width: width,
+          height: 180.0,
           margin: EdgeInsets.only(bottom: 0),
           padding: EdgeInsets.only(bottom: 0),
           decoration: BoxDecoration(
@@ -174,11 +193,17 @@ class _ReadingViewState extends State<ReadingView> {
           ),
           child: Stack(
             children: <Widget>[
-              Image.network(
-                item['image'],
+              ImageCached(
                 height: 180.0,
                 width: width,
-                fit: BoxFit.cover,
+                url: item['image'],
+                placeholder: Center(
+                  child: SpinKitPulse(
+                    color: AppColors.specicalBackgroundColor,
+                    size: 100
+                  )
+                ),
+                noimage: 'assets/images/noimage-reading.jpg'
               ),
               Positioned(
                 left: 0.0,
@@ -203,72 +228,10 @@ class _ReadingViewState extends State<ReadingView> {
             ]
           )
         ),
+        generateMarkdownData(item),
         Padding(
           padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          child: MarkdownBody(
-            data: """
-  **${item['heading'].trim()}**
-  =======
-  ---
-
-  **${item['summary'].trim()}**
-
-  ---
-  """
-          )
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-          child: Shimmer.fromColors(
-            baseColor: Colors.grey[300],
-            highlightColor: Colors.grey[100],
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: 8.0,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding:
-                    const EdgeInsets.symmetric(vertical: 4.0),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 8.0,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding:
-                    const EdgeInsets.symmetric(vertical: 4.0),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 8.0,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding:
-                    const EdgeInsets.symmetric(vertical: 4.0),
-                ),
-                Container(
-                  width: 40.0,
-                  height: 8.0,
-                  color: Colors.white,
-                ),
-                Padding(
-                  padding:
-                    const EdgeInsets.symmetric(vertical: 4.0),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 300,
-                  color: Colors.white,
-                )
-              ]
-            )
-          )
+          child: ContentLoading()
         )
       ]
     )
@@ -355,29 +318,40 @@ class _ReadingViewState extends State<ReadingView> {
       )
     ];
 
+    if (loading) {
+      columns.add(generateMarkdownData(widget.news));
+      columns.add(Padding(
+        padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        child: ContentLoading()
+      ));
+    }
+
     columns.addAll(relatedInstance);
 
-    return OverlayLoadingPage(
-      loading: loading,
-      component: Dismissible(
-        background: !loading && 0 < related.length
-          ? buildNextPage(related[0] ?? null, width) : Container(),
-        secondaryBackground: !loading && 1 < related.length
-          ? buildNextPage(related[1] ?? null, width) : Container(),
-        onDismissed: (DismissDirection direction) {
-          if (direction == DismissDirection.endToStart && related[0] != null) {
-            pushAndReplaceByName('/reading', context, { 'news': related[0] });
-          } else if(related[1] != null) {
-            pushAndReplaceByName('/reading', context, { 'news': related[1] });
-          }
-        },
-        key: new ValueKey('reading_page'),
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          controller: scrollController,
-          children: columns
-        )
+    return related.length > 2
+    ? Dismissible(
+      background: !loading && 1 < related.length
+        ? buildNextPage(related[1] ?? null, width) : Container(),
+      secondaryBackground: !loading && 0 < related.length
+        ? buildNextPage(related[0] ?? null, width) : Container(),
+      onDismissed: (DismissDirection direction) {
+        if (direction == DismissDirection.endToStart && related[0] != null) {
+          pushAndReplaceByName('/reading', context, { 'news': related[0] });
+        } else if(related[1] != null) {
+          pushAndReplaceByName('/reading', context, { 'news': related[1] });
+        }
+      },
+      resizeDuration: Duration(microseconds: 100),
+      key: new ValueKey('reading_page'),
+      child: ListView(
+        physics: BouncingScrollPhysics(),
+        controller: scrollController,
+        children: columns
       )
+    ) : ListView(
+      physics: BouncingScrollPhysics(),
+      controller: scrollController,
+      children: columns
     );
   }
 

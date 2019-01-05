@@ -69,7 +69,7 @@ class _BoardingPageState extends State<BoardingPage> with TickerProviderStateMix
         }
         if (activeIndex == 2) {
           Future.delayed(Duration(milliseconds: 1000), () {
-            pushAndRemoveByName('/home', context, {});
+            navigationPop(context);
           });
         }
       });
