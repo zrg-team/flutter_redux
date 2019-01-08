@@ -4,30 +4,46 @@ import 'package:cat_dog/common/state.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:cat_dog/styles/colors.dart';
 import 'package:cat_dog/pages/LoadingPage.dart';
-import 'package:cat_dog/common/components/NewsList.dart';
 
 class SoccerCalendarView extends StatefulWidget {
   final BuildContext scaffoldContext;
   final Function getSoccerCalendar;
+  final Function getTodaySoccerCalendar;
   const SoccerCalendarView({
     Key key,
     this.scaffoldContext,
-    this.getSoccerCalendar
+    this.getSoccerCalendar,
+    this.getTodaySoccerCalendar
   }) : super(key: key);
 
   @override
   _SoccerCalendarViewState createState() => new _SoccerCalendarViewState();
 }
 
-class _SoccerCalendarViewState extends State<SoccerCalendarView> {
+class _SoccerCalendarViewState extends State<SoccerCalendarView> with TickerProviderStateMixin {
   bool loading = false;
   GlobalKey pageKey = new GlobalKey();
   final ScrollController scrollController = new ScrollController();
-  List<Object> list = [];
+  TabController tabbarControllder;
+  List<dynamic> dayMatchs = [];
+  List<dynamic> days = [];
   @override
   void initState() {
     super.initState();
-    widget.getSoccerCalendar();
+    widget.getTodaySoccerCalendar();
+
+    tabbarControllder = new TabController(initialIndex: 3, length: 7, vsync: this);
+    tabbarControllder.addListener(() async {
+      if (tabbarControllder.index == 3) {
+        return setState(() {});
+      }
+      dynamic item = days[tabbarControllder.index];
+      print(item);
+      var result = await widget.getSoccerCalendar(item['url']);
+      setState(() {
+        dayMatchs = result;
+      });
+    });
   }
 
   void callbackStart (type, item) {
@@ -158,27 +174,77 @@ class _SoccerCalendarViewState extends State<SoccerCalendarView> {
     );
   }
 
+  Widget buildTabBar(BuildContext context) {
+    return new Container(
+      height: 50,
+      width: MediaQuery.of(context).size.width,
+      // margin: EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        color: AppColors.white
+      ),
+      child: new StoreConnector<AppState, dynamic>(
+        converter: (Store<AppState> store) {
+          return store.state.soccer.days ?? [];
+        },
+        onDidChange: (state) {
+          setState(() {
+            days = state;
+          });
+        },
+        builder: (BuildContext context, news) {
+          return TabBar(
+            isScrollable: true,
+            controller: tabbarControllder,
+            indicatorColor: AppColors.specicalBackgroundColor,
+            labelColor: AppColors.specicalBackgroundColor,
+            unselectedLabelColor: AppColors.gray,
+            tabs: news.map<Widget>((item) {
+              return Tab(
+                // icon: Icon(Icons.home)
+                text: item['heading']
+              );
+            }).toList()
+          );
+        }
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new LoadingPage(
       key: pageKey,
       loading: loading,
-      component: new Container(
-        // height: MediaQuery.of(context).size.height - 476,
-        decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
-        child: new StoreConnector<AppState, dynamic>(
-          converter: (Store<AppState> store) {
-            return store.state.soccer.games;
-          },
-          builder: (BuildContext context, news) {
-            return new ListView.builder(
-              itemCount: news.length,
-              itemBuilder: (BuildContext context, int index) {
-                return buildItem(context, news[index]);
-              }
-            );
-          }
-        )
+      component: Flex(
+        direction: Axis.vertical,
+        children: <Widget>[
+          buildTabBar(context),
+          new Expanded(
+            child: new Container(
+              decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
+              child: tabbarControllder.index == 3
+              ? new StoreConnector<AppState, dynamic>(
+                converter: (Store<AppState> store) {
+                  return store.state.soccer.games;
+                },
+                builder: (BuildContext context, news) {
+                  return new ListView.builder(
+                    itemCount: news.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildItem(context, news[index]);
+                    }
+                  );
+                }
+              )
+              : ListView.builder(
+                itemCount: dayMatchs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return buildItem(context, dayMatchs[index]);
+                }
+              )
+            )
+          )
+        ]
       )
     );
   }

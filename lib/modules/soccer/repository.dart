@@ -6,3 +6,9 @@ Future<String> fetchSoccerCalendar() async {
   var response = await http.get(url);
   return response.body;
 }
+
+Future<String> fetchSoccerCalendarByDay(String day) async {
+  String url = GET_NEWS_API + day;
+  var response = await http.get(url);
+  return response.body;
+}

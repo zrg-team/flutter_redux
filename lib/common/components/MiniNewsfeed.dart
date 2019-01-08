@@ -98,7 +98,7 @@ class MiniNewsfeed extends StatelessWidget {
                               bottom: 8.0,
                               top: 8.0),
                             child: new Text(
-                              item['heading'],
+                              item['heading'].trim(),
                               style: new TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),

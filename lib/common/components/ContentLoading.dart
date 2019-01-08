@@ -14,8 +14,9 @@ class ContentLoading extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width - 40.0,
             height: 8.0,
+            margin: EdgeInsets.only(left: 40),
             color: Colors.white,
           ),
           Padding(

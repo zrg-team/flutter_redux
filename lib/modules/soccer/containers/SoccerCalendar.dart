@@ -14,13 +14,17 @@ class SoccerCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, dynamic>(
       converter: (Store<AppState> store) {
-        return () => getSoccerCalendarAction(store);
+        return {
+          'getTodaySoccerCalendar': () => getTodaySoccerCalendarAction(store),
+          'getSoccerCalendarAction': (url) => getSoccerCalendarAction(url)
+        };
       },
-      builder: (BuildContext context, getSoccerCalendar) {
+      builder: (BuildContext context, props) {
         return new SoccerCalendarView(
           key: key,
           scaffoldContext: scaffoldContext,
-          getSoccerCalendar: getSoccerCalendar
+          getSoccerCalendar: props['getSoccerCalendarAction'],
+          getTodaySoccerCalendar: props['getTodaySoccerCalendar']
         );
       }
     );

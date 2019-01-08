@@ -10,7 +10,7 @@ class SetSoccerGames {
   SetSoccerGames(this.games, this.days, this.matchs);
 }
 
-parseNews (result) {
+parseSoccerNews (result) {
   List<dynamic> data = new List();
   List<dynamic> days = new List();
   List<dynamic> matchs = new List();
@@ -100,12 +100,21 @@ parseNews (result) {
   };
 }
 
-final Function getSoccerCalendarAction = (Store<AppState> store) async {
+final Function getTodaySoccerCalendarAction = (Store<AppState> store) async {
   String result = await fetchSoccerCalendar();
   if (result != '') {
-    var data = parseNews(result);
+    var data = parseSoccerNews(result);
     store.dispatch(new SetSoccerGames(data['data'], data['days'], data['matchs']));
-    return data['hot'];
+    return data['data'];
+  }
+  return [];
+};
+
+final Function getSoccerCalendarAction = (String url) async {
+  String result = await fetchSoccerCalendarByDay(url);
+  if (result != '') {
+    var data = parseSoccerNews(result);
+    return data['data'];
   }
   return [];
 };

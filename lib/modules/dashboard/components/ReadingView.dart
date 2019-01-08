@@ -63,6 +63,7 @@ class _ReadingViewState extends State<ReadingView> {
           }
           if (event == MobileAdEvent.clicked || event == MobileAdEvent.closed) {
             widget.clearReadingCount();
+            interstitialAd?.dispose();
           }
         }
       )..load();
@@ -78,7 +79,7 @@ class _ReadingViewState extends State<ReadingView> {
         });
       } else {
         var result = await getDetailNews(widget.news['url']);
-        Future.delayed(const Duration(milliseconds: 200), () {
+        Future.delayed(const Duration(milliseconds: 220), () {
           setState(() {
             html = result['text'];
             loading = false;
@@ -343,10 +344,14 @@ class _ReadingViewState extends State<ReadingView> {
       },
       resizeDuration: Duration(microseconds: 100),
       key: new ValueKey('reading_page'),
-      child: ListView(
-        physics: BouncingScrollPhysics(),
-        controller: scrollController,
-        children: columns
+      child: Card(
+        margin: EdgeInsets.all(0),
+        elevation: 20.0,
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          controller: scrollController,
+          children: columns
+        )
       )
     ) : ListView(
       physics: BouncingScrollPhysics(),

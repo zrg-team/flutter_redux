@@ -86,7 +86,7 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
     widget.checkFirstOpen();
 
     scrollSoccerController.addListener(() {
-      if (scrollSoccerController.offset >= scrollSoccerController.position.maxScrollExtent) {
+      if (scrollSoccerController.offset >= scrollSoccerController.position.maxScrollExtent - 10) {
         autoScroller(0);
       } else if (scrollSoccerController.offset == 0) {
         autoScroller(null);
@@ -189,9 +189,10 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
   }
 
   autoScroller (to) {
-    final timeout = to ?? scrollSoccerController.position.maxScrollExtent.toInt() * 38;
+    final timeout = scrollSoccerController.position.maxScrollExtent.toInt() * 38;
+    final toOffset = to ?? scrollSoccerController.position.maxScrollExtent;
     scrollSoccerController.animateTo(                                      // NEW
-      scrollSoccerController.position.maxScrollExtent,                     // NEW
+      toOffset,                     // NEW
       duration: Duration(milliseconds: timeout),                    // NEW
       curve: Curves.linear,                                             // NEW
     );
@@ -419,18 +420,19 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
   }
 
   Widget buildSoccerMatch(BuildContext context) {
-    return Container(
-      height: 32,
-      width: MediaQuery.of(context).size.width,
-      child: new StoreConnector<AppState, dynamic>(
-        converter: (Store<AppState> store) {
-          return store.state.soccer.matchs;
-        },
-        builder: (BuildContext context, news) {
-          return ListView.builder(
+    return new StoreConnector<AppState, dynamic>(
+      converter: (Store<AppState> store) {
+        return store.state.soccer.matchs ?? [];
+      },
+      builder: (BuildContext context, news) {
+        return news.length > 0
+        ? Container(
+          height: 32,
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
             controller: scrollSoccerController,
             scrollDirection: Axis.horizontal,
-            itemCount: news != null ? news.length : 0,
+            itemCount: news.length,
             itemBuilder: (BuildContext context, index) {
               var item = news[index];
               String text = "";
@@ -453,9 +455,10 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
                 )
               );
             },
-          );
-        }
-      )
+          )
+        )
+        : Container();
+      }
     );
   }
 

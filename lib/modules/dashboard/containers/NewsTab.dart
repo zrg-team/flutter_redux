@@ -44,7 +44,7 @@ class NewsTab extends StatelessWidget {
           'getMoreVideoNews': (page) async => 
             await getMoreVideoNewsAction(store, page),
           'getSoccerCalendar': () => 
-            getSoccerCalendarAction(store),
+            getTodaySoccerCalendarAction(store),
           'saveNews': (item) async => 
             await saveNewsAction(store, item),
           'shouldLoading': store.state.dashboard.hot == null || store.state.dashboard.hot.length == 0
