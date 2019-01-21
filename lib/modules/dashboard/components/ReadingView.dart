@@ -52,7 +52,6 @@ class _ReadingViewState extends State<ReadingView> {
     super.initState();
     
     this.getDetail();
-    
     FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     widget.addReadingCount();
     if (widget.readingCount > SHOW_ADS_COUNT) {

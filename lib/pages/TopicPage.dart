@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
+import 'package:cat_dog/common/components/MainDrawer.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
 import 'package:cat_dog/modules/dashboard/components/TopicView.dart';
 
@@ -33,7 +34,8 @@ class TopicPage extends StatelessWidget {
           key: key,
           scaffoldContext: context
         )
-      )
+      ),
+      drawer: new MainDrawer(),
     );
   }
 }

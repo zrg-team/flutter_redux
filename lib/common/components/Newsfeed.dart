@@ -147,6 +147,7 @@ class Newsfeed extends StatelessWidget {
                                 top: 2.0),
                               child: new Text(
                                 "${item['heading']}".trim(),
+
                                 style: new TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
