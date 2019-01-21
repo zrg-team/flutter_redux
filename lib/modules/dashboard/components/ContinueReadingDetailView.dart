@@ -13,27 +13,33 @@ import 'package:flutter_parallax/flutter_parallax.dart';
 import 'package:cat_dog/common/components/ImageCached.dart';
 import 'package:cat_dog/common/components/ContentLoading.dart';
 
-class ReadingView extends StatefulWidget {
+class ContinueReadingDetailView extends StatefulWidget {
   final dynamic news;
-  final bool push;
+  final dynamic nextNews;
+  final dynamic lastNews;
   final int readingCount;
+  final dynamic newsKey;
   final BuildContext scaffoldContext;
   final Function clearReadingCount;
   final Function addReadingCount;
-  const ReadingView({
+  final Function onDismissed;
+  const ContinueReadingDetailView({
     Key key,
     this.news,
-    this.push,
-    this.scaffoldContext,
+    this.newsKey,
+    this.lastNews,
+    this.nextNews,
+    this.onDismissed,
     this.readingCount,
+    this.scaffoldContext,
     this.addReadingCount,
     this.clearReadingCount
   }) : super(key: key);
 
   @override
-  _ReadingViewState createState() => new _ReadingViewState();
+  _ContinueReadingDetailViewState createState() => new _ContinueReadingDetailViewState();
 }
-class _ReadingViewState extends State<ReadingView> {
+class _ContinueReadingDetailViewState extends State<ContinueReadingDetailView> {
   String html = '';
   bool loading = true;
   CarouselSlider carouselInstance;
@@ -55,7 +61,7 @@ class _ReadingViewState extends State<ReadingView> {
     
     FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     widget.addReadingCount();
-    if (widget.readingCount > SHOW_ADS_COUNT) {
+    if (widget.readingCount > SHOW_ADS_COUNT_MAX) {
       interstitialAd = InterstitialAd(
         adUnitId: READING_ADS_ID,
         targetingInfo: targetingInfo,
@@ -101,11 +107,7 @@ class _ReadingViewState extends State<ReadingView> {
                   item: item,
                   metaData: true,
                   onTap: (seleted) {
-                    if (widget.push) {
-                      pushByName('/reading', context, { 'news': seleted });
-                    } else {
-                      pushAndReplaceByName('/reading', context, { 'news': seleted });
-                    }
+                    pushByName('/reading', context, { 'news': seleted });
                   }
                 )
               ).toList();
@@ -138,8 +140,10 @@ class _ReadingViewState extends State<ReadingView> {
 
   CarouselSlider buildCarousel (List<dynamic> data) {
     return CarouselSlider(
+      height: 180,
       items: data.map((item) {
         return new Container(
+          height: 180,
           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: FlatButton(
             onPressed: () async {
@@ -365,32 +369,18 @@ class _ReadingViewState extends State<ReadingView> {
     }
 
     columns.addAll(relatedInstance);
-
     columns.add(buildSwipeInformation());
 
-    return related.length > 2
-    ? Dismissible(
-      background: !loading && 1 < related.length
-        ? buildNextPage(related[1] ?? null, width) : Container(),
-      secondaryBackground: !loading && 0 < related.length
-        ? buildNextPage(related[0] ?? null, width) : Container(),
+    return Dismissible(
+      secondaryBackground: !loading && widget.nextNews != null
+        ? buildNextPage(widget.nextNews ?? null, width) : Container(),
+      background: !loading && widget.lastNews != null
+        ? buildNextPage(widget.lastNews ?? null, width) : Container(),
       onDismissed: (DismissDirection direction) {
-        if (direction == DismissDirection.endToStart && related[0] != null) {
-          if (widget.push) {
-            pushByName('/reading', context, { 'news': related[0] });
-          } else {
-            pushAndReplaceByName('/reading', context, { 'news': related[0] });
-          }
-        } else if(related[1] != null) {
-          if (widget.push) {
-            pushByName('/reading', context, { 'news': related[1] });
-          } else {
-            pushAndReplaceByName('/reading', context, { 'news': related[1] });
-          }
-        }
+        widget.onDismissed(direction);
       },
-      resizeDuration: Duration(microseconds: 100),
-      key: new ValueKey('reading_page'),
+      resizeDuration: Duration(milliseconds: 300),
+      key: widget.newsKey,
       child: Card(
         margin: EdgeInsets.all(0),
         elevation: 20.0,
@@ -400,11 +390,6 @@ class _ReadingViewState extends State<ReadingView> {
           children: columns
         )
       )
-    ) : ListView(
-      physics: BouncingScrollPhysics(),
-      controller: scrollController,
-      children: columns
     );
   }
-
 }

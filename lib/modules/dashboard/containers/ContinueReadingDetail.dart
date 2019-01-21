@@ -2,21 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:cat_dog/common/state.dart';
-import 'package:cat_dog/modules/dashboard/components/ReadingView.dart';
+import 'package:cat_dog/modules/dashboard/components/ContinueReadingDetailView.dart';
 import 'package:cat_dog/common/actions/common.dart';
 
-class Reading extends StatelessWidget {
+class ContinueReadingDetail extends StatelessWidget {
   final dynamic news;
-  final bool push;
+  final dynamic lastNews;
+  final dynamic nextNews;
+  final dynamic newsKey;
+  final Function onDismissed;
   final BuildContext scaffoldContext;
-  Reading({
+  ContinueReadingDetail({
     Key key,
     Object news,
-    dynamic push,
+    dynamic lastNews,
+    dynamic nextNews,
+    dynamic newsKey,
+    Function onDismissed,
     BuildContext scaffoldContext
   }) :
   news = news,
-  push = push != null ? push : false,
+  newsKey = newsKey,
+  lastNews = lastNews,
+  nextNews = nextNews,
+  onDismissed = onDismissed,
   scaffoldContext = scaffoldContext,
   super(key: key);
 
@@ -35,10 +44,13 @@ class Reading extends StatelessWidget {
         };
       },
       builder: (BuildContext context, props) {
-        return new ReadingView(
+        return new ContinueReadingDetailView(
           key: key,
           news: news,
-          push: push,
+          newsKey: newsKey,
+          lastNews: lastNews,
+          nextNews: nextNews,
+          onDismissed: onDismissed,
           scaffoldContext: scaffoldContext,
           readingCount: props['readingCount'],
           addReadingCount: props['addReadingCount'],

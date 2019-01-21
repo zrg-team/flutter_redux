@@ -70,7 +70,7 @@ class ReadingPage extends StatelessWidget {
         )
       ),
       body: Builder(
-        builder: (context) => new Reading(key: key, news: news, scaffoldContext: context)
+        builder: (context) => new Reading(key: key, news: news, scaffoldContext: context, push: false)
       )
     );
   }

@@ -87,21 +87,29 @@ class MainDrawer extends StatelessWidget {
                                   navigationPop(scaffoldKey.currentContext);
                                 }
                               ),
-                              new Divider(),
                               new ListTile(
-                                leading: new Icon(Icons.tv),
-                                title: new Text('Chủ Đề Nóng'),
+                                leading: new Icon(Icons.vibration),
+                                title: new Text('Đọc Báo Trang'),
                                 onTap: () {
                                   navigationPop(scaffoldKey.currentContext);
-                                  pushByName('/topics', context, {});
+                                  pushByName('/continue-reading', context, {});
                                 }
                               ),
+                              new Divider(),
                               new ListTile(
                                 leading: new Icon(Icons.score),
                                 title: new Text('Lịch Bóng Đá'),
                                 onTap: () {
                                   navigationPop(scaffoldKey.currentContext);
                                   pushByName('/soccer', context, {});
+                                }
+                              ),
+                              new ListTile(
+                                leading: new Icon(Icons.tv),
+                                title: new Text('Chủ Đề Nóng'),
+                                onTap: () {
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/topics', context, {});
                                 }
                               ),
                               new ListTile(
@@ -136,18 +144,18 @@ class MainDrawer extends StatelessWidget {
                                   pushByName('/saved', context, {});
                                 }
                               ),
-                              new ListTile(
-                                leading: new Icon(Icons.chat),
-                                title: new Text('Phản Hồi'),
-                                onTap: () async {
-                                  String url = FEEDBACK_URL;
-                                  if (await canLaunch(url)) {
-                                    await launch(url);
-                                  } else {
-                                    print('Could not launch $url');
-                                  }
-                                }
-                              ),
+                              // new ListTile(
+                              //   leading: new Icon(Icons.chat),
+                              //   title: new Text('Phản Hồi'),
+                              //   onTap: () async {
+                              //     String url = FEEDBACK_URL;
+                              //     if (await canLaunch(url)) {
+                              //       await launch(url);
+                              //     } else {
+                              //       print('Could not launch $url');
+                              //     }
+                              //   }
+                              // ),
                               new ListTile(
                                 leading: new Icon(Icons.info),
                                 title: new Text('Thông Tin'),

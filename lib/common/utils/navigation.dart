@@ -13,6 +13,7 @@ import 'package:cat_dog/pages/VideosPage.dart';
 import 'package:cat_dog/pages/TopicPage.dart';
 import 'package:cat_dog/pages/TopicDetailPage.dart';
 import 'package:cat_dog/pages/SoccerPage.dart';
+import 'package:cat_dog/pages/ContinueReadingPage.dart';
 
 
 const int DEFAULT_TIME = 180;
@@ -167,6 +168,18 @@ final Function getNavigationData = (
             type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: SoccerPage(),
+            curve: Curves.elasticInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
+        );
+        break;
+      case '/continue-reading':
+        navigationFunction(
+          context,
+          PageTransition(
+            type: PageTransitionType.rightToLeft,
+            alignment: Alignment.bottomCenter,
+            child: ContinueReadingPage(),
             curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )

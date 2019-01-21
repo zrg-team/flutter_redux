@@ -29,6 +29,7 @@ class App extends StatelessWidget {
         title: 'Tin Mới',
         color: AppColors.commonBackgroundColor,
         debugShowCheckedModeBanner: false,
+        showSemanticsDebugger: false,
         theme: defaultTargetPlatform == TargetPlatform.iOS
           ? kIOSTheme
           : kDefaultTheme,
