@@ -39,8 +39,8 @@
  
   Checkout "develop" branch
  
-  ![Demo 1](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-1.png?raw=true)
-  ![Demo 2](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-2.png?raw=true)
+  ![Demo 1](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/good-6.png)
+  ![Demo 2](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/good-7.png)
   ![Demo 3](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-3.png?raw=true)
   ![Demo 4](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-4.png?raw=true)
 
