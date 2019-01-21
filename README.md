@@ -39,10 +39,19 @@
  
   Checkout "develop" branch
  
-  ![Demo 1](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/698b8869f84f384b4e4515d367e2a353.png)
-  ![Demo 2](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/7344391926af2b52a529c1fb2ee81b51.png)
-  ![Demo 3](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/7c17d105cf0be4bb1140a02c5c45ae17.png)
-  ![Demo 4](https://raw.githubusercontent.com/zrg-team/flutter_redux/develop/assets/store/8c4c261ab8ec68da14b93205045eb8c7.png)
+  ![Demo 1](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-1.png?raw=true)
+  ![Demo 2](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-2.png?raw=true)
+  ![Demo 3](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-3.png?raw=true)
+  ![Demo 4](https://github.com/zrg-team/flutter_redux/blob/develop/assets/store/good-4.png?raw=true)
+
+## Install
+
+  + Step 1 : `flutter packages get`
+  + Step 2 : Create a firebase project at `https://firebase.google.com/`
+  + Step 3 : Put firebase's project file into `android/app/google-services.json` and `ios/Runner/GoogleService-Info.plist`
+  + Step 4 : Correct your admob APPLICATION_ID in `android/app/src/AndroidManifest.xml`
   
+  **Checkout branch `starter` for easier setup**
+
 ## Donate
   ethereum address: 0x46D1c53249cA6232eb7d3E046713Bc3D2Ae15BA3
