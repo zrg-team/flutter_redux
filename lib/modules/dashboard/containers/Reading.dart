@@ -7,13 +7,16 @@ import 'package:cat_dog/common/actions/common.dart';
 
 class Reading extends StatelessWidget {
   final dynamic news;
+  final bool push;
   final BuildContext scaffoldContext;
   Reading({
     Key key,
     Object news,
+    dynamic push,
     BuildContext scaffoldContext
   }) :
   news = news,
+  push = push != null ? push : false,
   scaffoldContext = scaffoldContext,
   super(key: key);
 
@@ -35,6 +38,7 @@ class Reading extends StatelessWidget {
         return new ReadingView(
           key: key,
           news: news,
+          push: push,
           scaffoldContext: scaffoldContext,
           readingCount: props['readingCount'],
           addReadingCount: props['addReadingCount'],

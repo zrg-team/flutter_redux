@@ -7,8 +7,8 @@ description: A new Flutter project.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 2.0.1+1
-versionCode: 20
+version: 2.2.1+1
+versionCode: 31
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -44,6 +44,7 @@ dependencies:
   flutter_parallax: ^0.1.2
   cached_network_image: ^0.5.1
   folding_cell: ^0.1.0
+  shimmer: ^0.0.6
 
 dev_dependencies:
   flutter_launcher_icons: ^0.7.0
@@ -80,25 +81,34 @@ flutter:
   - assets/images/khoahoc.jpg
   - assets/images/tinhot.png
   - assets/images/latest.jpg
-  - assets/zing.png
-  - assets/vov.jpg
-  - assets/thanhnien.jpg
-  - assets/laodong.jpg
-  - assets/vietnamplus.jpg
-  - assets/vietnamnet.png
-  - assets/vtc.png
-  - assets/saostart.jpg
-  - assets/vnmedia.png
-  - assets/ictnews.png
-  - assets/tienphong.png
-  - assets/kienthuc.jpeg
+  - assets/images/zing.png
+  - assets/images/vov.jpg
+  - assets/images/thanhnien.jpg
+  - assets/images/laodong.jpg
+  - assets/images/vietnamplus.jpg
+  - assets/images/vietnamnet.png
+  - assets/images/vtc.png
+  - assets/images/saostart.jpg
+  - assets/images/vnmedia.png
+  - assets/images/ictnews.png
+  - assets/images/tienphong.png
+  - assets/images/kienthuc.jpeg
   - assets/videoplayer.jpg
+  - assets/images/petrotimes.png
+  - assets/images/chinhphu.jpg
+  - assets/images/phapluat.png
   - assets/store/icon.png
   - assets/images/banner-1.png
   - assets/images/banner-2.png
   - assets/images/banner-3.png
   - assets/images/noimage-reading.jpg
   - assets/images/noimage.jpg
+  - assets/images/swipeleft.png
+  - assets/images/swiperight.png
+  - assets/images/lamdep.jpg
+  - assets/images/kinhdoanh.jpg
+  - assets/images/honnhan.jpg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

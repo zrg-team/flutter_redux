@@ -6,11 +6,14 @@ import 'package:cat_dog/modules/user/actions.dart';
 import 'package:cat_dog/common/state.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cat_dog/common/configs.dart';
-
 import 'package:cat_dog/common/utils/navigation.dart';
 
 class MainDrawer extends StatelessWidget {
-  MainDrawer({Key key}): super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  MainDrawer({Key key, dynamic scaffoldKey}):
+    scaffoldKey = scaffoldKey != null ? scaffoldKey : new GlobalKey<ScaffoldState>(),
+    super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,62 +83,93 @@ class MainDrawer extends StatelessWidget {
                                 leading: new Icon(Icons.home),
                                 title: new Text('Trang Chủ'),
                                 onTap: () {
-                                  pushAndRemoveByName('/home', context, {});
+                                  // pushAndRemoveByName('/home', context, {});
+                                  navigationPop(scaffoldKey.currentContext);
+                                }
+                              ),
+                              new ListTile(
+                                leading: new Icon(Icons.vibration),
+                                title: new Text('Đọc Báo Trang'),
+                                onTap: () {
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/continue-reading', context, {});
                                 }
                               ),
                               new Divider(),
                               new ListTile(
+                                leading: new Icon(Icons.score),
+                                title: new Text('Lịch Bóng Đá'),
+                                onTap: () {
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/soccer', context, {});
+                                }
+                              ),
+                              new ListTile(
                                 leading: new Icon(Icons.tv),
                                 title: new Text('Chủ Đề Nóng'),
                                 onTap: () {
-                                  pushAndReplaceByName('/topics', context, {});
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/topics', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.video_library),
                                 title: new Text('Videos'),
                                 onTap: () {
-                                  pushAndReplaceByName('/videos', context, {});
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/videos', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.apps),
                                 title: new Text('Thế Loại'),
                                 onTap: () {
-                                  pushAndReplaceByName('/categories', context, {});
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/categories', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.school),
                                 title: new Text('Nguồn Tin'),
                                 onTap: () {
-                                  pushAndReplaceByName('/source', context, {});
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/source', context, {});
                                 }
                               ),
                               new ListTile(
                                 leading: new Icon(Icons.save),
                                 title: new Text('Tin Đã Lưu'),
                                 onTap: () {
-                                  pushAndReplaceByName('/saved', context, {});
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/saved', context, {});
                                 }
                               ),
-                              new ListTile(
-                                leading: new Icon(Icons.chat),
-                                title: new Text('Phản Hồi'),
-                                onTap: () async {
-                                  String url = FEEDBACK_URL;
-                                  if (await canLaunch(url)) {
-                                    await launch(url);
-                                  } else {
-                                    print('Could not launch $url');
-                                  }
-                                }
-                              ),
+                              // new ListTile(
+                              //   leading: new Icon(Icons.chat),
+                              //   title: new Text('Phản Hồi'),
+                              //   onTap: () async {
+                              //     String url = FEEDBACK_URL;
+                              //     if (await canLaunch(url)) {
+                              //       await launch(url);
+                              //     } else {
+                              //       print('Could not launch $url');
+                              //     }
+                              //   }
+                              // ),
                               new ListTile(
                                 leading: new Icon(Icons.info),
                                 title: new Text('Thông Tin'),
                                 onTap: () {
-                                  pushAndReplaceByName('/about', context, {});
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/about', context, {});
+                                }
+                              ),
+                              new ListTile(
+                                leading: new Icon(Icons.store_mall_directory),
+                                title: new Text('Giới Thiệu'),
+                                onTap: () {
+                                  navigationPop(scaffoldKey.currentContext);
+                                  pushByName('/boarding', context, {});
                                 }
                               )
                               // new ListTile(

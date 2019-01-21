@@ -5,6 +5,7 @@ import 'package:cat_dog/common/state.dart';
 import 'package:cat_dog/modules/dashboard/actions.dart';
 import 'package:cat_dog/modules/dashboard/components/NewsTabView.dart';
 import 'package:cat_dog/modules/user/actions.dart';
+import 'package:cat_dog/modules/soccer/actions.dart';
 import 'package:cat_dog/common/actions/common.dart';
 
 class NewsTab extends StatelessWidget {
@@ -42,6 +43,8 @@ class NewsTab extends StatelessWidget {
             await getMoreTopicNewsAction(store, page),
           'getMoreVideoNews': (page) async => 
             await getMoreVideoNewsAction(store, page),
+          'getSoccerCalendar': () => 
+            getTodaySoccerCalendarAction(store),
           'saveNews': (item) async => 
             await saveNewsAction(store, item),
           'shouldLoading': store.state.dashboard.hot == null || store.state.dashboard.hot.length == 0
@@ -62,6 +65,7 @@ class NewsTab extends StatelessWidget {
           checkFirstOpen: props['checkFirstOpen'],
           shouldLoading: props['shouldLoading'],
           saveNews: props['saveNews'],
+          getSoccerCalendar: props['getSoccerCalendar'],
           scaffoldContext: scaffoldContext,
         );
       }

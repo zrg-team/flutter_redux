@@ -10,8 +10,8 @@ import 'package:cat_dog/common/components/MiniNewsList.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/common/components/ImageCached.dart';
 
-const int TAB_HOT = 0;
-const int TAB_LATEST = 1;
+const int TAB_LATEST = 0;
+const int TAB_HOT = 1;
 const int TAB_VIDEO = 2;
 const int TAB_TOPIC = 3;
 
@@ -27,6 +27,7 @@ class NewsTabView extends StatefulWidget {
   final Function getMoreTopicNews;
   final Function getMoreVideoNews;
   final Function checkFirstOpen;
+  final Function getSoccerCalendar;
   final BuildContext scaffoldContext;
   final bool shouldLoading;
   const NewsTabView({
@@ -43,6 +44,7 @@ class NewsTabView extends StatefulWidget {
     this.getMoreTopicNews,
     this.getMoreVideoNews,
     this.checkFirstOpen,
+    this.getSoccerCalendar,
     dynamic shouldLoading,
   }) :
   shouldLoading = shouldLoading == null ? true : shouldLoading,
@@ -53,7 +55,7 @@ class NewsTabView extends StatefulWidget {
 }
 
 class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin {
-  int tabIndex = TAB_HOT;
+  int tabIndex = TAB_LATEST;
   bool loading = true;
 
   int pageHot = 1;
@@ -69,6 +71,7 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
   AnimationController animationController;
   Animation<double> animation;
   ScrollController scrollController = new ScrollController();
+  ScrollController scrollSoccerController = new ScrollController();
   TabController tabControllder;
   TabController tabbarControllder;
   CarouselSlider carouselInstance;
@@ -81,6 +84,14 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
   
     getAllNews();
     widget.checkFirstOpen();
+
+    scrollSoccerController.addListener(() {
+      if (scrollSoccerController.offset >= scrollSoccerController.position.maxScrollExtent - 10) {
+        autoScroller(0);
+      } else if (scrollSoccerController.offset == 0) {
+        autoScroller(null);
+      }
+    });
 
     // Animation
     animationController = AnimationController(
@@ -112,22 +123,26 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
     scrollController.removeListener(() {});
     tabControllder.removeListener(() {});
     tabbarControllder.removeListener(() {});
+    scrollSoccerController.removeListener(() {});
 
     tabControllder.dispose();
     scrollController.dispose();
     tabbarControllder.dispose();
+    scrollSoccerController.dispose();
     super.dispose();
   }
 
   void handleRefresh(dynamic refreshController, bool isUp) async {
     try {
       if (isUp) {
-        await getAllNews();
-        scrollController.animateTo(
-          0,
-          duration: new Duration(milliseconds: 400),
-          curve: Curves.easeInOut
-        );
+        Future.delayed(Duration(microseconds: 320), () async {
+          await getAllNews();
+          scrollController.animateTo(
+            0,
+            duration: new Duration(milliseconds: 400),
+            curve: Curves.easeInOut
+          );
+        });
       } else {
         if (tabIndex == TAB_HOT && !onLoadMoreHot) {
           pageHot += 1;
@@ -159,16 +174,35 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
 
   getAllNews () async {
     try {
-      await getHots();
-      getNews();
+      getHots();
+      await getNews();
       getVideos();
       getTopics();
+      getSoccerMatch();
     } catch (err) {
     }
-    Future.delayed(const Duration(milliseconds: 1000), () async {
+    Future.delayed(const Duration(milliseconds: 300), () async {
       setState(() {
         loading = false;
       });
+    });
+  }
+
+  autoScroller (to) {
+    final timeout = scrollSoccerController.position.maxScrollExtent.toInt() * 38;
+    final toOffset = to ?? scrollSoccerController.position.maxScrollExtent;
+    scrollSoccerController.animateTo(                                      // NEW
+      toOffset,                     // NEW
+      duration: Duration(milliseconds: timeout),                    // NEW
+      curve: Curves.linear,                                             // NEW
+    );
+  }
+
+  getSoccerMatch () async {
+    scrollSoccerController.jumpTo(0);
+    await widget.getSoccerCalendar();
+    Future.delayed(const Duration(milliseconds: 10000), () async {
+      autoScroller(null);
     });
   }
 
@@ -185,7 +219,9 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
     try {
       List<dynamic> hots = await widget.getHotNews(pageHot);
       carouselInstance = buildCarousel(hots);
-      animationController.forward();
+      // Future.delayed(Duration(milliseconds: 300), () {
+      //   animationController.forward();
+      // });
       return true;
     } catch (err) {
       return false;
@@ -303,13 +339,15 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
         converter: (Store<AppState> store) {
           return getData(store);
         },
-        builder: (BuildContext context, news) => NewsList(
-          list: news ?? [],
-          widget: widget,
-          controller: scrollController,
-          handleRefresh: handleRefresh,
-          features: { 'download': true, 'share': true }
-        )
+        builder: (BuildContext context, news) {
+          return NewsList(
+            list: news ?? [],
+            widget: widget,
+            controller: scrollController,
+            handleRefresh: handleRefresh,
+            features: { 'download': true, 'share': true }
+          );
+        }
       )
     );
   }
@@ -350,7 +388,7 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
           Container(
             width: 50,
             height: 50,
-            child: Icon(Icons.list, color: AppColors.specicalBackgroundColor)
+            child: Icon(Icons.home, color: AppColors.specicalBackgroundColor)
           ),
           Expanded(
             child: TabBar(
@@ -381,6 +419,49 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
     );
   }
 
+  Widget buildSoccerMatch(BuildContext context) {
+    return new StoreConnector<AppState, dynamic>(
+      converter: (Store<AppState> store) {
+        return store.state.soccer.matchs ?? [];
+      },
+      builder: (BuildContext context, news) {
+        return news.length > 0
+        ? Container(
+          height: 32,
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
+            controller: scrollSoccerController,
+            scrollDirection: Axis.horizontal,
+            itemCount: news.length,
+            itemBuilder: (BuildContext context, index) {
+              var item = news[index];
+              String text = "";
+              if (!item['match']) {
+                text = " ${item['league']} (${item['info']}) ";
+              } else {
+                text = " ${item['home']} ${item['homeScore']} - ${item['awayScore']} ${item['away']} ";
+              }
+              return Padding(
+                padding: EdgeInsets.only(left: 2, right: 2, bottom: 0, top: 1),
+                child: Chip(
+                  label: Text(
+                    text,
+                    style: TextStyle(
+                      color: AppColors.specicalDefaultColor,
+                      fontWeight: !item['match'] ? FontWeight.bold : FontWeight.normal
+                    )
+                  ),
+                  backgroundColor: AppColors.commonBackgroundColor,
+                )
+              );
+            },
+          )
+        )
+        : Container();
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new LoadingPage(
@@ -389,6 +470,7 @@ class _NewsTabViewState extends State<NewsTabView> with TickerProviderStateMixin
       component: new Flex(
         direction: Axis.vertical,
         children: <Widget>[
+          buildSoccerMatch(context),
           new NewsCarouselAnimated(animation: animation, instance: carouselInstance),
           new Expanded(
             child: DefaultTabController(

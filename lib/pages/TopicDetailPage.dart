@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
-import 'package:cat_dog/modules/category/components/TopicDetailView.dart';
+import 'package:cat_dog/modules/category/components/NewDetailTopicView.dart';
 
 class TopicDetailPage extends StatelessWidget {
   final dynamic topic;
@@ -30,7 +30,7 @@ class TopicDetailPage extends StatelessWidget {
         ),
       ),
       body: Builder(
-        builder: (context) => TopicDetailView(
+        builder: (context) => NewDetailTopicView(
           key: key,
           topic: topic,
           scaffoldContext: context

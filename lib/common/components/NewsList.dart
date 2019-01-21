@@ -103,7 +103,7 @@ class _NewsListState extends State<NewsList> {
     return new Container(
       margin: EdgeInsets.only(bottom: 10, top: 10),
       child: Center(
-        child: SpinKitWave(
+        child: SpinKitDoubleBounce(
           color: AppColors.specicalBackgroundColor,
           size: 32
         )

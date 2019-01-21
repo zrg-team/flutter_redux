@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => new _HomePageState();
 }
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _mainKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> mainKey = new GlobalKey<ScaffoldState>();
 
   Function hideCallback;
 
@@ -38,49 +38,46 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      key: _mainKey,
+      key: mainKey,
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: Hero(
-          tag: "app-bar-hero",
-          child: new GradientAppBar(
-            'Trang Chủ',
-            Icon(
-              Icons.dehaze,
-              size: 32
-            ),
-            () => _mainKey.currentState.openDrawer(),
-            Icon(
-              Icons.chrome_reader_mode,
-              size: 32
-            ),
-            () {
-              if (hideCallback != null) {
-                hideCallback();
-              }
+        child: new GradientAppBar(
+          'Trang Chủ',
+          Icon(
+            Icons.dehaze,
+            size: 32
+          ),
+          () => mainKey.currentState.openDrawer(),
+          Icon(
+            Icons.chrome_reader_mode,
+            size: 32
+          ),
+          () {
+            if (hideCallback != null) {
+              hideCallback();
             }
-            // new AnimatedIcon(animation: animation),
-            // () async {
-            //   if (animationController.isAnimating) {
-            //     return false;
-            //   }
-            //   if (timeout != null && timeoutSteam != null) {
-            //     timeoutSteam.cancel();
-            //     timeout = null;
-            //     timeoutSteam = null;
-            //   }
-            //   animationController.forward();
-            //   if (refreshCallback != null) {
-            //     refreshCallback();
-            //   }
-            //   timeout = Future.delayed(const Duration(milliseconds: 4000));
-            //   timeoutSteam = timeout.asStream().listen((_) {
-            //     animationController.stop();
-            //     timeout = null;
-            //     timeoutSteam = null;
-            //   });
-            // }
-          )
+          }
+          // new AnimatedIcon(animation: animation),
+          // () async {
+          //   if (animationController.isAnimating) {
+          //     return false;
+          //   }
+          //   if (timeout != null && timeoutSteam != null) {
+          //     timeoutSteam.cancel();
+          //     timeout = null;
+          //     timeoutSteam = null;
+          //   }
+          //   animationController.forward();
+          //   if (refreshCallback != null) {
+          //     refreshCallback();
+          //   }
+          //   timeout = Future.delayed(const Duration(milliseconds: 4000));
+          //   timeoutSteam = timeout.asStream().listen((_) {
+          //     animationController.stop();
+          //     timeout = null;
+          //     timeoutSteam = null;
+          //   });
+          // }
         )
       ),
       body: Builder(
@@ -96,7 +93,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
       drawer: PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: new MainDrawer()
+        child: new MainDrawer(scaffoldKey: mainKey)
       )
     );
   }

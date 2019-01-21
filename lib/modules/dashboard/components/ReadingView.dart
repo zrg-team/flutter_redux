@@ -4,16 +4,18 @@ import 'package:cat_dog/modules/dashboard/actions.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cat_dog/styles/colors.dart';
-import 'package:cat_dog/pages/OverlayLoadingPage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cat_dog/common/components/MiniNewsfeed.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:cat_dog/common/configs.dart';
 import 'package:flutter_parallax/flutter_parallax.dart';
 import 'package:cat_dog/common/components/ImageCached.dart';
+import 'package:cat_dog/common/components/ContentLoading.dart';
 
 class ReadingView extends StatefulWidget {
   final dynamic news;
+  final bool push;
   final int readingCount;
   final BuildContext scaffoldContext;
   final Function clearReadingCount;
@@ -21,6 +23,7 @@ class ReadingView extends StatefulWidget {
   const ReadingView({
     Key key,
     this.news,
+    this.push,
     this.scaffoldContext,
     this.readingCount,
     this.addReadingCount,
@@ -47,8 +50,8 @@ class _ReadingViewState extends State<ReadingView> {
   @override
   void initState() {
     super.initState();
+    
     this.getDetail();
-
     FirebaseAdMob.instance.initialize(appId: ADMOB_APP_ID);
     widget.addReadingCount();
     if (widget.readingCount > SHOW_ADS_COUNT) {
@@ -61,6 +64,7 @@ class _ReadingViewState extends State<ReadingView> {
           }
           if (event == MobileAdEvent.clicked || event == MobileAdEvent.closed) {
             widget.clearReadingCount();
+            interstitialAd?.dispose();
           }
         }
       )..load();
@@ -70,42 +74,49 @@ class _ReadingViewState extends State<ReadingView> {
   getDetail () async {
     try {
       if (widget.news['data'] != null) {
-        return setState(() {
-          html = widget.news['data'];
-          loading = false;
+        Future.delayed(const Duration(milliseconds: 200), () {
+          setState(() {
+            html = widget.news['data'];
+            loading = false;
+          });
+        });
+      } else {
+        var result = await getDetailNews(widget.news['url']);
+        Future.delayed(const Duration(milliseconds: 320), () {
+          setState(() {
+            html = result['text'];
+            loading = false;
+          });
+        });
+        Future.delayed(const Duration(milliseconds: 400), () {
+          setState(() {
+            if (result['video'] != null && result['video'].length > 0) {
+              carouselInstance = buildCarousel(result['video'] ?? []);
+            }
+            if (result['related'] != null && result['related'].length > 0) {
+              related = result['related'];
+              relatedInstance = result['related'].map<Widget>((item) => 
+                MiniNewsfeed(
+                  item: item,
+                  metaData: true,
+                  onTap: (seleted) {
+                    if (widget.push) {
+                      pushByName('/reading', context, { 'news': seleted });
+                    } else {
+                      pushAndReplaceByName('/reading', context, { 'news': seleted });
+                    }
+                  }
+                )
+              ).toList();
+            }
+          });
         });
       }
-      var result = await getDetailNews(widget.news['url']);
-      Future.delayed(const Duration(milliseconds: 300), () {
-        setState(() {
-          html = result['text'];
-          loading = false;
-        });
-      });
-      Future.delayed(const Duration(milliseconds: 600), () {
-        setState(() {
-          if (result['video'] != null && result['video'].length > 0) {
-            carouselInstance = buildCarousel(result['video'] ?? []);
-          }
-          if (result['related'] != null && result['related'].length > 0) {
-            related = result['related'];
-            relatedInstance = result['related'].map<Widget>((item) => 
-              MiniNewsfeed(
-                item: item,
-                metaData: true,
-                onTap: (seleted) {
-                  pushAndReplaceByName('/reading', context, { 'news': seleted });
-                }
-              )
-            ).toList();
-          }
-        });
-      });
     } catch (err) {
     }
   }
 
-  Widget _buildPlayButton() {
+  Widget buildPlayButton() {
     return Center(
       child: Material(
         color: Colors.black87,
@@ -148,7 +159,7 @@ class _ReadingViewState extends State<ReadingView> {
                     height: 180
                   )
                 ),
-                _buildPlayButton()
+                buildPlayButton()
               ]
             )
           )
@@ -159,66 +170,179 @@ class _ReadingViewState extends State<ReadingView> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> columns = [
-      carouselInstance != null
-      ? carouselInstance
-      : Container(
-        margin: EdgeInsets.only(bottom: 0),
-        padding: EdgeInsets.only(bottom: 0),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.readingNewsBackgroundColor),
+  Widget generateMarkdownData (dynamic item) {
+    return Padding(
+      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: MarkdownBody(
+        data: """
+**${item['heading'].trim()}**
+=======
+---
+
+**${item['summary'].trim()}**
+
+---
+"""
+      )
+    );
+  }
+
+  Widget buildNextPage(dynamic item, double width) {
+    return item != null
+    ? ListView(
+      children: <Widget>[
+        Container(
+          width: width,
+          height: 180.0,
+          margin: EdgeInsets.only(bottom: 0),
+          padding: EdgeInsets.only(bottom: 0),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.readingNewsBackgroundColor),
+          ),
+          child: Stack(
+            children: <Widget>[
+              ImageCached(
+                height: 180.0,
+                width: width,
+                url: item['image'],
+                placeholder: Center(
+                  child: SpinKitPulse(
+                    color: AppColors.specicalBackgroundColor,
+                    size: 100
+                  )
+                ),
+                noimage: 'assets/images/noimage-reading.jpg'
+              ),
+              Positioned(
+                left: 0.0,
+                right: 0.0,
+                height: 180,
+                child: Container(
+                  decoration: BoxDecoration(
+                    // border: new Border.all(color: AppColors.readingNewsBackgroundColor),
+                    gradient: LinearGradient(
+                      begin: Alignment.center,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.readingNewsBackgroundColor.withOpacity(0),
+                        AppColors.readingNewsBackgroundColor.withOpacity(1)
+                      ],
+                      stops: [0.0, 100.0],
+                      tileMode: TileMode.clamp
+                    )
+                  ),
+                )
+              )
+            ]
+          )
         ),
-        child: Stack(
-          children: <Widget>[
-            loading
-            ? Hero(
-              tag: "news-feed-${widget.news['url']}",
+        generateMarkdownData(item),
+        Padding(
+          padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+          child: ContentLoading()
+        )
+      ]
+    )
+    : Center(
+      child: Image.asset('assets/images/banner-2.png')
+    );
+  }
+
+  Widget buildBanner(double width) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 0),
+      padding: EdgeInsets.only(bottom: 0),
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.readingNewsBackgroundColor),
+      ),
+      child: Stack(
+        children: <Widget>[
+          loading
+          ? Hero(
+            tag: "news-feed-${widget.news['url']}",
+            child: ImageCached(
+              height: 180.0,
+              width: width,
+              url: widget.news['image'],
+              placeholder: Container(),
+              noimage: 'assets/images/noimage-reading.jpg'
+            )
+          )
+          : Hero(
+            tag: "news-feed-${widget.news['url']}",
+            child: Parallax.inside(
               child: ImageCached(
                 height: 180.0,
-                width: MediaQuery.of(widget.scaffoldContext).size.width,
+                width: width,
                 url: widget.news['image'],
                 placeholder: Container(),
                 noimage: 'assets/images/noimage-reading.jpg'
-              )
+              ),
+              mainAxisExtent: 180,
             )
-            : Hero(
-              tag: "news-feed-${widget.news['url']}",
-              child: Parallax.inside(
-                child: ImageCached(
-                  height: 180.0,
-                  width: MediaQuery.of(widget.scaffoldContext).size.width,
-                  url: widget.news['image'],
-                  placeholder: Container(),
-                  noimage: 'assets/images/noimage-reading.jpg'
-                ),
-                mainAxisExtent: 180,
-              )
+          ),
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            height: 180,
+            child: Container(
+              decoration: BoxDecoration(
+                // border: new Border.all(color: AppColors.readingNewsBackgroundColor),
+                gradient: LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.readingNewsBackgroundColor.withOpacity(0),
+                    AppColors.readingNewsBackgroundColor.withOpacity(1)
+                  ],
+                  stops: [0.0, 100.0],
+                  tileMode: TileMode.clamp
+                )
+              ),
+            )
+          )
+        ]
+      )
+    );
+  }
+
+  Widget buildSwipeInformation () {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Image.asset(
+          'assets/images/swiperight.png',
+          width: 40,
+          height: 40,
+          fit: BoxFit.contain,
+        ),
+        Expanded(
+          child: Text(
+            'Lướt qua trái hoặc phải để đọc tin khác.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold
             ),
-            Positioned(
-              left: 0.0,
-              right: 0.0,
-              height: 180,
-              child: Container(
-                decoration: BoxDecoration(
-                  // border: new Border.all(color: AppColors.readingNewsBackgroundColor),
-                  gradient: LinearGradient(
-                    begin: Alignment.center,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      AppColors.readingNewsBackgroundColor.withOpacity(0),
-                      AppColors.readingNewsBackgroundColor.withOpacity(1)
-                    ],
-                    stops: [0.0, 100.0],
-                    tileMode: TileMode.clamp
-                  )
-                ),
-              )
-            )
-          ]
+          )
+        ),
+        Image.asset(
+          'assets/images/swipeleft.png',
+          width: 40,
+          height: 40,
+          fit: BoxFit.contain,
         )
-      ),
+      ]
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.of(widget.scaffoldContext).size.width;
+
+    List<Widget> columns = [
+      carouselInstance != null
+      ? carouselInstance
+      : buildBanner(width),
       AnimatedOpacity(
         opacity: loading ? 0 : 1,
         duration: Duration(milliseconds: 800),
@@ -230,28 +354,55 @@ class _ReadingViewState extends State<ReadingView> {
         )
       )
     ];
+
+    if (loading) {
+      columns.add(generateMarkdownData(widget.news));
+      columns.add(Padding(
+        padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        child: ContentLoading()
+      ));
+    }
+
     columns.addAll(relatedInstance);
-    return OverlayLoadingPage(
-      loading: loading,
-      component: related == null || related.length <= 1
-      ? ListView(
-          controller: scrollController,
-          children: columns
-        )
-      : Dismissible(
-        onDismissed: (DismissDirection direction) {
-          if (direction == DismissDirection.endToStart) {
+
+    columns.add(buildSwipeInformation());
+
+    return related.length > 2
+    ? Dismissible(
+      background: !loading && 1 < related.length
+        ? buildNextPage(related[1] ?? null, width) : Container(),
+      secondaryBackground: !loading && 0 < related.length
+        ? buildNextPage(related[0] ?? null, width) : Container(),
+      onDismissed: (DismissDirection direction) {
+        if (direction == DismissDirection.endToStart && related[0] != null) {
+          if (widget.push) {
+            pushByName('/reading', context, { 'news': related[0] });
+          } else {
             pushAndReplaceByName('/reading', context, { 'news': related[0] });
+          }
+        } else if(related[1] != null) {
+          if (widget.push) {
+            pushByName('/reading', context, { 'news': related[1] });
           } else {
             pushAndReplaceByName('/reading', context, { 'news': related[1] });
           }
-        },
-        key: new ValueKey('reading_page'),
+        }
+      },
+      resizeDuration: Duration(microseconds: 100),
+      key: new ValueKey('reading_page'),
+      child: Card(
+        margin: EdgeInsets.all(0),
+        elevation: 20.0,
         child: ListView(
+          physics: BouncingScrollPhysics(),
           controller: scrollController,
           children: columns
         )
       )
+    ) : ListView(
+      physics: BouncingScrollPhysics(),
+      controller: scrollController,
+      children: columns
     );
   }
 

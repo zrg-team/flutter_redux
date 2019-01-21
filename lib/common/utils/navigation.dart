@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 // PAGES
+import 'package:cat_dog/pages/BoardingPage.dart';
 import 'package:cat_dog/pages/HomePage.dart';
 import 'package:cat_dog/pages/ReadingPage.dart';
 import 'package:cat_dog/pages/CategoriesPage.dart';
@@ -11,9 +12,11 @@ import 'package:cat_dog/pages/SubNewsPage.dart';
 import 'package:cat_dog/pages/VideosPage.dart';
 import 'package:cat_dog/pages/TopicPage.dart';
 import 'package:cat_dog/pages/TopicDetailPage.dart';
+import 'package:cat_dog/pages/SoccerPage.dart';
+import 'package:cat_dog/pages/ContinueReadingPage.dart';
 
 
-const int DEFAULT_TIME = 200;
+const int DEFAULT_TIME = 180;
 class NoTransmissionRoute<T> extends MaterialPageRoute<T> {
   NoTransmissionRoute({ WidgetBuilder builder, RouteSettings settings })
       : super(builder: builder, settings: settings);
@@ -41,12 +44,8 @@ final Function getNavigationData = (
       case '/home':
         navigationFunction(
           context,
-          PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.centerLeft,
-            child: HomePage(),
-            curve: Curves.elasticInOut,
-            duration: Duration(milliseconds: DEFAULT_TIME)
+          NoTransmissionRoute(
+            builder: (BuildContext context) => HomePage()
           )
         );
         break;
@@ -54,10 +53,10 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.scale,
+            type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: CategoriesPage(),
-            curve: Curves.elasticInOut,
+            curve: Curves.easeInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
@@ -66,7 +65,7 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.scale,
+            type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: SavedNewsPage(),
             curve: Curves.elasticInOut,
@@ -78,7 +77,7 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.scale,
+            type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: NewsSourcePage(),
             curve: Curves.elasticInOut,
@@ -90,7 +89,7 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.scale,
+            type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: VideosPage(),
             curve: Curves.elasticInOut,
@@ -102,7 +101,7 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.scale,
+            type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: AboutPage(),
             curve: Curves.elasticInOut,
@@ -122,8 +121,8 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.scale,
-            alignment: Alignment.bottomCenter,
+            type: PageTransitionType.rightToLeft,
+            alignment: Alignment.centerRight,
             child: SubNewsPage(view: params['view']),
             curve: Curves.elasticInOut,
             duration: Duration(milliseconds: DEFAULT_TIME)
@@ -134,7 +133,7 @@ final Function getNavigationData = (
         navigationFunction(
           context,
           PageTransition(
-            type: PageTransitionType.scale,
+            type: PageTransitionType.rightToLeft,
             alignment: Alignment.bottomCenter,
             child: TopicPage(),
             curve: Curves.elasticInOut,
@@ -147,6 +146,42 @@ final Function getNavigationData = (
           context,
           MaterialPageRoute(
             builder: (BuildContext context) => TopicDetailPage(topic: params['topic'])
+          )
+        );
+        break;
+      case '/boarding':
+        navigationFunction(
+          context,
+          PageTransition(
+            type: PageTransitionType.rightToLeft,
+            alignment: Alignment.bottomCenter,
+            child: BoardingPage(),
+            curve: Curves.elasticInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
+        );
+        break;
+      case '/soccer':
+        navigationFunction(
+          context,
+          PageTransition(
+            type: PageTransitionType.rightToLeft,
+            alignment: Alignment.bottomCenter,
+            child: SoccerPage(),
+            curve: Curves.elasticInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
+          )
+        );
+        break;
+      case '/continue-reading':
+        navigationFunction(
+          context,
+          PageTransition(
+            type: PageTransitionType.rightToLeft,
+            alignment: Alignment.bottomCenter,
+            child: ContinueReadingPage(),
+            curve: Curves.elasticInOut,
+            duration: Duration(milliseconds: DEFAULT_TIME)
           )
         );
         break;
@@ -168,12 +203,8 @@ final Function pushAndRemoveByName = (String url, BuildContext context, dynamic 
       case '/home':
         Navigator.pushAndRemoveUntil(
           context,
-          PageTransition(
-            type: PageTransitionType.leftToRight,
-            alignment: Alignment.bottomCenter,
-            child: HomePage(),
-            curve: Curves.bounceInOut,
-            duration: Duration(milliseconds: DEFAULT_TIME)
+          MaterialPageRoute(
+            builder: (BuildContext context) => HomePage()
           ),
           (_) => false
         );

@@ -87,10 +87,34 @@ class CategoriesView extends StatelessWidget {
           'Khoa Học',
           '',
           'https://m.baomoi.com/khoa-hoc.epi'
+        ),
+        new _Tile(
+          'assets/images/lamdep.jpg',
+          10,
+          'Làm Đẹp',
+          '',
+          'https://m.baomoi.com/dinh-duong-lam-dep.epi'
+        ),
+        new _Tile(
+          'assets/images/kinhdoanh.jpg',
+          11,
+          'Kinh Doanh',
+          '',
+          'https://m.baomoi.com/kinh-doanh.epi'
+        ),
+        new _Tile(
+          'assets/images/honnhan.jpg',
+          12,
+          'Hôn Nhân',
+          '',
+          'https://m.baomoi.com/tinh-yeu-hon-nhan.epi'
         )
       ],
       staggeredTiles: const <StaggeredTile>[
         const StaggeredTile.fit(4),
+        const StaggeredTile.fit(2),
+        const StaggeredTile.fit(2),
+        const StaggeredTile.fit(2),
         const StaggeredTile.fit(2),
         const StaggeredTile.fit(2),
         const StaggeredTile.fit(2),

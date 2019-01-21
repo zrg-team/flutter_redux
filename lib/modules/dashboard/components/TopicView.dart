@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cat_dog/styles/colors.dart';
-import 'package:cat_dog/pages/LoadingPage.dart';
+import 'package:cat_dog/pages/ContentLoadingPage.dart';
 import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/modules/category/actions.dart';
 import 'package:cat_dog/common/components/MiniNewsList.dart';
@@ -26,7 +26,11 @@ class _TopicViewState extends State<TopicView> {
   @override
   void initState() {
     super.initState();
-    getNews(true);
+
+    Future.delayed(const Duration(milliseconds: 180), () {
+      getNews(true);
+    });
+    
     controller.addListener(() {
       if (controller.offset >= controller.position.maxScrollExtent - 100 && !onLoadMore) {
         setState(() {
@@ -51,7 +55,7 @@ class _TopicViewState extends State<TopicView> {
     } catch (err) {
       print(err);
     }
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         loading = false;
         onLoadMore = false;
@@ -72,13 +76,13 @@ class _TopicViewState extends State<TopicView> {
 
   @override
   Widget build(BuildContext context) {
-    return new LoadingPage(
+    return ContentLoadingPage(
       key: pageKey,
       loading: loading,
-      component: new Container(
+      component: Container(
         height: MediaQuery.of(context).size.height,
-        decoration: new BoxDecoration(color: AppColors.commonBackgroundColor),
-        child: new MiniNewsList(
+        decoration: BoxDecoration(color: AppColors.commonBackgroundColor),
+        child: MiniNewsList(
           list: list,
           widget: widget,
           controller: controller,

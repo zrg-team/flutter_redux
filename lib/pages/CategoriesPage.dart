@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cat_dog/common/utils/navigation.dart';
 import 'package:cat_dog/modules/category/components/CategoriesView.dart';
-import 'package:cat_dog/common/components/MainDrawer.dart';
 import 'package:cat_dog/common/components/GradientAppBar.dart';
 
 
@@ -23,23 +23,21 @@ class _CategoriesPageState extends State<CategoriesPage> {
       key: _mainKey,
       appBar: new PreferredSize(
         preferredSize: const Size.fromHeight(48.0),
-        child: Hero(
-          tag: "app-bar-hero",
-          child: new GradientAppBar(
-            'Thể Loại',
-            Icon(
-              Icons.dehaze,
-              size: 32
-            ),
-            () => _mainKey.currentState.openDrawer(),
-            null,
-            () async {
-            }
-          )
+        child: new GradientAppBar(
+          'Thể Loại',
+          Icon(
+            Icons.arrow_back,
+            size: 32
+          ),
+          () {
+            navigationPop(context);
+          },
+          null,
+          () async {
+          }
         )
       ),
-      body: new CategoriesView(),
-      drawer: new MainDrawer(),
+      body: new CategoriesView()
     );
   }
 }
